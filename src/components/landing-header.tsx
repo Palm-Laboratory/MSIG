@@ -12,7 +12,7 @@ const defaultItems = ["진단 소개", "검사 과정", "결과 유형", "FAQ"];
 export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "진단 소개", items = defaultItems }: LandingHeaderProps) {
   return (
     <nav
-      className="absolute inset-x-0 top-0 z-30 flex min-h-20 items-center justify-between px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
+      className="fixed inset-x-0 top-0 z-50 flex min-h-20 items-center justify-between border-b border-[rgba(242,218,218,0.42)] bg-[rgba(255,247,245,0.78)] px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
       aria-label={label}
     >
       <Link className="flex min-w-0 max-w-[calc(100vw-5rem)] flex-col text-[#292524]" href={brandHref}>
