@@ -1,14 +1,14 @@
 export function SiteFooter() {
   return (
-    <footer className="site-footer">
-      <div className="site-footer-copy">
-        <strong>복음경제영성연구소</strong>
-        <p>© 2026 복음경제영성연구소. All rights reserved provided by Baos Lab</p>
+    <footer className="flex min-h-28 w-full items-center justify-between bg-[#52494b] px-8 py-12 text-[rgba(255,255,255,0.8)] max-[767px]:flex-col max-[767px]:items-start max-[767px]:gap-6 max-[767px]:px-6 max-[767px]:py-9">
+      <div className="flex min-w-0 flex-col items-start gap-2">
+        <strong className="text-lg font-medium leading-7 text-[rgba(255,255,255,0.9)]">복음경제영성연구소</strong>
+        <p className="text-caption font-light leading-4 tracking-[0.01875rem] text-[rgba(255,255,255,0.6)]">© 2026 복음경제영성연구소. All rights reserved provided by Baos Lab</p>
       </div>
-      <nav className="site-footer-links" aria-label="푸터 링크">
-        <span>이용약관</span>
-        <span>개인정보처리방침</span>
-        <span>문의하기</span>
+      <nav className="flex items-start gap-8 max-[767px]:flex-wrap max-[767px]:gap-x-6 max-[767px]:gap-y-3" aria-label="푸터 링크">
+        <span className="text-caption font-light leading-4 tracking-[0.01875rem] text-[rgba(255,255,255,0.8)]">이용약관</span>
+        <span className="text-caption font-light leading-4 tracking-[0.01875rem] text-[rgba(255,255,255,0.8)]">개인정보처리방침</span>
+        <span className="text-caption font-light leading-4 tracking-[0.01875rem] text-[rgba(255,255,255,0.8)]">문의하기</span>
       </nav>
     </footer>
   );

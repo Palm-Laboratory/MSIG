@@ -138,18 +138,24 @@ const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
 
 function BarRow({ row }: { row: ScoreRow }) {
   return (
-    <div className="bar-row">
-      <div className="bar-meta">
-        <span>{row.name}</span>
-        <strong>{row.percent}%</strong>
+    <div className="grid gap-2">
+      <div className="flex items-center justify-between">
+        <span className="font-black text-[#423739]">{row.name}</span>
+        <strong className="font-black text-[#423739]">{row.percent}%</strong>
       </div>
-      <div className="bar-track">
-        <div className="bar-fill" style={{ width: `${row.percent}%` }} />
+      <div className="h-2 overflow-hidden rounded-full bg-[#f1dedb]">
+        <div className="h-full rounded-full bg-[#e8667a]" style={{ width: `${row.percent}%` }} />
       </div>
-      {row.feedback ? <p>{row.feedback}</p> : null}
+      {row.feedback ? <p className="text-[0.9375rem] leading-[1.6] text-[#78716c]">{row.feedback}</p> : null}
     </div>
   );
 }
+
+const riskLevelClass = (level: string) => {
+  if (level === "고위험") return "text-[#a33d4c]";
+  if (level === "주의") return "text-[#a4612a]";
+  return "text-[#47745d]";
+};
 
 export function ResultView() {
   const [answers, setAnswers] = useState<SurveyAnswers>({});
@@ -202,12 +208,12 @@ export function ResultView() {
 
   if (totalAnswered === 0) {
     return (
-      <main className="result-shell empty-state">
-        <div className="survey-card">
-          <p className="section-kicker">결과 없음</p>
-          <h1>저장된 설문 응답이 없습니다.</h1>
-          <p>진단을 시작하면 응답이 브라우저에 임시 저장되고 결과지가 생성됩니다.</p>
-          <Link className="button primary" href="/diagnosis/info">
+      <main className="flex min-h-screen items-center justify-center bg-[#fff7f5] px-6 py-10">
+        <div className="grid max-w-[520px] gap-4 rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">결과 없음</p>
+          <h1 className="text-[1.625rem] font-extrabold leading-[1.2] text-[#423739] md:text-[2.5rem]">저장된 설문 응답이 없습니다.</h1>
+          <p className="text-[0.9375rem] leading-[1.7] text-[#78716c] md:text-base">진단을 시작하면 응답이 브라우저에 임시 저장되고 결과지가 생성됩니다.</p>
+          <Link className="inline-flex min-h-[46px] items-center justify-center rounded-md bg-[#e8667a] px-[18px] font-extrabold text-white transition hover:-translate-y-px" href="/diagnosis/info">
             진단 시작하기
           </Link>
         </div>
@@ -216,71 +222,73 @@ export function ResultView() {
   }
 
   return (
-    <main className="result-shell">
-      <section className="result-hero">
-        <div>
-          <Link className="brand-mark" href="/">
+    <main className="mx-auto grid min-h-screen w-full max-w-[1120px] gap-6 bg-[#fff7f5] px-6 py-8 text-[#1c1c19]">
+      <section className="grid grid-cols-[minmax(0,1fr)_minmax(260px,340px)] items-end gap-6 py-5 max-[900px]:grid-cols-1">
+        <div className="grid gap-3.5">
+          <Link className="inline-flex h-10 min-w-[74px] items-center justify-center justify-self-start rounded-md bg-[#423739] px-3.5 font-black text-[#fff7f5]" href="/">
             MSIG
           </Link>
-          <p className="section-kicker">복음경제영성 진단 결과</p>
-          <h1>{profile.name || "수검자"}님의 경제영성 프로파일</h1>
-          <p>응답 {totalAnswered}/{SURVEY_QUESTIONS.length}문항 기준으로 현재의 강점, 위험 신호, 행동 균형을 정리했습니다.</p>
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">복음경제영성 진단 결과</p>
+          <h1 className="text-[2.1rem] font-extrabold leading-[1.12] text-[#423739] md:text-[4rem]">{profile.name || "수검자"}님의 경제영성 프로파일</h1>
+          <p className="max-w-[680px] text-[0.9375rem] leading-[1.7] text-[#78716c] md:text-base">
+            응답 {totalAnswered}/{SURVEY_QUESTIONS.length}문항 기준으로 현재의 강점, 위험 신호, 행동 균형을 정리했습니다.
+          </p>
         </div>
-        <div className="score-card">
-          <span>종합 경제영성 지수</span>
-          <strong>{overall}</strong>
-          <p>
+        <div className="grid gap-2.5 rounded-lg bg-[#423739] p-6 text-[#fff7f5]">
+          <span className="font-black text-[#ffd6dc]">종합 경제영성 지수</span>
+          <strong className="text-[4rem] leading-none">{overall}</strong>
+          <p className="text-[0.9375rem] leading-[1.7]">
             {result.part1.grade.code} · {result.part1.grade.label}
           </p>
-          <div className="bar-track">
-            <div className="bar-fill" style={{ width: `${overall}%` }} />
+          <div className="h-2 overflow-hidden rounded-full bg-[#f1dedb]">
+            <div className="h-full rounded-full bg-[#e8667a]" style={{ width: `${overall}%` }} />
           </div>
         </div>
       </section>
 
-      <section className="result-grid compact">
-        <div className="survey-card info-card">
-          <span>이름</span>
-          <strong>{profile.name || "미입력"}</strong>
+      <section className="grid grid-cols-3 gap-[18px] max-[900px]:grid-cols-1">
+        <div className="grid gap-2 rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <span className="text-sm font-black text-[#78716c]">이름</span>
+          <strong className="text-[1.24rem] font-black text-[#423739]">{profile.name || "미입력"}</strong>
         </div>
-        <div className="survey-card info-card">
-          <span>출석 교회</span>
-          <strong>{profile.church || "미입력"}</strong>
+        <div className="grid gap-2 rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <span className="text-sm font-black text-[#78716c]">출석 교회</span>
+          <strong className="text-[1.24rem] font-black text-[#423739]">{profile.church || "미입력"}</strong>
         </div>
-        <div className="survey-card info-card">
-          <span>검사 일자</span>
-          <strong>{today}</strong>
+        <div className="grid gap-2 rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <span className="text-sm font-black text-[#78716c]">검사 일자</span>
+          <strong className="text-[1.24rem] font-black text-[#423739]">{today}</strong>
         </div>
       </section>
 
-      <section className="result-grid">
-        <article className="survey-card archetype-card">
-          <p className="section-kicker">나의 경제유형</p>
-          <div className="character-slot">
-            <span>{archetype.subtitle}</span>
-            <strong>{archetype.name}</strong>
+      <section className="grid grid-cols-2 gap-[18px] max-[900px]:grid-cols-1">
+        <article className="grid gap-[18px] rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">나의 경제유형</p>
+          <div className="rounded-lg bg-[#423739] p-5 text-[#fff7f5]">
+            <span className="block text-[0.9375rem] leading-[1.7] text-[#ffd6dc]">{archetype.subtitle}</span>
+            <strong className="block text-[2rem] font-black leading-[1.2]">{archetype.name}</strong>
           </div>
-          <p>{archetype.description}</p>
-          <dl className="definition-list">
-            <div>
-              <dt>강점</dt>
-              <dd>{archetype.strength}</dd>
+          <p className="text-[0.9375rem] leading-[1.7] text-[#78716c]">{archetype.description}</p>
+          <dl className="grid gap-2.5">
+            <div className="grid gap-1 border-t border-[#efdfdf] pt-2.5">
+              <dt className="font-black text-[#8c4752]">강점</dt>
+              <dd className="m-0 text-[0.9375rem] leading-[1.7] text-[#78716c]">{archetype.strength}</dd>
             </div>
-            <div>
-              <dt>약점</dt>
-              <dd>{archetype.weakness}</dd>
+            <div className="grid gap-1 border-t border-[#efdfdf] pt-2.5">
+              <dt className="font-black text-[#8c4752]">약점</dt>
+              <dd className="m-0 text-[0.9375rem] leading-[1.7] text-[#78716c]">{archetype.weakness}</dd>
             </div>
-            <div>
-              <dt>처방</dt>
-              <dd>{archetype.prescription}</dd>
+            <div className="grid gap-1 border-t border-[#efdfdf] pt-2.5">
+              <dt className="font-black text-[#8c4752]">처방</dt>
+              <dd className="m-0 text-[0.9375rem] leading-[1.7] text-[#78716c]">{archetype.prescription}</dd>
             </div>
           </dl>
         </article>
 
-        <article className="survey-card">
-          <p className="section-kicker">6대 역량</p>
-          <h2>강점과 보완 영역</h2>
-          <div className="bars">
+        <article className="rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">6대 역량</p>
+          <h2 className="mt-1 text-[1.375rem] font-bold leading-[1.3] text-[#423739] md:text-[1.875rem]">강점과 보완 영역</h2>
+          <div className="mt-[18px] grid gap-3.5">
             {capacityScores.map((row) => (
               <BarRow key={row.id} row={row} />
             ))}
@@ -288,23 +296,25 @@ export function ResultView() {
         </article>
       </section>
 
-      <section className="result-grid">
-        <article className="survey-card">
-          <p className="section-kicker">8대 경제장애 위험도</p>
-          <h2>주의가 필요한 패턴</h2>
-          <div className="risk-grid">
+      <section className="grid grid-cols-2 gap-[18px] max-[900px]:grid-cols-1">
+        <article className="rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">8대 경제장애 위험도</p>
+          <h2 className="mt-1 text-[1.375rem] font-bold leading-[1.3] text-[#423739] md:text-[1.875rem]">주의가 필요한 패턴</h2>
+          <div className="mt-[18px] grid grid-cols-2 gap-2.5 max-[640px]:grid-cols-1">
             {riskScores.map((row) => (
-              <div className={`risk-pill ${row.level}`} key={row.id}>
-                <span>{row.name}</span>
-                <strong>{row.percent}% · {row.level}</strong>
+              <div className="grid gap-1 rounded-md border border-[#efdfdf] bg-[#f7f2ef] p-3.5" key={row.id}>
+                <span className="font-black text-[#423739]">{row.name}</span>
+                <strong className={`text-sm font-black ${riskLevelClass(row.level)}`}>
+                  {row.percent}% · {row.level}
+                </strong>
               </div>
             ))}
           </div>
         </article>
-        <article className="survey-card">
-          <p className="section-kicker">MSIG 행동 프로파일</p>
-          <h2>가장 낮은 영역은 {PROFILE_LABELS[result.part3.lowestArea.key]}입니다.</h2>
-          <div className="bars">
+        <article className="rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
+          <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">MSIG 행동 프로파일</p>
+          <h2 className="mt-1 text-[1.375rem] font-bold leading-[1.3] text-[#423739] md:text-[1.875rem]">가장 낮은 영역은 {PROFILE_LABELS[result.part3.lowestArea.key]}입니다.</h2>
+          <div className="mt-[18px] grid gap-3.5">
             {profileScores.map((row) => (
               <BarRow key={row.id} row={row} />
             ))}
@@ -312,14 +322,14 @@ export function ResultView() {
         </article>
       </section>
 
-      <footer className="result-actions no-print">
-        <button className="button ghost" onClick={() => window.print()} type="button">
+      <footer className="flex flex-wrap justify-end gap-2.5 pb-8 print:hidden">
+        <button className="inline-flex min-h-[46px] items-center justify-center rounded-md border border-[#efdfdf] bg-[rgba(255,255,255,0.66)] px-[18px] font-extrabold text-[#423739] transition hover:-translate-y-px" onClick={() => window.print()} type="button">
           결과지 인쇄/PDF 저장
         </button>
-        <a className="button primary" href="mailto:contact@example.com?subject=MSIG%20상담%20신청">
+        <a className="inline-flex min-h-[46px] items-center justify-center rounded-md bg-[#e8667a] px-[18px] font-extrabold text-white transition hover:-translate-y-px" href="mailto:contact@example.com?subject=MSIG%20상담%20신청">
           상담하기
         </a>
-        <Link className="button soft" href="/diagnosis" onClick={reset}>
+        <Link className="inline-flex min-h-[46px] items-center justify-center rounded-md bg-[#ffe2db] px-[18px] font-extrabold text-[#8c4752] transition hover:-translate-y-px" href="/diagnosis" onClick={reset}>
           다시 진단하기
         </Link>
       </footer>

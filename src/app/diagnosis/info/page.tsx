@@ -2,6 +2,9 @@ import Link from "next/link";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
 
+const badgeIcon = "https://www.figma.com/api/mcp/asset/ca1f999b-965a-4692-8cd9-2958fed5160f";
+const arrowIcon = "https://www.figma.com/api/mcp/asset/83745a12-4bac-4633-b2b0-1faf42dbd1fd";
+
 const processParts = [
   {
     label: "Part 01",
@@ -42,28 +45,36 @@ const archetypes = [
 
 export default function DiagnosisInfoPage() {
   return (
-    <main className="landing-shell">
-      <section className="landing-hero">
-        <div className="landing-blur landing-blur-left" />
-        <div className="landing-blur landing-blur-right" />
+    <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
+      <section className="relative min-h-[720px] overflow-hidden bg-[#fff7f5] px-[120px] pb-32 pt-40 [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-[900px]:px-6 max-[900px]:pb-[190px] max-[900px]:pt-32">
+        <div className="absolute -left-[164px] top-[584px] h-[800px] w-[800px] rounded-full bg-[rgba(193,133,144,0.1)] blur-[32px]" />
+        <div className="absolute left-[728px] top-16 h-[520px] w-[520px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[32px]" />
 
-        <LandingHeader brandHref="/diagnosis/info" label="진단 소개 내비게이션" />
+        <LandingHeader activeItem="검사 과정" brandHref="/diagnosis/info" items={["검사 과정", "소개", "결과 유형", "FAQ"]} label="진단 소개 내비게이션" />
 
-        <div className="landing-hero-copy">
-          <div className="landing-pill">✦ DISCOVER YOUR BIBLICAL IDENTITY</div>
-          <h1>
-            나의 경제 습관,
-            <br />
-            성경의 어떤 인물과 닮았을까?
-          </h1>
-          <p>
-            당신의 재정적 태도와 신앙의 성숙도를 정밀하게 분석하고
-            <br />
-            성경 속 인물을 통해 해답을 찾아보세요.
-          </p>
-          <Link className="landing-primary-button" href="/diagnosis/part/1">
-            테스트 시작 <span aria-hidden="true">→</span>
-          </Link>
+        <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-[60px] max-[900px]:px-0">
+          <div className="flex min-w-0 flex-1 flex-col items-center gap-10">
+            <div className="inline-flex items-center gap-3 rounded bg-[#ffe2db] px-4 py-1.5 text-[#4a3136] max-[900px]:hidden">
+              <img className="h-3 w-3" alt="" src={badgeIcon} />
+              <span className="whitespace-nowrap text-[0.625rem] font-medium uppercase leading-[0.9375rem] tracking-[0.125rem]">DISCOVER YOUR BIBLICAL IDENTITY</span>
+            </div>
+            <h1 className="text-display whitespace-normal text-center font-extrabold text-[#615557] md:text-display-desktop min-[901px]:whitespace-nowrap">
+              나의 경제 습관,
+              <br />
+              성경의 어떤 인물과 닮았을까?
+            </h1>
+            <p className="max-w-[36rem] text-center text-body-m font-medium text-[#615557] opacity-80 md:text-body-l-desktop">
+              당신의 재정적 태도와 신앙의 성숙도를 정밀하게 분석하고
+              <br />
+              성경 속 인물을 통해 해답을 찾아보세요.
+            </p>
+            <div className="flex w-full justify-center pt-[16.7px]">
+              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-[60px] md:px-10 md:py-5 md:text-h3-desktop" href="/diagnosis/part/1">
+                <span className="!text-white">테스트 시작</span>
+                <img className="h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -126,10 +137,10 @@ export default function DiagnosisInfoPage() {
           <p>더 깊은 상담을 원하신다면 전문가와 함께 정밀한 상담을 받아보세요.</p>
         </div>
         <div className="landing-cta-actions">
-          <Link className="landing-primary-button" href="/diagnosis/part/1">
+          <Link className="inline-flex min-h-14 items-center justify-center rounded bg-[#d47182] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="/diagnosis/part/1">
             진단 시작하기 (무료)
           </Link>
-          <a className="landing-secondary-button" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">
+          <a className="inline-flex min-h-14 items-center justify-center rounded bg-[#7d545b] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] text-white transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">
             정밀 상담 신청하기
           </a>
         </div>
