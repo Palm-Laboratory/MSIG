@@ -442,6 +442,10 @@ p {
   z-index: 1;
 }
 
+.process-tabs button:nth-child(1) {
+  z-index: 3;
+}
+
 .process-tabs button:nth-child(2) {
   --process-tab-bg: #fdc8d1;
   color: #b6848d;
@@ -450,7 +454,7 @@ p {
 
 .process-tabs button:nth-child(3) {
   --process-tab-bg: #fba9b6;
-  z-index: 3;
+  z-index: 1;
 }
 
 .process-tabs button:hover {
