@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
+import { SiteFooter } from "@/components/site-footer";
 
 const badgeIcon = "https://www.figma.com/api/mcp/asset/ca1f999b-965a-4692-8cd9-2958fed5160f";
 const arrowIcon = "https://www.figma.com/api/mcp/asset/83745a12-4bac-4633-b2b0-1faf42dbd1fd";
@@ -33,27 +34,27 @@ const processParts = [
 ];
 
 const archetypes = [
-  ["아브라함", "믿음의 모험가"],
-  ["나발", "수전노"],
-  ["야곱형", "전략적 사냥꾼"],
-  ["발람", "물질 숭배"],
-  ["엘리야", "지친 전사"],
-  ["아간", "일확천금 추구"],
-  ["탕자", "낭비가"],
-  ["므비보셋", "경제적 미성숙"],
+  ["아브라함", "믿음의 모험가", "/images/아브라함_.png"],
+  ["나발", "수전노", "/images/나발_.png"],
+  ["야곱형", "전략적 사냥꾼", "/images/야곱_.png"],
+  ["발람", "물질 숭배", "/images/발람_.png"],
+  ["엘리야", "지친 전사", "/images/엘리야_.png"],
+  ["아간", "일확천금 추구", "/images/아간_.png"],
+  ["탕자", "낭비가", "/images/탕자_.png"],
+  ["므비보셋", "경제적 미성숙", "/images/므비보셋_.png"],
 ];
 
 export default function DiagnosisInfoPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
-      <section className="relative min-h-[720px] overflow-hidden bg-[#fff7f5] px-[120px] pb-32 pt-40 [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-[900px]:px-6 max-[900px]:pb-[190px] max-[900px]:pt-32">
+      <section className="relative flex min-h-[640px] flex-col items-center overflow-hidden bg-[#fff7f5] px-6 pb-20 pt-40 [@media(min-height:760px)]:min-h-[82svh] [@media(min-height:980px)]:min-h-[760px] md:px-[120px] max-[900px]:pb-24 max-[900px]:pt-32">
         <div className="absolute -left-[164px] top-[584px] h-[800px] w-[800px] rounded-full bg-[rgba(193,133,144,0.1)] blur-[32px]" />
         <div className="absolute left-[728px] top-16 h-[520px] w-[520px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[32px]" />
 
         <LandingHeader activeItem="검사 과정" brandHref="/diagnosis/info" items={["검사 과정", "소개", "결과 유형", "FAQ"]} label="진단 소개 내비게이션" />
 
-        <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-[60px] max-[900px]:px-0">
-          <div className="flex min-w-0 flex-1 flex-col items-center gap-10">
+        <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-0 md:px-[60px]">
+          <div className="mx-auto flex min-w-0 max-w-[72rem] flex-1 flex-col items-center gap-10 text-center">
             <div className="inline-flex items-center gap-3 rounded bg-[#ffe2db] px-4 py-1.5 text-[#4a3136] max-[900px]:hidden">
               <img className="h-3 w-3" alt="" src={badgeIcon} />
               <span className="whitespace-nowrap text-[0.625rem] font-medium uppercase leading-[0.9375rem] tracking-[0.125rem]">DISCOVER YOUR BIBLICAL IDENTITY</span>
@@ -68,10 +69,10 @@ export default function DiagnosisInfoPage() {
               <br />
               성경 속 인물을 통해 해답을 찾아보세요.
             </p>
-            <div className="flex w-full justify-center pt-[16.7px]">
-              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-[60px] md:px-10 md:py-5 md:text-h3-desktop" href="/diagnosis/part/1">
-                <span className="!text-white">테스트 시작</span>
-                <img className="h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
+            <div className="flex w-full justify-center pt-[46px]">
+              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-[60px] md:px-7 md:py-3 md:text-h3-desktop" href="/diagnosis/part/1">
+                <span className="text-h4">테스트 시작</span>
+                <img className="text-h4 h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
               </Link>
             </div>
           </div>
@@ -115,10 +116,10 @@ export default function DiagnosisInfoPage() {
         </div>
 
         <div className="landing-character-grid">
-          {archetypes.map(([name, subtitle]) => (
+          {archetypes.map(([name, subtitle, imageSrc]) => (
             <article className="landing-character" key={name}>
-              <div className="character-image-slot" aria-label={`${name} 캐릭터 이미지 준비 중`}>
-                <span>이미지 준비 중</span>
+              <div className="character-image-slot" aria-label={imageSrc ? `${name} 캐릭터 이미지` : `${name} 캐릭터 이미지 준비 중`}>
+                {imageSrc ? <img alt={`${name} 캐릭터`} src={imageSrc} /> : <span>이미지 준비 중</span>}
               </div>
               <h3>{name}</h3>
               <p>{subtitle}</p>
@@ -137,21 +138,16 @@ export default function DiagnosisInfoPage() {
           <p>더 깊은 상담을 원하신다면 전문가와 함께 정밀한 상담을 받아보세요.</p>
         </div>
         <div className="landing-cta-actions">
-          <Link className="inline-flex min-h-14 items-center justify-center rounded bg-[#d47182] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="/diagnosis/part/1">
+          <Link className="inline-flex min-h-14 items-center justify-center rounded bg-[#d47182] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="/diagnosis/part/1">
             진단 시작하기 (무료)
           </Link>
-          <a className="inline-flex min-h-14 items-center justify-center rounded bg-[#7d545b] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] text-white transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">
+          <a className="inline-flex min-h-14 items-center justify-center rounded bg-[#7d545b] px-10 py-5 text-center text-h4 font-black tracking-[0.0625rem] !text-white transition hover:-translate-y-0.5 hover:brightness-[1.03]" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">
             정밀 상담 신청하기
           </a>
         </div>
       </section>
 
-      <footer className="landing-footer" id="faq">
-        <strong>한국목회지원센터</strong>
-        <span>서울 강남구 OO로 OO길 OO타워 OO호</span>
-        <span>TEL: 010-0000-0000</span>
-        <span>copyright ⓒ (사)한국목회지원회 All rights reserved.</span>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

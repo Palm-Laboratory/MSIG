@@ -148,10 +148,10 @@ p {
   color: #fff5f0;
   display: flex;
   flex-direction: column;
-  gap: 72px;
-  min-height: 720px;
+  gap: 56px;
+  min-height: 640px;
   overflow: hidden;
-  padding: 115px 60px 100px;
+  padding: 88px 60px 80px;
   position: relative;
 }
 
@@ -178,6 +178,10 @@ p {
   font-size: 3rem;
   font-weight: 900;
   line-height: 1.625;
+}
+
+.landing-process .landing-section-title {
+  max-width: 1120px;
 }
 
 .landing-shape {
@@ -214,7 +218,7 @@ p {
 .process-desktop-card {
   animation: landing-fade-up 680ms ease 320ms both;
   margin: 0 auto;
-  max-width: 1280px;
+  max-width: 1120px;
   position: relative;
   width: 100%;
   z-index: 2;
@@ -235,7 +239,7 @@ p {
   border: 0;
   color: #ba9098;
   display: inline-flex;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 900;
   height: 68px;
   isolation: isolate;
@@ -313,7 +317,7 @@ p {
 .process-mobile-card h3 {
   color: #000;
   font-size: 1.875rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   margin-bottom: 28px;
 }
@@ -324,7 +328,7 @@ p {
   display: flex;
   flex-direction: column;
   font-size: 1.375rem;
-  font-weight: 600;
+  font-weight: 400;
   gap: 12px;
   line-height: 1.636;
   list-style: none;
@@ -351,11 +355,11 @@ p {
 
 .process-time {
   color: #fff5f0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1;
-  margin: 0 auto;
-  max-width: 1280px;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin: -40px auto 0;
+  max-width: 1120px;
   position: relative;
   width: 100%;
   z-index: 2;
@@ -379,12 +383,17 @@ p {
   color: #e7dede;
 }
 
+.landing-archetypes .landing-section-title {
+  max-width: 1120px;
+}
+
 .landing-character-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 256px));
+  justify-content: space-between;
   margin: 0 auto;
-  max-width: 1280px;
+  max-width: 1120px;
   position: relative;
   width: 100%;
   z-index: 2;
@@ -406,7 +415,16 @@ p {
   color: rgba(97, 85, 87, 0.32);
   display: flex;
   justify-content: center;
-  min-height: 300px;
+  min-height: 296px;
+  overflow: hidden;
+}
+
+.character-image-slot img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
 }
 
 .character-image-slot span {
@@ -459,7 +477,8 @@ p {
   display: flex;
   flex-direction: column;
   gap: 60px;
-  min-height: 720px;
+  justify-content: center;
+  min-height: 560px;
   padding: 100px 60px;
   text-align: center;
 }
@@ -486,44 +505,39 @@ p {
   gap: 24px;
 }
 
-.landing-footer {
-  background: #423739;
-  color: white;
-  display: none;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px 26px 50px;
-}
-
-.landing-footer strong {
-  font-size: 0.75rem;
-}
-
-.landing-footer span {
-  font-size: 0.5rem;
-  font-weight: 300;
+@media (min-width: 901px) {
+  .landing-cta-actions {
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+  }
 }
 
 @media (min-height: 760px) {
   .landing-process,
-  .landing-archetypes,
-  .landing-cta {
+  .landing-archetypes {
     min-height: 100svh;
   }
 }
 
 @media (min-height: 980px) {
-  .landing-process,
-  .landing-archetypes,
-  .landing-cta {
+  .landing-archetypes {
     min-height: 900px;
+  }
+
+  .landing-process {
+    min-height: 780px;
+  }
+
+  .landing-cta {
+    min-height: 640px;
   }
 }
 
 @media (max-width: 900px) {
   .landing-process {
-    gap: 84px;
-    padding: 140px 26px;
+    gap: 56px;
+    padding: 96px 26px;
   }
 
   .landing-section-title {
@@ -602,8 +616,9 @@ p {
   }
 
   .process-time {
-    font-size: 1rem;
-    line-height: 1;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-top: -34px;
     text-align: center;
   }
 
@@ -622,12 +637,12 @@ p {
   }
 
   .landing-character {
-    flex: 0 0 228px;
+    flex: 0 0 200px;
     scroll-snap-align: center;
   }
 
   .character-image-slot {
-    min-height: 309px;
+    min-height: 270px;
   }
 
   .landing-cta {
