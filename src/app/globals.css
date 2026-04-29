@@ -380,35 +380,8 @@ p {
 .main-hero {
   align-items: center;
   display: flex;
-  height: min(100svh, 900px);
   justify-content: center;
-  min-height: 720px;
   padding: 160px 0 128px;
-}
-
-.main-hero,
-.landing-process,
-.landing-archetypes,
-.landing-cta {
-  min-height: 720px;
-}
-
-@media (min-height: 760px) {
-  .main-hero,
-  .landing-process,
-  .landing-archetypes,
-  .landing-cta {
-    min-height: 100svh;
-  }
-}
-
-@media (min-height: 980px) {
-  .main-hero,
-  .landing-process,
-  .landing-archetypes,
-  .landing-cta {
-    min-height: 900px;
-  }
 }
 
 .main-hero .landing-nav {
@@ -791,10 +764,17 @@ p {
   display: flex;
   flex-direction: column;
   gap: 72px;
-  min-height: 1070px;
   overflow: hidden;
   padding: 115px 60px 100px;
   position: relative;
+}
+
+.main-process-background {
+  background-color: #615557;
+  background-image: url("https://www.figma.com/api/mcp/asset/68db41fe-e8a4-4ad5-9cce-e6a0e6b29ec8");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .landing-section-title {
@@ -1940,7 +1920,6 @@ input {
   .landing-process {
     align-items: center;
     gap: 84px;
-    min-height: auto;
     padding: 140px 26px;
   }
 
@@ -2146,6 +2125,31 @@ input {
 
   .button {
     width: 100%;
+  }
+}
+
+.main-hero,
+.landing-process,
+.landing-archetypes,
+.landing-cta {
+  min-height: 720px;
+}
+
+@media (min-height: 760px) {
+  .main-hero,
+  .landing-process,
+  .landing-archetypes,
+  .landing-cta {
+    min-height: 100svh;
+  }
+}
+
+@media (min-height: 980px) {
+  .main-hero,
+  .landing-process,
+  .landing-archetypes,
+  .landing-cta {
+    min-height: 900px;
   }
 }
 

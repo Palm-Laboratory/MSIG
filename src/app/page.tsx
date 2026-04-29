@@ -47,10 +47,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="landing-process" id="process">
-        <div className="landing-shape shape-a" />
-        <div className="landing-shape shape-b" />
-      </section>
+      <section className="landing-process main-process-background" id="process" />
 
       <section className="landing-archetypes" id="archetypes">
         <div className="landing-shape shape-c" />
