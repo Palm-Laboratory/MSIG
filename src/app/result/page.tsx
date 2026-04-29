@@ -1,5 +1,5 @@
-import { ResultView } from "@/components/ResultView";
+import { redirect } from "next/navigation";
 
 export default function ResultPage() {
-  return <ResultView />;
+  redirect("/diagnosis/result");
 }

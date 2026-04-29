@@ -38,7 +38,74 @@ export const designTokens = {
     },
   },
   font: {
-    sans: '"Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif',
+    sans: '"Gmarket Sans", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif',
+    face: {
+      light: "/fonts/GmarketSansTTFLight.ttf",
+      medium: "/fonts/GmarketSansTTFMedium.ttf",
+      bold: "/fonts/GmarketSansTTFBold.ttf",
+    },
+  },
+  typography: {
+    display: {
+      mobile: "2rem",
+      desktop: "3.25rem",
+      lineHeight: 1.15,
+      weight: 800,
+    },
+    h1: {
+      mobile: "1.625rem",
+      desktop: "2.5rem",
+      lineHeight: 1.2,
+      weight: 800,
+    },
+    h2: {
+      mobile: "1.375rem",
+      desktop: "1.875rem",
+      lineHeight: 1.3,
+      weight: 700,
+    },
+    h3: {
+      mobile: "1.125rem",
+      desktop: "1.375rem",
+      lineHeight: 1.4,
+      weight: 600,
+    },
+    h4: {
+      mobile: "1rem",
+      desktop: "1.125rem",
+      lineHeight: 1.4,
+      weight: 600,
+    },
+    bodyL: {
+      mobile: "1rem",
+      desktop: "1.125rem",
+      lineHeight: 1.7,
+      weight: 400,
+    },
+    bodyM: {
+      mobile: "0.9375rem",
+      desktop: "1rem",
+      lineHeight: 1.7,
+      weight: 400,
+    },
+    bodyS: {
+      mobile: "0.875rem",
+      desktop: "0.875rem",
+      lineHeight: 1.6,
+      weight: 400,
+    },
+    label: {
+      mobile: "0.8125rem",
+      desktop: "0.8125rem",
+      lineHeight: 1.4,
+      weight: 500,
+    },
+    caption: {
+      mobile: "0.75rem",
+      desktop: "0.75rem",
+      lineHeight: 1.4,
+      weight: 400,
+    },
   },
   space: {
     1: "4px",

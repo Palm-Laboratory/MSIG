@@ -1,15 +1,13 @@
-import { notFound } from "next/navigation";
-import { SurveyRunner } from "@/components/SurveyRunner";
-import type { PartId } from "@/lib/survey-data";
+import { notFound, redirect } from "next/navigation";
 
 type Props = {
   params: Promise<{ part: string }>;
 };
 
-const PART_BY_SLUG: Record<string, PartId> = {
-  "part-1": "part-1",
-  "part-2": "part-2",
-  "part-3": "part-3",
+const PART_BY_SLUG: Record<string, string> = {
+  "part-1": "1",
+  "part-2": "2",
+  "part-3": "3",
 };
 
 export default async function SurveyPartPage({ params }: Props) {
@@ -18,5 +16,5 @@ export default async function SurveyPartPage({ params }: Props) {
 
   if (!partNumber) notFound();
 
-  return <SurveyRunner part={partNumber} />;
+  redirect(`/diagnosis/part/${partNumber}`);
 }

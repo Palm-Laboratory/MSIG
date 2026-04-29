@@ -56,7 +56,7 @@ export default function HomePage() {
               검사 과정
             </a>
             <a href="#archetypes">결과 유형</a>
-            <Link href="/result">나의 결과</Link>
+            <Link href="/diagnosis/result">나의 결과</Link>
             <a href="#faq">FAQ</a>
           </div>
           <details className="landing-mobile-nav">
@@ -68,7 +68,7 @@ export default function HomePage() {
             <div>
               <a href="#process">검사 과정</a>
               <a href="#archetypes">결과 유형</a>
-              <Link href="/result">나의 결과</Link>
+              <Link href="/diagnosis/result">나의 결과</Link>
               <a href="#faq">FAQ</a>
             </div>
           </details>
@@ -86,7 +86,7 @@ export default function HomePage() {
             <br />
             성경 속 인물을 통해 해답을 찾아보세요.
           </p>
-          <Link className="landing-primary-button" href="/survey/part-1">
+          <Link className="landing-primary-button" href="/diagnosis/info">
             테스트 시작 <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -140,7 +140,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <Link className="landing-outline-button" href="/result">
+        <Link className="landing-outline-button" href="/diagnosis/result">
           전체 유형 보기
         </Link>
       </section>
@@ -151,7 +151,7 @@ export default function HomePage() {
           <p>더 깊은 상담을 원하신다면 전문가와 함께 정밀한 상담을 받아보세요.</p>
         </div>
         <div className="landing-cta-actions">
-          <Link className="landing-primary-button" href="/survey/part-1">
+          <Link className="landing-primary-button" href="/diagnosis/info">
             진단 시작하기 (무료)
           </Link>
           <a className="landing-secondary-button" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">

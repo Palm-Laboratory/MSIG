@@ -9,20 +9,15 @@ type Props = {
   part: PartId;
 };
 
-type Profile = {
-  name: string;
-  church: string;
-};
-
 const STORAGE_KEYS = {
-  answers: "msig.answers",
-  profile: "msig.profile",
+  answers: "ges_answers",
+  legacyAnswers: "msig.answers",
 } as const;
 
-const loadJson = <T,>(key: string, fallback: T): T => {
+const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
   if (typeof window === "undefined") return fallback;
   try {
-    const stored = window.localStorage.getItem(key);
+    const stored = window.localStorage.getItem(key) ?? (legacyKey ? window.localStorage.getItem(legacyKey) : null);
     return stored ? (JSON.parse(stored) as T) : fallback;
   } catch {
     return fallback;
@@ -34,26 +29,20 @@ export function SurveyRunner({ part }: Props) {
   const partMeta = SURVEY_PARTS.find((item) => item.id === part) ?? SURVEY_PARTS[0];
   const questions = useMemo(() => SURVEY_QUESTIONS.filter((question) => question.part === part), [part]);
   const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [profile, setProfile] = useState<Profile>({ name: "", church: "" });
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setAnswers(loadJson<Record<string, number>>(STORAGE_KEYS.answers, {}));
-    setProfile(loadJson<Profile>(STORAGE_KEYS.profile, { name: "", church: "" }));
+    setAnswers(loadJson<Record<string, number>>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers));
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEYS.answers, JSON.stringify(answers));
   }, [answers]);
 
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEYS.profile, JSON.stringify(profile));
-  }, [profile]);
-
   const answeredInPart = questions.filter((question) => answers[String(question.id)]).length;
   const overallAnswered = SURVEY_QUESTIONS.filter((question) => answers[String(question.id)]).length;
   const progress = Math.round((overallAnswered / SURVEY_QUESTIONS.length) * 100);
-  const canContinue = answeredInPart === questions.length && (part !== "part-1" || profile.name.trim().length > 0);
+  const canContinue = answeredInPart === questions.length;
 
   const grouped = questions.reduce<Record<string, typeof questions>>((acc, question) => {
     acc[question.groupName] = [...(acc[question.groupName] ?? []), question];
@@ -62,19 +51,19 @@ export function SurveyRunner({ part }: Props) {
 
   const onNext = () => {
     if (!canContinue) {
-      setMessage(part === "part-1" && !profile.name.trim() ? "이름과 모든 문항 응답을 확인해 주세요." : "현재 파트의 모든 문항에 응답해 주세요.");
+      setMessage("현재 파트의 모든 문항에 응답해 주세요.");
       return;
     }
     setMessage("");
-    if (part === "part-1") router.push("/survey/part-2");
-    if (part === "part-2") router.push("/survey/part-3");
-    if (part === "part-3") router.push("/analyzing");
+    if (part === "part-1") router.push("/diagnosis/part/2");
+    if (part === "part-2") router.push("/diagnosis/part/3");
+    if (part === "part-3") router.push("/diagnosis/loading");
   };
 
   return (
     <main className="survey-shell">
       <header className="survey-header">
-        <Link className="brand-mark" href="/">
+        <Link className="brand-mark" href="/diagnosis">
           MSIG
         </Link>
         <div className="survey-progress" aria-label={`전체 진행률 ${progress}%`}>
@@ -99,23 +88,6 @@ export function SurveyRunner({ part }: Props) {
               : "버는 행동, 쓰는 행동, 불리는 행동, 나누는 행동의 균형을 살핍니다."}
         </span>
       </section>
-
-      {part === "part-1" ? (
-        <section className="survey-card profile-card" aria-label="기본 정보">
-          <div>
-            <p className="section-kicker">기본 정보</p>
-            <h2>결과지에 표시할 정보를 입력해 주세요.</h2>
-          </div>
-          <label>
-            이름
-            <input value={profile.name} onChange={(event) => setProfile({ ...profile, name: event.target.value })} placeholder="홍길동" />
-          </label>
-          <label>
-            출석 교회
-            <input value={profile.church} onChange={(event) => setProfile({ ...profile, church: event.target.value })} placeholder="선택 입력" />
-          </label>
-        </section>
-      ) : null}
 
       <div className="question-groups">
         {Object.entries(grouped).map(([groupName, groupQuestions]) => (
@@ -153,7 +125,7 @@ export function SurveyRunner({ part }: Props) {
       </div>
 
       <footer className="survey-actions">
-        <Link className="button ghost" href={part === "part-1" ? "/" : part === "part-2" ? "/survey/part-1" : "/survey/part-2"}>
+        <Link className="button ghost" href={part === "part-1" ? "/diagnosis/info" : part === "part-2" ? "/diagnosis/part/1" : "/diagnosis/part/2"}>
           이전
         </Link>
         <div>

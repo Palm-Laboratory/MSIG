@@ -1,3 +1,27 @@
+@font-face {
+  font-family: "Gmarket Sans";
+  src: url("/fonts/GmarketSansTTFLight.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Gmarket Sans";
+  src: url("/fonts/GmarketSansTTFMedium.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 500;
+}
+
+@font-face {
+  font-family: "Gmarket Sans";
+  src: url("/fonts/GmarketSansTTFBold.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600 800;
+}
+
 :root {
   color-scheme: light;
 
@@ -24,7 +48,48 @@
   --color-danger: #ef4444;
   --color-focus: #be123c;
 
-  --font-sans: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --font-sans: "Gmarket Sans", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+
+  --text-display-size: 2rem;
+  --text-display-size-md: 3.25rem;
+  --text-display-line-height: 1.15;
+  --text-display-weight: 800;
+  --text-h1-size: 1.625rem;
+  --text-h1-size-md: 2.5rem;
+  --text-h1-line-height: 1.2;
+  --text-h1-weight: 800;
+  --text-h2-size: 1.375rem;
+  --text-h2-size-md: 1.875rem;
+  --text-h2-line-height: 1.3;
+  --text-h2-weight: 700;
+  --text-h3-size: 1.125rem;
+  --text-h3-size-md: 1.375rem;
+  --text-h3-line-height: 1.4;
+  --text-h3-weight: 600;
+  --text-h4-size: 1rem;
+  --text-h4-size-md: 1.125rem;
+  --text-h4-line-height: 1.4;
+  --text-h4-weight: 600;
+  --text-body-l-size: 1rem;
+  --text-body-l-size-md: 1.125rem;
+  --text-body-l-line-height: 1.7;
+  --text-body-l-weight: 400;
+  --text-body-m-size: 0.9375rem;
+  --text-body-m-size-md: 1rem;
+  --text-body-m-line-height: 1.7;
+  --text-body-m-weight: 400;
+  --text-body-s-size: 0.875rem;
+  --text-body-s-size-md: 0.875rem;
+  --text-body-s-line-height: 1.6;
+  --text-body-s-weight: 400;
+  --text-label-size: 0.8125rem;
+  --text-label-size-md: 0.8125rem;
+  --text-label-line-height: 1.4;
+  --text-label-weight: 500;
+  --text-caption-size: 0.75rem;
+  --text-caption-size-md: 0.75rem;
+  --text-caption-line-height: 1.4;
+  --text-caption-weight: 400;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -86,6 +151,121 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   word-break: keep-all;
+}
+
+.text-display,
+.text-h1,
+.text-h2,
+.text-h3,
+.text-h4,
+.text-body-l,
+.text-body-m,
+.text-body-s,
+.text-label,
+.text-caption {
+  letter-spacing: 0;
+}
+
+.text-display {
+  font-size: var(--text-display-size);
+  font-weight: var(--text-display-weight);
+  line-height: var(--text-display-line-height);
+}
+
+.text-h1 {
+  font-size: var(--text-h1-size);
+  font-weight: var(--text-h1-weight);
+  line-height: var(--text-h1-line-height);
+}
+
+.text-h2 {
+  font-size: var(--text-h2-size);
+  font-weight: var(--text-h2-weight);
+  line-height: var(--text-h2-line-height);
+}
+
+.text-h3 {
+  font-size: var(--text-h3-size);
+  font-weight: var(--text-h3-weight);
+  line-height: var(--text-h3-line-height);
+}
+
+.text-h4 {
+  font-size: var(--text-h4-size);
+  font-weight: var(--text-h4-weight);
+  line-height: var(--text-h4-line-height);
+}
+
+.text-body-l {
+  font-size: var(--text-body-l-size);
+  font-weight: var(--text-body-l-weight);
+  line-height: var(--text-body-l-line-height);
+}
+
+.text-body-m {
+  font-size: var(--text-body-m-size);
+  font-weight: var(--text-body-m-weight);
+  line-height: var(--text-body-m-line-height);
+}
+
+.text-body-s {
+  font-size: var(--text-body-s-size);
+  font-weight: var(--text-body-s-weight);
+  line-height: var(--text-body-s-line-height);
+}
+
+.text-label {
+  font-size: var(--text-label-size);
+  font-weight: var(--text-label-weight);
+  line-height: var(--text-label-line-height);
+}
+
+.text-caption {
+  font-size: var(--text-caption-size);
+  font-weight: var(--text-caption-weight);
+  line-height: var(--text-caption-line-height);
+}
+
+@media (min-width: 768px) {
+  .text-display {
+    font-size: var(--text-display-size-md);
+  }
+
+  .text-h1 {
+    font-size: var(--text-h1-size-md);
+  }
+
+  .text-h2 {
+    font-size: var(--text-h2-size-md);
+  }
+
+  .text-h3 {
+    font-size: var(--text-h3-size-md);
+  }
+
+  .text-h4 {
+    font-size: var(--text-h4-size-md);
+  }
+
+  .text-body-l {
+    font-size: var(--text-body-l-size-md);
+  }
+
+  .text-body-m {
+    font-size: var(--text-body-m-size-md);
+  }
+
+  .text-body-s {
+    font-size: var(--text-body-s-size-md);
+  }
+
+  .text-label {
+    font-size: var(--text-label-size-md);
+  }
+
+  .text-caption {
+    font-size: var(--text-caption-size-md);
+  }
 }
 
 button,

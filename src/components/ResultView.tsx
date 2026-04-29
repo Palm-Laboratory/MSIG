@@ -18,8 +18,10 @@ type ScoreRow = {
 };
 
 const STORAGE_KEYS = {
-  answers: "msig.answers",
-  profile: "msig.profile",
+  answers: "ges_answers",
+  profile: "ges_user",
+  legacyAnswers: "msig.answers",
+  legacyProfile: "msig.profile",
 } as const;
 
 const COMPETENCY_LABELS: Record<Part1CompetencyKey, { name: string; low: string; high: string }> = {
@@ -124,10 +126,10 @@ const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string;
   },
 };
 
-const loadJson = <T,>(key: string, fallback: T): T => {
+const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
   if (typeof window === "undefined") return fallback;
   try {
-    const stored = window.localStorage.getItem(key);
+    const stored = window.localStorage.getItem(key) ?? (legacyKey ? window.localStorage.getItem(legacyKey) : null);
     return stored ? (JSON.parse(stored) as T) : fallback;
   } catch {
     return fallback;
@@ -155,8 +157,8 @@ export function ResultView() {
   const [today, setToday] = useState("");
 
   useEffect(() => {
-    setAnswers(loadJson<SurveyAnswers>(STORAGE_KEYS.answers, {}));
-    setProfile(loadJson<Profile>(STORAGE_KEYS.profile, { name: "", church: "" }));
+    setAnswers(loadJson<SurveyAnswers>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers));
+    setProfile(loadJson<Profile>(STORAGE_KEYS.profile, { name: "", church: "" }, STORAGE_KEYS.legacyProfile));
     setToday(new Intl.DateTimeFormat("ko-KR", { dateStyle: "long" }).format(new Date()));
   }, []);
 
@@ -194,6 +196,8 @@ export function ResultView() {
   const reset = () => {
     window.localStorage.removeItem(STORAGE_KEYS.answers);
     window.localStorage.removeItem(STORAGE_KEYS.profile);
+    window.localStorage.removeItem(STORAGE_KEYS.legacyAnswers);
+    window.localStorage.removeItem(STORAGE_KEYS.legacyProfile);
   };
 
   if (totalAnswered === 0) {
@@ -203,7 +207,7 @@ export function ResultView() {
           <p className="section-kicker">결과 없음</p>
           <h1>저장된 설문 응답이 없습니다.</h1>
           <p>진단을 시작하면 응답이 브라우저에 임시 저장되고 결과지가 생성됩니다.</p>
-          <Link className="button primary" href="/survey/part-1">
+          <Link className="button primary" href="/diagnosis/info">
             진단 시작하기
           </Link>
         </div>
@@ -315,7 +319,7 @@ export function ResultView() {
         <a className="button primary" href="mailto:contact@example.com?subject=MSIG%20상담%20신청">
           상담하기
         </a>
-        <Link className="button soft" href="/survey/part-1" onClick={reset}>
+        <Link className="button soft" href="/diagnosis" onClick={reset}>
           다시 진단하기
         </Link>
       </footer>
