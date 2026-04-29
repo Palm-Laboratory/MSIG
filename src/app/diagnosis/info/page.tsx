@@ -47,30 +47,30 @@ const archetypes = [
 export default function DiagnosisInfoPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
-      <section className="relative flex min-h-[640px] flex-col items-center overflow-hidden bg-[#fff7f5] px-6 pb-20 pt-40 [@media(min-height:760px)]:min-h-[82svh] [@media(min-height:980px)]:min-h-[760px] md:px-[120px] max-[900px]:pb-24 max-[900px]:pt-32">
-        <div className="absolute -left-[164px] top-[584px] h-[800px] w-[800px] rounded-full bg-[rgba(193,133,144,0.1)] blur-[32px]" />
-        <div className="absolute left-[728px] top-16 h-[520px] w-[520px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[32px]" />
+      <section className="relative flex min-h-[42rem] flex-col items-center justify-center overflow-hidden bg-[#fff7f5] px-6 py-24 [@media(min-height:980px)]:lg:min-h-[760px] lg:min-h-[640px] lg:justify-start lg:px-[120px] lg:pb-20 lg:pt-40">
+        <div className="absolute -left-[12rem] bottom-[-10rem] h-[28rem] w-[28rem] rounded-full bg-[rgba(193,133,144,0.12)] blur-[2rem] lg:-left-[164px] lg:bottom-auto lg:top-[584px] lg:h-[800px] lg:w-[800px]" />
+        <div className="absolute right-[-10rem] top-[6rem] h-[22rem] w-[22rem] rounded-full bg-[rgba(255,172,117,0.12)] blur-[2rem] lg:left-[728px] lg:right-auto lg:top-16 lg:h-[520px] lg:w-[520px]" />
 
         <LandingHeader activeItem="검사 과정" brandHref="/diagnosis/info" items={["검사 과정", "소개", "결과 유형", "FAQ"]} label="진단 소개 내비게이션" />
 
-        <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-0 md:px-[60px]">
+        <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-0 lg:px-[60px]">
           <div className="mx-auto flex min-w-0 max-w-[72rem] flex-1 flex-col items-center gap-10 text-center">
-            <div className="inline-flex items-center gap-3 rounded bg-[#ffe2db] px-4 py-1.5 text-[#4a3136] max-[900px]:hidden">
+            <div className="inline-flex items-center gap-3 rounded bg-[#ffe2db] px-4 py-1.5 text-[#4a3136] max-lg:hidden">
               <img className="h-3 w-3" alt="" src={badgeIcon} />
               <span className="whitespace-nowrap text-[0.625rem] font-medium uppercase leading-[0.9375rem] tracking-[0.125rem]">DISCOVER YOUR BIBLICAL IDENTITY</span>
             </div>
-            <h1 className="text-display whitespace-normal text-center font-extrabold text-[#615557] md:text-display-desktop min-[901px]:whitespace-nowrap">
+            <h1 className="text-display whitespace-normal text-center font-extrabold text-[#615557] lg:whitespace-nowrap lg:text-display-desktop">
               나의 경제 습관,
               <br />
               성경의 어떤 인물과 닮았을까?
             </h1>
-            <p className="max-w-[36rem] text-center text-body-m font-medium text-[#615557] opacity-80 md:text-body-l-desktop">
+            <p className="max-w-[36rem] text-center text-body-m font-medium text-[#615557] opacity-80 lg:text-body-l-desktop">
               당신의 재정적 태도와 신앙의 성숙도를 정밀하게 분석하고
               <br />
               성경 속 인물을 통해 해답을 찾아보세요.
             </p>
             <div className="flex w-full justify-center pt-[46px]">
-              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-[60px] md:px-7 md:py-3 md:text-h3-desktop" href="/diagnosis/part/1">
+              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
                 <span className="text-h4">테스트 시작</span>
                 <img className="text-h4 h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
               </Link>

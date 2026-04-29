@@ -189,6 +189,7 @@ p {
   border-radius: 48%;
   pointer-events: none;
   position: absolute;
+  z-index: 0;
 }
 
 .shape-a {
@@ -351,6 +352,8 @@ p {
 
 .process-mobile-stack {
   display: none;
+  position: relative;
+  z-index: 2;
 }
 
 .process-time {
@@ -397,6 +400,14 @@ p {
   position: relative;
   width: 100%;
   z-index: 2;
+}
+
+.landing-character-grid {
+  scrollbar-width: none;
+}
+
+.landing-character-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .landing-character {
@@ -505,7 +516,7 @@ p {
   gap: 24px;
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1024px) {
   .landing-cta-actions {
     align-items: center;
     flex-direction: row;
@@ -534,7 +545,7 @@ p {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .landing-process {
     gap: 56px;
     padding: 96px 26px;
@@ -577,13 +588,15 @@ p {
     font-weight: 900;
     height: 42px;
     justify-content: center;
-    margin-bottom: -16px;
+    margin-bottom: -18px;
+    position: relative;
     width: 90px;
+    z-index: 1;
   }
 
   .process-mobile-card > div {
     background: #f9e4e7;
-    border-radius: 16px;
+    border-radius: 0 16px 16px 16px;
     padding: 36px 16px 20px;
   }
 
@@ -608,6 +621,7 @@ p {
   }
 
   .process-mobile-card ul {
+    background: white;
     border-radius: 0 0 16px 16px;
     color: rgba(97, 85, 87, 0.8);
     font-size: 0.875rem;

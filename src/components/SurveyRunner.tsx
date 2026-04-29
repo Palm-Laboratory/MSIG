@@ -97,7 +97,7 @@ export function SurveyRunner({ part }: Props) {
               <h2 className="text-[1.375rem] font-bold leading-[1.3] text-[#423739] md:text-[1.875rem]">{groupName}</h2>
             </div>
             {groupQuestions.map((question) => (
-              <article className="grid grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)] gap-5 border-t border-[#efdfdf] pt-5 max-[900px]:grid-cols-1" key={question.id}>
+              <article className="grid grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)] gap-5 border-t border-[#efdfdf] pt-5 max-lg:grid-cols-1" key={question.id}>
                 <div className="grid gap-2">
                   <span className="text-[0.8125rem] font-black text-[#e8667a]">Q{question.id}</span>
                   <h3 className="text-[1.125rem] font-semibold leading-[1.4] text-[#30292a] md:text-[1.375rem]">{question.label}</h3>

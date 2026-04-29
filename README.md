@@ -90,51 +90,51 @@ public/
 | `GmarketSansTTFMedium.ttf` | `400`, `500` |
 | `GmarketSansTTFBold.ttf` | `600`, `700`, `800` |
 
-타입 스케일은 `rem` 기준입니다. 모바일 토큰을 기본으로 쓰고 데스크톱에서는 `md:` prefix로 desktop 토큰을 적용합니다.
+타입 스케일은 `rem` 기준입니다. 모바일 토큰을 기본으로 쓰고 데스크톱에서는 `lg:` prefix로 desktop 토큰을 적용합니다.
 
 | Role | Mobile | Desktop |
 | --- | --- | --- |
-| Display | `text-display` | `md:text-display-desktop` |
-| H1 | `text-h1` | `md:text-h1-desktop` |
-| H2 | `text-h2` | `md:text-h2-desktop` |
-| H3 | `text-h3` | `md:text-h3-desktop` |
-| H4 | `text-h4` | `md:text-h4-desktop` |
-| Body-L | `text-body-l` | `md:text-body-l-desktop` |
-| Body-M | `text-body-m` | `md:text-body-m-desktop` |
-| Body-S | `text-body-s` | `md:text-body-s` |
-| Label | `text-label` | `md:text-label` |
-| Caption | `text-caption` | `md:text-caption` |
+| Display | `text-display` | `lg:text-display-desktop` |
+| H1 | `text-h1` | `lg:text-h1-desktop` |
+| H2 | `text-h2` | `lg:text-h2-desktop` |
+| H3 | `text-h3` | `lg:text-h3-desktop` |
+| H4 | `text-h4` | `lg:text-h4-desktop` |
+| Body-L | `text-body-l` | `lg:text-body-l-desktop` |
+| Body-M | `text-body-m` | `lg:text-body-m-desktop` |
+| Body-S | `text-body-s` | `lg:text-body-s` |
+| Label | `text-label` | `lg:text-label` |
+| Caption | `text-caption` | `lg:text-caption` |
 
 예시:
 
 ```tsx
-<h1 className="text-display md:text-display-desktop">나의 경제 습관</h1>
-<p className="text-body-m md:text-body-l-desktop">본문 문장</p>
+<h1 className="text-display lg:text-display-desktop">나의 경제 습관</h1>
+<p className="text-body-m lg:text-body-l-desktop">본문 문장</p>
 ```
 
 새 타이포 작업에서 `text-[60px]`, `leading-[78px]` 같은 px 기반 임의값은 피합니다. Figma 수치가 px로 제공되더라도 타입 스케일 토큰에 매핑하거나 rem으로 환산해 사용합니다.
 
 ## Responsive Policy
 
-이 프로젝트는 모바일 기본값을 먼저 작성하고, 화면이 넓어질 때 `md:` 또는 필요한 breakpoint로 확장합니다.
+이 프로젝트는 모바일 기본값을 먼저 작성하고, 화면이 넓어질 때 Tailwind 기본 breakpoint로 확장합니다. 실무 기준은 모바일 `<768px`, 태블릿 `768px-1023px`, 데스크톱 `1024px 이상`입니다.
 
 권장 패턴:
 
 ```tsx
-<h1 className="text-display md:text-display-desktop">...</h1>
-<section className="px-6 md:px-[60px]">...</section>
+<h1 className="text-display lg:text-display-desktop">...</h1>
+<section className="px-6 lg:px-[60px]">...</section>
 ```
 
 피해야 할 패턴:
 
 ```tsx
-<h1 className="text-display-desktop max-[900px]:text-display">...</h1>
+<h1 className="text-display-desktop max-lg:text-display">...</h1>
 ```
 
 반응형 점검 기준:
 
-- 텍스트는 모바일 기본 토큰을 먼저 쓰고 데스크톱 토큰은 `md:`로 올립니다.
-- `whitespace-nowrap`는 모바일에서 금지에 가깝게 봅니다. 꼭 필요하면 `md:whitespace-nowrap`처럼 넓은 화면에서만 적용합니다.
+- 텍스트는 모바일 기본 토큰을 먼저 쓰고 데스크톱 토큰은 `lg:`로 올립니다.
+- `whitespace-nowrap`는 모바일/태블릿에서 금지에 가깝게 봅니다. 꼭 필요하면 `lg:whitespace-nowrap`처럼 넓은 화면에서만 적용합니다.
 - 큰 고정 width/height는 모바일에서 `w-full`, `max-w-*`, `aspect-*`로 풀어줍니다.
 - 섹션 높이는 `min-h`를 사용하고, 뷰포트 기준 섹션은 `min-h-[100svh]`를 조건부로 적용합니다.
 - Figma 데스크톱 프레임 수치를 그대로 모바일 기본값으로 가져오지 않습니다.

@@ -223,7 +223,7 @@ export function ResultView() {
 
   return (
     <main className="mx-auto grid min-h-screen w-full max-w-[1120px] gap-6 bg-[#fff7f5] px-6 py-8 text-[#1c1c19]">
-      <section className="grid grid-cols-[minmax(0,1fr)_minmax(260px,340px)] items-end gap-6 py-5 max-[900px]:grid-cols-1">
+      <section className="grid grid-cols-[minmax(0,1fr)_minmax(260px,340px)] items-end gap-6 py-5 max-lg:grid-cols-1">
         <div className="grid gap-3.5">
           <Link className="inline-flex h-10 min-w-[74px] items-center justify-center justify-self-start rounded-md bg-[#423739] px-3.5 font-black text-[#fff7f5]" href="/">
             MSIG
@@ -246,7 +246,7 @@ export function ResultView() {
         </div>
       </section>
 
-      <section className="grid grid-cols-3 gap-[18px] max-[900px]:grid-cols-1">
+      <section className="grid grid-cols-3 gap-[18px] max-lg:grid-cols-1">
         <div className="grid gap-2 rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
           <span className="text-sm font-black text-[#78716c]">이름</span>
           <strong className="text-[1.24rem] font-black text-[#423739]">{profile.name || "미입력"}</strong>
@@ -261,7 +261,7 @@ export function ResultView() {
         </div>
       </section>
 
-      <section className="grid grid-cols-2 gap-[18px] max-[900px]:grid-cols-1">
+      <section className="grid grid-cols-2 gap-[18px] max-lg:grid-cols-1">
         <article className="grid gap-[18px] rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
           <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">나의 경제유형</p>
           <div className="rounded-lg bg-[#423739] p-5 text-[#fff7f5]">
@@ -296,7 +296,7 @@ export function ResultView() {
         </article>
       </section>
 
-      <section className="grid grid-cols-2 gap-[18px] max-[900px]:grid-cols-1">
+      <section className="grid grid-cols-2 gap-[18px] max-lg:grid-cols-1">
         <article className="rounded-lg border border-[#efdfdf] bg-[rgba(255,255,255,0.86)] p-6 shadow-[0_14px_38px_rgba(140,71,82,0.09)]">
           <p className="text-[0.8125rem] font-black uppercase text-[#e8667a]">8대 경제장애 위험도</p>
           <h2 className="mt-1 text-[1.375rem] font-bold leading-[1.3] text-[#423739] md:text-[1.875rem]">주의가 필요한 패턴</h2>

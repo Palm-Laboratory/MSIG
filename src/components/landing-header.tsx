@@ -12,14 +12,14 @@ const defaultItems = ["진단 소개", "검사 과정", "결과 유형", "FAQ"];
 export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "진단 소개", items = defaultItems }: LandingHeaderProps) {
   return (
     <nav
-      className="absolute inset-x-0 top-0 z-30 flex min-h-20 items-center justify-between px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-[900px]:px-6"
+      className="absolute inset-x-0 top-0 z-30 flex min-h-20 items-center justify-between px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
       aria-label={label}
     >
       <Link className="flex min-w-0 max-w-[calc(100vw-5rem)] flex-col text-[#292524]" href={brandHref}>
-        <strong className="text-body-m font-medium leading-[1.4] md:whitespace-nowrap md:text-h2 md:leading-[1.625]">복음경제영성 종합 진단</strong>
-        <span className="text-caption font-light leading-4 text-black md:whitespace-nowrap md:text-body-m">한국교회 목회지원센터</span>
+        <strong className="text-body-m font-medium leading-[1.4] lg:whitespace-nowrap lg:text-h2 lg:leading-[1.625]">복음경제영성 종합 진단</strong>
+        <span className="text-caption font-light leading-4 text-black lg:whitespace-nowrap lg:text-body-m">한국교회 목회지원센터</span>
       </Link>
-      <div className="flex items-center gap-10 max-[900px]:hidden">
+      <div className="flex items-center gap-10 max-lg:hidden">
         {items.map((item) =>
           item === "진단 소개" ? (
             <Link
@@ -36,7 +36,7 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
           ),
         )}
       </div>
-      <details className="relative hidden max-[900px]:block">
+      <details className="relative hidden max-lg:block">
         <summary className="flex h-8 w-8 list-none flex-col items-center justify-center gap-[5px] p-1 [&::-webkit-details-marker]:hidden" aria-label="메뉴 열기">
           <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
           <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
