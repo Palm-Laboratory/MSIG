@@ -56,7 +56,6 @@ const clearSurveyStorage = () => {
 
 export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
   const router = useRouter();
-  const preserveOnUnmount = useRef(false);
   const autoAdvanceTimer = useRef<number | null>(null);
   const partMeta = SURVEY_PARTS.find((item) => item.id === part) ?? SURVEY_PARTS[0];
   const questions = useMemo(() => SURVEY_QUESTIONS.filter((question) => question.part === part), [part]);
@@ -99,19 +98,9 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
   }, [currentIndex, loaded, part]);
 
   useEffect(() => {
-    const clearOnPageExit = () => {
-      clearSurveyStorage();
-    };
-
-    window.addEventListener("pagehide", clearOnPageExit);
-
     return () => {
-      window.removeEventListener("pagehide", clearOnPageExit);
       if (autoAdvanceTimer.current) {
         window.clearTimeout(autoAdvanceTimer.current);
-      }
-      if (!preserveOnUnmount.current) {
-        clearSurveyStorage();
       }
     };
   }, []);
@@ -128,7 +117,6 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
       return;
     }
 
-    preserveOnUnmount.current = true;
     if (part === "part-1") router.push("/diagnosis/part/2");
     if (part === "part-2") router.push("/diagnosis/part/3");
     if (part === "part-3") router.push("/diagnosis/loading");
@@ -171,7 +159,6 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
     const previousPartQuestions = SURVEY_QUESTIONS.filter((item) => item.part === previousPart);
     const storedIndex = loadJson<Record<string, number>>(STORAGE_KEYS.partIndex, {});
     window.localStorage.setItem(STORAGE_KEYS.partIndex, JSON.stringify({ ...storedIndex, [previousPart]: previousPartQuestions.length - 1 }));
-    preserveOnUnmount.current = true;
     router.push(`/diagnosis/part/${routePartById[previousPart]}`);
   };
 
