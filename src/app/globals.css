@@ -776,6 +776,11 @@ input[type="submit"] * {
   color: inherit !important;
 }
 
+.result-action-button,
+.result-action-button * {
+  color: #fff !important;
+}
+
 @media print {
   body {
     background: white;

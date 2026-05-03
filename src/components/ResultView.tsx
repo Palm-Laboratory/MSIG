@@ -58,12 +58,12 @@ const COMPETENCY_LABELS: Record<Part1CompetencyKey, { name: string; low: string;
 };
 
 const RISK_LABELS: Record<Part2RiskKey, { name: string; subtitle: string }> = {
-  esau: { name: "에서 증후군", subtitle: "즉시 만족" },
-  ahab: { name: "아합 증후군", subtitle: "탐욕" },
-  ananias: { name: "아나니아 증후군", subtitle: "위선" },
-  achan: { name: "아간 증후군", subtitle: "숨긴 욕심" },
-  richFool: { name: "어리석은 부자 증후군", subtitle: "축적 집착" },
-  solomon: { name: "솔로몬 증후군", subtitle: "과소비" },
+  esau: { name: "에서 증후군", subtitle: "충동 소비" },
+  ahab: { name: "아합 증후군", subtitle: "경제적 의존" },
+  ananias: { name: "아나니아 증후군", subtitle: "과시적 나눔" },
+  achan: { name: "아간 증후군", subtitle: "탐욕 · 도박" },
+  richFool: { name: "어리석은 부자 증후군", subtitle: "저장 집착" },
+  solomon: { name: "솔로몬 증후군", subtitle: "과소비 · 사치" },
   oneTalentServant: { name: "한 달란트 증후군", subtitle: "가난의 맹세" },
   martha: { name: "마르다 증후군", subtitle: "일중독" },
 };
@@ -82,6 +82,17 @@ const RADAR_SHORT_LABELS: Record<string, string> = {
   nehemiah: "느헤미야",
   samson: "삼손",
   daniel: "다니엘",
+};
+
+const RADAR_ORDER: Part1CompetencyKey[] = ["abraham", "joseph", "david", "nehemiah", "samson", "daniel"];
+
+const CAPACITY_CARD_STYLES: Record<Part1CompetencyKey, { accent: string; bg: string; text: string }> = {
+  abraham: { accent: "#9b4250", bg: "#fffafa", text: "#603139" },
+  david: { accent: "#77584e", bg: "#fffdfc", text: "#563c34" },
+  joseph: { accent: "#7a7b7a", bg: "#fdfffd", text: "#3e3e3e" },
+  nehemiah: { accent: "#587a79", bg: "#faffff", text: "#304040" },
+  samson: { accent: "#53618b", bg: "#fdfeff", text: "#282f45" },
+  daniel: { accent: "#7b5980", bg: "#fffdff", text: "#453148" },
 };
 
 const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string; weakness: string; prescription: string; image: string }> = {
@@ -158,8 +169,8 @@ const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min,
 function SectionTitle({ align = "left", dark = false, title }: { align?: "left" | "center"; dark?: boolean; title: string }) {
   return (
     <div className={`flex flex-col gap-[25.2px] ${align === "center" ? "items-center text-center" : "items-start"}`}>
-      <p className="text-[21px] font-medium uppercase leading-[16.8px] tracking-[1.05px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
-      <h2 className={`text-[60px] font-bold leading-[60px] ${dark ? "text-[#fff7f7]" : "text-[#312225]"}`}>{title}</h2>
+      <p className="text-[1.3125rem] font-medium uppercase leading-[1.05rem] tracking-[1.05px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
+      <h2 className={`text-[3.75rem] font-bold leading-[3.75rem] ${dark ? "text-[#fff7f7]" : "text-[#312225]"}`}>{title}</h2>
     </div>
   );
 }
@@ -177,7 +188,7 @@ function ScoreDonut({ color, percent, showValue = true, size = 140 }: { color: s
         <circle cx={size / 2} cy={size / 2} fill="none" r={radius} stroke={color} strokeDasharray={`${dash} ${circumference - dash}`} strokeLinecap="round" strokeWidth={stroke} />
       </svg>
       {showValue ? (
-        <strong className="absolute text-[25px] font-bold leading-none" style={{ color }}>
+        <strong className="absolute text-[1.5625rem] font-bold leading-none" style={{ color }}>
           {Math.round(percent)}%
         </strong>
       ) : null}
@@ -210,17 +221,17 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
         </defs>
       </svg>
       <div className="absolute left-1/2 top-[100.72px] flex -translate-x-1/2 flex-col items-center gap-[45.36px] text-center">
-        <strong className="bg-gradient-to-b from-[#ed536c] to-[#ffa8b6] bg-clip-text text-[90.72px] font-bold leading-[90.72px] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]">
+        <strong className="bg-gradient-to-b from-[#ed536c] to-[#ffa8b6] bg-clip-text text-[5.67rem] font-bold leading-[5.67rem] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]">
           {grade}
         </strong>
         <div className="flex flex-col items-center gap-[12.3px]">
           <p className="flex items-end justify-center gap-[8.456px] whitespace-nowrap text-center tracking-[0.3459px]">
-            <span className="text-[33.634px] font-bold leading-[33.634px] text-[#f37d90]">{Math.round(percent)}</span>
-            <span className="text-[19.219px] font-medium leading-[19.219px] text-[#949494]">/ 100점</span>
+            <span className="text-[2.10213rem] font-bold leading-[2.10213rem] text-[#f37d90]">{Math.round(percent)}</span>
+            <span className="text-[1.20119rem] font-medium leading-[1.20119rem] text-[#949494]">/ 100점</span>
           </p>
           <p className="flex items-center justify-center gap-[12.3px] whitespace-nowrap text-center tracking-[0.3459px]">
-            <span className="text-[18.45px] font-medium leading-[21.526px] text-[#78716c]">등급:</span>
-            <span className="text-[19.219px] font-medium leading-[19.219px] text-[#e57385]">{label}</span>
+            <span className="text-[1.15312rem] font-medium leading-[1.34537rem] text-[#78716c]">등급:</span>
+            <span className="text-[1.20119rem] font-medium leading-[1.20119rem] text-[#e57385]">{label}</span>
           </p>
         </div>
       </div>
@@ -229,40 +240,41 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
 }
 
 function RadarChart({ rows }: { rows: ScoreRow[] }) {
-  const width = 620;
-  const height = 360;
+  const orderedRows = RADAR_ORDER.map((id) => rows.find((row) => row.id === id)).filter((row): row is ScoreRow => Boolean(row));
+  const width = 554;
+  const height = 320;
   const centerX = width / 2;
-  const centerY = 180;
-  const radius = 118;
+  const centerY = 160;
+  const radius = 98;
   const labelPositions = [
-    { anchor: "middle", x: centerX, y: 18 },
-    { anchor: "start", x: 475, y: 122 },
-    { anchor: "start", x: 475, y: 260 },
-    { anchor: "middle", x: centerX, y: 338 },
-    { anchor: "end", x: 145, y: 260 },
-    { anchor: "end", x: 145, y: 122 },
+    { anchor: "middle", x: centerX, y: 16 },
+    { anchor: "start", x: 398, y: 108 },
+    { anchor: "start", x: 398, y: 228 },
+    { anchor: "middle", x: centerX, y: 302 },
+    { anchor: "end", x: 156, y: 228 },
+    { anchor: "end", x: 156, y: 108 },
   ] as const;
-  const points = rows.map((row, index) => {
-    const angle = -Math.PI / 2 + (index * Math.PI * 2) / rows.length;
+  const points = orderedRows.map((row, index) => {
+    const angle = -Math.PI / 2 + (index * Math.PI * 2) / orderedRows.length;
     const value = clamp(row.percent) / 100;
     return `${centerX + Math.cos(angle) * radius * value},${centerY + Math.sin(angle) * radius * value}`;
   });
 
   return (
-    <svg className="h-[360px] w-full max-w-[620px] overflow-hidden" viewBox={`0 0 ${width} ${height}`}>
+    <svg className="h-[320px] w-full max-w-[554px] overflow-visible" viewBox={`0 0 ${width} ${height}`}>
       {[1, 0.8, 0.6].map((scale) => (
         <circle cx={centerX} cy={centerY} fill="none" key={scale} r={radius * scale} stroke={`rgba(255,126,126,${scale === 1 ? 0.4 : scale === 0.8 ? 0.3 : 0.2})`} strokeWidth="1.15" />
       ))}
-      {rows.map((row, index) => {
-        const angle = -Math.PI / 2 + (index * Math.PI * 2) / rows.length;
+      {orderedRows.map((row, index) => {
+        const angle = -Math.PI / 2 + (index * Math.PI * 2) / orderedRows.length;
         return <line key={`axis-${row.id}`} stroke="rgba(177,178,177,0.2)" strokeWidth="1.15" x1={centerX} x2={centerX + Math.cos(angle) * radius} y1={centerY} y2={centerY + Math.sin(angle) * radius} />;
       })}
-      <polygon fill="rgba(155,66,80,0.16)" points={points.join(" ")} stroke="#ff6f8a" strokeLinejoin="round" strokeWidth="7" />
+      <polygon fill="rgba(155,66,80,0.16)" points={points.join(" ")} stroke="#ff6f8a" strokeLinejoin="round" strokeWidth="6.8" />
       {points.map((point, index) => {
         const [x, y] = point.split(",").map(Number);
-        return <circle cx={x} cy={y} fill="#ff5f7d" key={`${point}-${index}`} r="8.5" />;
+        return <circle cx={x} cy={y} fill="#ff5f7d" key={`${point}-${index}`} r="8.2" />;
       })}
-      {rows.map((row, index) => {
+      {orderedRows.map((row, index) => {
         const label = labelPositions[index] ?? labelPositions[0];
         const isTop = index === 0;
         return (
@@ -280,12 +292,12 @@ function TraitRow({ items, tone, title }: { items: string[]; tone: "green" | "or
   return (
     <div className={`flex min-h-[74px] items-center gap-8 rounded px-0 ${styles}`}>
       <div className="flex h-full min-w-[154px] items-center gap-4">
-        <span className="grid h-[74px] w-[74px] place-items-center bg-[var(--chip)] text-[26px]">{tone === "green" ? "↗" : "!"}</span>
-        <strong className="text-[19px] font-medium tracking-[0.05em]">{title}</strong>
+        <span className="grid h-[74px] w-[74px] place-items-center bg-[var(--chip)] text-[1.625rem]">{tone === "green" ? "↗" : "!"}</span>
+        <strong className="text-[1.1875rem] font-medium tracking-[0.05em]">{title}</strong>
       </div>
       <div className="flex flex-wrap gap-4 py-4">
         {items.map((item) => (
-          <span className="rounded-full bg-[var(--chip)] px-5 py-2 text-[15px] font-medium leading-4 tracking-[0.05em] text-[var(--chipText)]" key={item}>
+          <span className="rounded-full bg-[var(--chip)] px-5 py-2 text-[0.9375rem] font-medium leading-4 tracking-[0.05em] text-[var(--chipText)]" key={item}>
             {item}
           </span>
         ))}
@@ -313,12 +325,12 @@ function DesktopTraitRow({ icon, items, tone, title }: { icon: string; items: st
   return (
     <div className={`flex h-[74.2px] w-full items-center gap-[54.6px] rounded-[4.2px] ${styles.rowBg}`}>
       <div className="flex h-full shrink-0 items-center gap-[16.8px]">
-        <span className={`grid h-full w-[74.2px] place-items-center rounded-[4.2px] text-[28px] font-medium ${styles.iconBg} ${styles.text}`}>{icon}</span>
-        <strong className={`text-[18.9px] font-medium leading-[18.9px] tracking-[1.05px] ${styles.text}`}>{title}</strong>
+        <span className={`grid h-full w-[74.2px] place-items-center rounded-[4.2px] text-[1.75rem] font-medium ${styles.iconBg} ${styles.text}`}>{icon}</span>
+        <strong className={`text-[1.18125rem] font-medium leading-[1.18125rem] tracking-[1.05px] ${styles.text}`}>{title}</strong>
       </div>
       <div className="flex flex-wrap items-center gap-[29.4px]">
         {items.map((item) => (
-          <span className={`rounded-full px-[21px] py-[10.5px] text-[14.7px] font-medium leading-[16.8px] tracking-[1.05px] ${styles.chip}`} key={item}>
+          <span className={`rounded-full px-[21px] py-[10.5px] text-[0.91875rem] font-medium leading-[1.05rem] tracking-[1.05px] ${styles.chip}`} key={item}>
             {item}
           </span>
         ))}
@@ -327,31 +339,56 @@ function DesktopTraitRow({ icon, items, tone, title }: { icon: string; items: st
   );
 }
 
-function RiskCard({ level, name, percent, subtitle }: { level: string; name: string; percent: number; subtitle: string }) {
+function RiskCard({ level, name, subtitle }: { level: string; name: string; subtitle: string }) {
   const isHigh = level === "고위험";
   const isWarning = level === "주의";
   const className = isHigh
-    ? "border-[#ff6363] bg-[rgba(255,99,99,0.20)] text-[#ff6363]"
+    ? "border-[#ff6363] bg-[rgba(255,99,99,0.20)] text-[#ff6363] [--risk-pill-bg:rgba(255,99,99,0.30)] [--risk-pill-text:#ff6363]"
     : isWarning
-      ? "border-[#a97143] bg-[rgba(169,113,67,0.20)] text-[#d2945f]"
-      : "border-[#4be7a2] bg-[rgba(75,231,162,0.16)] text-[#4be7a2]";
+      ? "border-[#f9a54d] bg-[rgba(249,165,77,0.18)] text-[#f9a54d] [--risk-pill-bg:rgba(249,165,77,0.30)] [--risk-pill-text:#f9a54d]"
+      : "border-[#4be7a2] bg-[rgba(75,231,162,0.18)] text-[#4be7a2] [--risk-pill-bg:rgba(75,231,162,0.30)] [--risk-pill-text:#4be7a2]";
 
   return (
-    <div className={`flex items-center justify-between rounded-xl border px-6 py-5 shadow-[0_4px_4px_rgba(0,0,0,0.10)] ${className}`}>
-      <div>
-        <strong className="block text-[18px] font-medium leading-none">{name}</strong>
-        <span className="mt-2 block text-[16px] font-medium leading-none text-[#aeaeae]">{subtitle}</span>
+    <div className={`flex min-h-[100px] items-center justify-between rounded-[12px] border px-[25px] py-[29px] shadow-[0_4px_4px_rgba(0,0,0,0.10)] ${className}`}>
+      <div className="grid gap-2">
+        <strong className="block whitespace-nowrap text-[1.125rem] font-medium leading-[1.125rem]">{name}</strong>
+        <span className="block text-[1rem] font-medium leading-[1rem] text-[#aeaeae]">{subtitle}</span>
       </div>
-      <span className="rounded-full bg-current/20 px-3 py-1 text-[16px] font-bold leading-none">{level}</span>
+      <span className="rounded-full bg-[var(--risk-pill-bg)] px-3 py-1 text-[1rem] font-bold leading-[1rem] text-[var(--risk-pill-text)]">{level}</span>
     </div>
+  );
+}
+
+function CapacityAnalysisCard({ row }: { row: ScoreRow }) {
+  const style = CAPACITY_CARD_STYLES[row.id as Part1CompetencyKey] ?? CAPACITY_CARD_STYLES.abraham;
+
+  return (
+    <article className="flex flex-col gap-3 rounded-[12px] border-l-4 py-3 pl-7 pr-6 shadow-[0_4px_4px_rgba(0,0,0,0.10)]" style={{ backgroundColor: style.bg, borderLeftColor: style.accent }}>
+      <div className="grid gap-2.5">
+        <div className="flex items-start justify-between gap-4">
+          <strong className="text-[1.125rem] font-medium leading-7" style={{ color: style.text }}>
+            {row.name}
+          </strong>
+          <span className="text-[1rem] font-bold leading-6" style={{ color: style.text }}>
+            {row.percent}%
+          </span>
+        </div>
+        <div className="h-[8.7px] overflow-hidden rounded-full bg-[#e2e2e1]">
+          <div className="h-full rounded-full" style={{ backgroundColor: style.accent, width: `${clamp(row.percent)}%` }} />
+        </div>
+      </div>
+      <p className="text-[0.9375rem] font-medium leading-[1.375rem]" style={{ color: `${style.text}cc` }}>
+        {row.feedback}
+      </p>
+    </article>
   );
 }
 
 function MobileSectionTitle({ dark = false, muted = false, title }: { dark?: boolean; muted?: boolean; title: string }) {
   return (
     <div className="flex flex-col items-center gap-3 whitespace-nowrap text-center tracking-[1px]">
-      <p className={`text-[14px] font-medium leading-[14px] ${dark ? "text-[#e3a2ad]" : muted ? "text-[#f3b5c1]" : "text-[#cf7989]"}`}>GOSPEL ECONOMIC SPIRITUALITY</p>
-      <h2 className={`text-[28px] font-medium leading-[28px] ${dark ? "text-[#fff7f7]" : muted ? "text-[#313332]" : "text-[#533030]"}`}>{title}</h2>
+      <p className={`text-[0.875rem] font-medium leading-[0.875rem] ${dark ? "text-[#e3a2ad]" : muted ? "text-[#f3b5c1]" : "text-[#cf7989]"}`}>GOSPEL ECONOMIC SPIRITUALITY</p>
+      <h2 className={`text-[1.75rem] font-medium leading-[1.75rem] ${dark ? "text-[#fff7f7]" : muted ? "text-[#313332]" : "text-[#533030]"}`}>{title}</h2>
     </div>
   );
 }
@@ -379,30 +416,30 @@ function MobileEconomicCard({
       <article className="flex min-h-[545px] w-full max-w-[308px] flex-col justify-between rounded-[12.5px] border border-[rgba(255,255,255,0.2)] bg-[rgba(0,0,0,0.2)] px-[30px] py-[37px]">
         <div className="grid gap-5">
           <div className="text-center">
-            <h2 className="text-[24px] font-bold leading-6 tracking-[1px] text-[#ffe2e2]">{archetype.name}</h2>
+            <h2 className="text-[1.5rem] font-bold leading-6 tracking-[1px] text-[#ffe2e2]">{archetype.name}</h2>
             <div className="mt-1.5 flex items-center gap-1">
               <span className="h-px flex-1 bg-[rgba(255,226,226,0.35)]" />
-              <span className="text-[14px] font-medium leading-[14px] tracking-[0.47px] text-[#ffa1a1]">{archetype.subtitle}</span>
+              <span className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.47px] text-[#ffa1a1]">{archetype.subtitle}</span>
               <span className="h-px flex-1 bg-[rgba(255,226,226,0.35)]" />
             </div>
           </div>
           <span className="h-px w-full bg-[rgba(255,255,255,0.22)]" />
-          <p className="text-[14px] font-medium leading-6 tracking-[1.05px] text-[#ffe4e4]">{archetype.description}</p>
+          <p className="text-[0.875rem] font-medium leading-6 tracking-[1.05px] text-[#ffe4e4]">{archetype.description}</p>
         </div>
 
         <div className="grid gap-3">
           <div className="grid grid-cols-2 gap-3">
             <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.08)] pb-4 text-center backdrop-blur">
-              <p className="bg-[rgba(123,211,174,0.16)] py-3 text-[14px] font-medium leading-[14px] tracking-[1px] text-[#4adfa1]">강점</p>
-              <div className="mt-4 grid gap-3 text-[10px] font-medium leading-[10px] tracking-[1.05px] text-[#7bd3ae]">
+              <p className="bg-[rgba(123,211,174,0.16)] py-3 text-[0.875rem] font-medium leading-[0.875rem] tracking-[1px] text-[#4adfa1]">강점</p>
+              <div className="mt-4 grid gap-3 text-[0.625rem] font-medium leading-[0.625rem] tracking-[1.05px] text-[#7bd3ae]">
                 {strengths.map((item) => (
                   <span key={item}>{item}</span>
                 ))}
               </div>
             </div>
             <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.08)] pb-4 text-center">
-              <p className="bg-[rgba(255,164,100,0.24)] py-3 text-[14px] font-medium leading-[14px] tracking-[1px] text-[#ff9a56]">약점</p>
-              <div className="mt-4 grid gap-3 text-[10px] font-medium leading-[10px] tracking-[1.05px] text-[#ffb483]">
+              <p className="bg-[rgba(255,164,100,0.24)] py-3 text-[0.875rem] font-medium leading-[0.875rem] tracking-[1px] text-[#ff9a56]">약점</p>
+              <div className="mt-4 grid gap-3 text-[0.625rem] font-medium leading-[0.625rem] tracking-[1.05px] text-[#ffb483]">
                 {weaknesses.map((item) => (
                   <span key={item}>{item}</span>
                 ))}
@@ -410,8 +447,8 @@ function MobileEconomicCard({
             </div>
           </div>
           <div className="overflow-hidden rounded border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.08)] text-center">
-            <p className="bg-[rgba(255,155,155,0.24)] py-3 text-[14px] font-medium leading-[14px] tracking-[1px] text-[#ff7e7e]">처방</p>
-            <p className="px-4 pb-4 pt-4 text-[12px] font-medium leading-[23.1px] tracking-[1.05px] text-[#ff9b9b]">{archetype.prescription}</p>
+            <p className="bg-[rgba(255,155,155,0.24)] py-3 text-[0.875rem] font-medium leading-[0.875rem] tracking-[1px] text-[#ff7e7e]">처방</p>
+            <p className="px-4 pb-4 pt-4 text-[0.75rem] font-medium leading-[1.44375rem] tracking-[1.05px] text-[#ff9b9b]">{archetype.prescription}</p>
           </div>
         </div>
       </article>
@@ -458,9 +495,9 @@ function MobileProfileCard({ row }: { row: ScoreRow & { color: string; english: 
     <article className="flex h-[211.68px] flex-col items-center justify-center gap-[25.2px] rounded-[11.2px] border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] shadow-[0_2.52px_7.56px_rgba(154,108,86,0.20)]">
       <ScoreDonut color={row.color} percent={row.percent} size={88.2} />
       <div className="text-center">
-        <p className="text-[8.82px] font-medium leading-[8.82px] text-[#b09098]">{row.name}</p>
-        <p className="mt-[7px] text-[7.56px] font-medium leading-[7.56px] text-[rgba(176,144,152,0.8)]">({row.english})</p>
-        <p className="mt-[15.8px] text-[8.82px] font-bold leading-[8.82px]" style={{ color: row.color }}>
+        <p className="text-[0.55125rem] font-medium leading-[0.55125rem] text-[#b09098]">{row.name}</p>
+        <p className="mt-[7px] text-[0.4725rem] font-medium leading-[0.4725rem] text-[rgba(176,144,152,0.8)]">({row.english})</p>
+        <p className="mt-[15.8px] text-[0.55125rem] font-bold leading-[0.55125rem]" style={{ color: row.color }}>
           {row.raw} / 20
         </p>
       </div>
@@ -494,8 +531,8 @@ function MobileResultView({
         <div className="h-[50px] w-full" />
         <div className="flex items-center justify-between px-[26px]">
           <div className="grid gap-2">
-            <p className="text-[16px] font-medium leading-4 tracking-[-0.6px] text-[#292524]">복음경제영성 종합 진단</p>
-            <p className="text-[14px] font-light leading-[14px] text-black">한국교회 목회지원센터</p>
+            <p className="text-[1rem] font-medium leading-4 tracking-[-0.6px] text-[#292524]">복음경제영성 종합 진단</p>
+            <p className="text-[0.875rem] font-light leading-[0.875rem] text-black">한국교회 목회지원센터</p>
           </div>
           <button aria-label="메뉴" className="grid size-8 place-items-center" type="button">
             <span className="grid gap-1">
@@ -510,8 +547,8 @@ function MobileResultView({
       <section className="relative flex w-full flex-col items-center px-[26px] pb-[300px] pt-[136px]">
         <div className="flex flex-col items-center gap-[44.1px]">
           <div className="flex flex-col items-center gap-[18.5px] whitespace-nowrap text-center">
-            <p className="text-[14px] font-medium leading-[14px] tracking-[0.77px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
-            <h1 className="text-[44px] font-bold leading-[44px] text-[#312225]">종합 진단 결과</h1>
+            <p className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.77px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
+            <h1 className="text-[2.75rem] font-bold leading-[2.75rem] text-[#312225]">종합 진단 결과</h1>
           </div>
           <MobileOverallRankCircle grade={result.part1.grade.code} label={result.part1.grade.label} percent={overall} />
         </div>
@@ -530,10 +567,10 @@ function MobileResultView({
             {capacityScores.map((row) => (
               <article className="rounded border border-[#f0dadd] bg-[#fffdfd] p-3" key={row.id}>
                 <div className="flex items-center justify-between">
-                  <strong className="text-[12px] font-bold text-[#533030]">{row.name}</strong>
-                  <span className="text-[11px] font-bold text-[#e8607a]">{row.percent}%</span>
+                  <strong className="text-[0.75rem] font-bold text-[#533030]">{row.name}</strong>
+                  <span className="text-[0.6875rem] font-bold text-[#e8607a]">{row.percent}%</span>
                 </div>
-                <p className="mt-2 text-[10px] font-medium leading-4 text-[#8b6b6b]">{row.feedback}</p>
+                <p className="mt-2 text-[0.625rem] font-medium leading-4 text-[#8b6b6b]">{row.feedback}</p>
               </article>
             ))}
           </div>
@@ -546,10 +583,10 @@ function MobileResultView({
           {riskScores.map((risk) => (
             <div className="flex items-center justify-between rounded border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.06)] px-3 py-3" key={risk.id}>
               <div>
-                <p className="text-[12px] font-medium leading-3 text-white">{risk.name}</p>
-                <p className="mt-1.5 text-[10px] font-medium leading-[10px] text-[#aeaeae]">{risk.subtitle}</p>
+                <p className="text-[0.75rem] font-medium leading-3 text-white">{risk.name}</p>
+                <p className="mt-1.5 text-[0.625rem] font-medium leading-[0.625rem] text-[#aeaeae]">{risk.subtitle}</p>
               </div>
-              <span className="rounded-full bg-[rgba(225,159,90,0.3)] px-2 py-1 text-[11px] font-bold leading-[11px] text-[#e19f5a]">{risk.level}</span>
+              <span className="rounded-full bg-[rgba(225,159,90,0.3)] px-2 py-1 text-[0.6875rem] font-bold leading-[0.6875rem] text-[#e19f5a]">{risk.level}</span>
             </div>
           ))}
         </div>
@@ -557,7 +594,7 @@ function MobileResultView({
 
       <section className="relative flex w-full flex-col items-center gap-[60px] overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-9 py-[200px]">
         <MobileSectionTitle muted title="MSIG 행동 프로파일" />
-        <p className="w-full text-[14px] font-medium leading-7 tracking-[1px] text-[rgba(96,49,57,0.8)]">
+        <p className="w-full text-[0.875rem] font-medium leading-7 tracking-[1px] text-[rgba(96,49,57,0.8)]">
           M(Making) · S(Spending) · I(Investing) · G(Giving) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
         </p>
         <div className="grid w-full grid-cols-2 gap-[12.6px]">
@@ -569,25 +606,25 @@ function MobileResultView({
 
       <section className="flex h-[880px] w-full flex-col items-center justify-center gap-[60px] bg-[linear-gradient(180deg,#fff1f1_0%,#fff7e9_100%)] px-9 py-[100px]">
         <div className="grid gap-4 text-center">
-          <h2 className="w-[322px] text-[32px] font-bold leading-[48px] text-[#583439]">진단이 완료되었습니다</h2>
-          <p className="text-[14px] font-medium leading-[14px] tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
+          <h2 className="w-[322px] text-[2rem] font-bold leading-[3rem] text-[#583439]">진단이 완료되었습니다</h2>
+          <p className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
         </div>
         <div className="grid w-[287.2px] gap-[19.2px] print:hidden">
-          <a className="inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(163deg,#d47182_31%,#e68798_67%)] text-[14px] font-bold leading-[14px] text-[#fff7f7] shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청">
+          <a className="result-action-button inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(163deg,#d47182_31%,#e68798_67%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청" style={{ color: "#fff" }}>
             상담 · 코칭 신청하기
           </a>
-          <button className="inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(278deg,#7d545b_2%,#664349_100%)] text-[14px] font-bold leading-[14px] text-white shadow-[0_8px_12px_-2.4px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
+          <button className="inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(278deg,#7d545b_2%,#664349_100%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
             결과지 인쇄하기 / PDF 다운받기
           </button>
-          <Link className="inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(277deg,#ffe1e1_0%,#ffcaca_100%)] text-[14px] font-bold leading-[14px] text-white shadow-[0_8px_12px_-2.4px_rgba(151,110,110,0.2)]" href="/diagnosis" onClick={reset}>
+          <Link className="inline-flex h-[44.8px] items-center justify-center rounded-[3.2px] bg-[linear-gradient(277deg,#ffe1e1_0%,#ffcaca_100%)] text-[0.875rem] font-medium leading-[0.875rem] text-[#1f1a1b] shadow-[0_8px_12px_-2.4px_rgba(151,110,110,0.2)]" href="/diagnosis" onClick={reset}>
             다시 진단하기
           </Link>
         </div>
       </section>
 
       <footer className="w-full bg-[#423739] px-[26px] pb-[50px] pt-5 text-white">
-        <div className="grid gap-3 text-[8px] font-light leading-3">
-          <p className="text-[12px] font-medium leading-3">한국목회지원센터</p>
+        <div className="grid gap-3 text-[0.5rem] font-light leading-3">
+          <p className="text-[0.75rem] font-medium leading-3">한국목회지원센터</p>
           <p>서울 강남구 OO로 OO길 OO타워 OO호</p>
           <p>TEL: 010-0000-0000</p>
           <p>copyright (c) (사)한국목회지원회 All rights reserved.</p>
@@ -671,8 +708,8 @@ export function ResultView() {
         <div className="pointer-events-none absolute left-[63%] top-[-217px] size-[583px] rounded-full bg-[rgba(255,64,68,0.22)] opacity-25 blur-[30px]" />
         <div className="relative z-10 flex flex-col items-center gap-[60px]">
           <div className="flex flex-col items-center justify-center gap-[25.2px] whitespace-nowrap text-center">
-            <p className="text-[21px] font-medium uppercase leading-[16.8px] tracking-[1.05px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
-            <h2 className="text-[60px] font-bold leading-[60px] text-[#312225]">종합 진단 결과</h2>
+            <p className="text-[1.3125rem] font-medium uppercase leading-[1.05rem] tracking-[1.05px] text-[#dc657b]">GOSPEL ECONOMIC SPIRITUALITY</p>
+            <h2 className="text-[3.75rem] font-bold leading-[3.75rem] text-[#312225]">종합 진단 결과</h2>
           </div>
 
           <OverallRankCircle grade={result.part1.grade.code} label={result.part1.grade.label} percent={overall} />
@@ -686,14 +723,14 @@ export function ResultView() {
               <div className="flex w-full flex-col gap-[63px]">
                 <div className="flex w-full flex-col gap-[37.8px]">
                   <div className="grid justify-start gap-[10.5px]">
-                    <h3 className="text-[42px] font-bold leading-[42px] tracking-[2.1px] text-[#432424]">{archetype.name}</h3>
+                    <h3 className="text-[2.625rem] font-bold leading-[2.625rem] tracking-[2.1px] text-[#432424]">{archetype.name}</h3>
                     <div className="flex w-full items-center justify-center gap-[8.4px]">
                       <span className="h-px flex-1 bg-[rgba(96,49,57,0.55)]" />
-                      <span className="text-[21px] font-medium leading-[21px] tracking-[0.4725px] text-[rgba(64,55,55,0.8)]">{archetype.subtitle}</span>
+                      <span className="text-[1.3125rem] font-medium leading-[1.3125rem] tracking-[0.4725px] text-[rgba(64,55,55,0.8)]">{archetype.subtitle}</span>
                       <span className="h-px flex-1 bg-[rgba(96,49,57,0.55)]" />
                     </div>
                   </div>
-                  <p className="max-w-[600px] text-[16.8px] font-medium leading-[27.3px] tracking-[1.05px] text-[rgba(64,55,55,0.8)]">{archetype.description}</p>
+                  <p className="max-w-[600px] text-[1.05rem] font-medium leading-[1.70625rem] tracking-[1.05px] text-[rgba(64,55,55,0.8)]">{archetype.description}</p>
                 </div>
 
                 <div className="flex w-full flex-col gap-9 pt-[10.5px]">
@@ -704,11 +741,11 @@ export function ResultView() {
                     <div className="flex w-full items-center gap-[54.6px] rounded-[4.2px] bg-[#fff4f4]">
                       <div className="flex self-stretch">
                         <div className="flex h-full items-center gap-[16.8px]">
-                          <span className="grid h-full min-h-[74.2px] w-[74.2px] place-items-center rounded-[5.6px] bg-[#ffe0e0] text-[26px] font-medium text-[#b03030]">✚</span>
-                          <strong className="text-[18.9px] font-medium leading-[18.9px] tracking-[1.05px] text-[#b03030]">처방</strong>
+                          <span className="grid h-full min-h-[74.2px] w-[74.2px] place-items-center rounded-[5.6px] bg-[#ffe0e0] text-[1.625rem] font-medium text-[#b03030]">✚</span>
+                          <strong className="text-[1.18125rem] font-medium leading-[1.18125rem] tracking-[1.05px] text-[#b03030]">처방</strong>
                         </div>
                       </div>
-                      <p className="flex-1 py-[14px] pr-[42px] text-[14.7px] font-medium leading-[23.1px] tracking-[1.05px] text-[rgba(176,48,48,0.8)]">{archetype.prescription}</p>
+                      <p className="flex-1 py-[14px] pr-[42px] text-[0.91875rem] font-medium leading-[1.44375rem] tracking-[1.05px] text-[rgba(176,48,48,0.8)]">{archetype.prescription}</p>
                     </div>
                   </div>
                 </div>
@@ -719,8 +756,8 @@ export function ResultView() {
           <aside className="flex shrink-0 items-center overflow-hidden rounded-r-[14px] bg-[linear-gradient(167.65deg,#20242f_1%,rgba(37,0,24,0.969)_99%)] p-[42px]">
             <div className="flex w-[346px] flex-col items-center gap-[36.4px] rounded-[14px] border border-[rgba(255,255,255,0.2)] bg-[rgba(0,0,0,0.2)] px-[33.6px] py-[42px]">
               <div className="flex flex-col items-center gap-3 text-center tracking-[0.315px]">
-                <p className="text-[14px] font-medium leading-[14px] text-[#ffdede]">ECONOMIC TYPE</p>
-                <p className="text-[24px] font-medium leading-[24px] text-[#ffa1a1]">나의 경제유형</p>
+                <p className="text-[0.875rem] font-medium leading-[0.875rem] text-[#ffdede]">ECONOMIC TYPE</p>
+                <p className="text-[1.5rem] font-medium leading-[1.5rem] text-[#ffa1a1]">나의 경제유형</p>
               </div>
               <div className="flex flex-col items-center gap-[25.2px]">
                 <div className="bg-[#2a2e3b] p-[7px]">
@@ -729,10 +766,10 @@ export function ResultView() {
                   </div>
                 </div>
                 <div className="grid justify-items-center gap-[7px]">
-                  <strong className="text-[28px] font-bold leading-[28px] tracking-[1.4px] text-[#ffe2e2]">{archetype.name}</strong>
+                  <strong className="text-[1.75rem] font-bold leading-[1.75rem] tracking-[1.4px] text-[#ffe2e2]">{archetype.name}</strong>
                   <div className="flex w-full items-center justify-center gap-[5.6px]">
                     <span className="h-px flex-1 bg-[rgba(198,198,198,0.42)]" />
-                    <span className="text-[14px] font-medium leading-[14px] tracking-[0.315px] text-[rgba(198,198,198,0.8)]">{archetype.subtitle}</span>
+                    <span className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.315px] text-[rgba(198,198,198,0.8)]">{archetype.subtitle}</span>
                     <span className="h-px flex-1 bg-[rgba(198,198,198,0.42)]" />
                   </div>
                 </div>
@@ -742,91 +779,108 @@ export function ResultView() {
         </article>
       </section>
 
-      <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-[#ffedf0] to-[#fff5ee] px-[60px] py-[60px]">
-        <div className="pointer-events-none absolute left-[55%] top-9 size-[488px] rounded-full bg-[rgba(255,64,157,0.22)] opacity-25 blur-[30px]" />
-        <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-[minmax(0,1fr)_390px] gap-[48px]">
-          <div className="grid gap-[36px]">
-            <SectionTitle title="6대 성경인물 역량 분석" />
-            <div className="flex w-full max-w-[640px] flex-col items-start gap-[28px] rounded-[20px] bg-white px-10 py-10 shadow-[0_4px_12px_rgba(255,159,159,0.15)]">
+      <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-[#ffedf0] to-[#fff5ee] px-[60px] py-10">
+        <div className="pointer-events-none absolute left-[174px] top-[1031px] size-[488px] rounded-full bg-[rgba(255,104,104,0.22)] opacity-25 blur-[30px]" />
+        <div className="pointer-events-none absolute left-[900px] top-[530px] size-[488px] rounded-full bg-[rgba(255,242,64,0.22)] opacity-25 blur-[30px]" />
+        <div className="pointer-events-none absolute left-[705px] top-[37px] size-[488px] rounded-full bg-[rgba(255,64,157,0.22)] opacity-25 blur-[30px]" />
+        <div className="pointer-events-none absolute left-[-70px] top-[304px] size-[488px] rounded-full bg-[rgba(255,217,64,0.22)] opacity-25 blur-[30px]" />
+        <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-[600px_minmax(0,1fr)] items-start gap-[72px]">
+          <div className="flex flex-col items-start gap-9">
+            <div className="flex flex-col items-start gap-4 tracking-[1px]">
+              <p className="text-[1.25rem] font-medium uppercase leading-8 text-[#cf7989]">GOSPEL ECONOMIC SPIRITUALITY</p>
+              <h2 className="whitespace-nowrap text-[3rem] font-medium leading-[3rem] text-[#533030]">6대 성경인물 역량 분석</h2>
+            </div>
+            <div className="flex w-full flex-col items-start gap-6 rounded-[20px] bg-white px-10 py-7 shadow-[0_4px_12px_rgba(255,159,159,0.15)]">
               <div className="grid w-full place-items-center">
                 <RadarChart rows={capacityScores} />
               </div>
               <div className="flex w-full items-center justify-between rounded-[12px] border-l-4 border-[#9b4250] bg-[rgba(155,66,80,0.08)] py-5 pl-9 pr-8 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
                 <div className="grid gap-3">
-                  <p className="text-[18px] font-medium leading-[18px] text-[#ab6d78]">주요 유형</p>
-                  <p className="text-[24px] font-bold leading-6 text-[#9b4250]">{RADAR_SHORT_LABELS[topCapacity.id] ?? topCapacity.name}</p>
+                  <p className="text-[1.125rem] font-medium leading-[1.125rem] text-[#ab6d78]">주요 유형</p>
+                  <p className="text-[1.5rem] font-bold leading-6 text-[#9b4250]">{RADAR_SHORT_LABELS[topCapacity.id] ?? topCapacity.name}</p>
                 </div>
-                <span className="rounded-full bg-[#ffe0e0] px-3 py-1.5 text-[16px] font-bold leading-6 text-[#9b4250]">{topCapacity.percent}% 일치</span>
+                <span className="rounded-full bg-[#ffe0e0] px-3 py-1.5 text-[1rem] font-bold leading-6 text-[#9b4250]">{topCapacity.percent}% 일치</span>
               </div>
             </div>
           </div>
 
-          <div className="grid content-start gap-3">
+          <div className="grid content-start gap-4">
             {capacityScores.map((row) => (
-              <article className="rounded border border-[rgba(232,96,122,0.2)] bg-[#fffdfd] px-5 py-4 shadow-[0_4px_10px_rgba(154,108,86,0.10)]" key={row.id}>
-                <div className="flex items-center justify-between">
-                  <strong className="text-[16px] font-medium text-[#4d3338]">{row.name}</strong>
-                  <span className="text-[14px] font-bold text-[#e8607a]">{row.percent}%</span>
-                </div>
-                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#f2dfdf]">
-                  <div className="h-full rounded-full bg-[#e8607a]" style={{ width: `${row.percent}%` }} />
-                </div>
-                <p className="mt-3 text-[13px] font-medium leading-5 text-[#8b6b6b]">{row.feedback}</p>
-              </article>
+              <CapacityAnalysisCard key={row.id} row={row} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="grid h-dvh max-h-dvh place-items-center overflow-hidden bg-[linear-gradient(145deg,#2e191e_0%,#1d161d_100%)] px-[60px] py-[80px] text-white">
-        <div className="mx-auto grid w-full max-w-[1160px] gap-[60px]">
-          <SectionTitle dark title="8대 경제장애 위험도" />
-          <div className="grid grid-cols-2 gap-5">
+      <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-[#1e1515] to-[#442c3c] px-[60px] py-[80px] text-white">
+        <div className="pointer-events-none absolute left-[-159px] top-[-57px] size-[488px] rounded-full bg-[rgba(255,64,101,0.10)] blur-[80px]" />
+        <div className="pointer-events-none absolute left-[544px] top-[-231px] size-[488px] rounded-full bg-[rgba(212,120,216,0.10)] blur-[75px]" />
+        <div className="pointer-events-none absolute left-[794px] top-[163px] size-[488px] rotate-[35deg] rounded-full bg-[rgba(197,107,64,0.10)] blur-[80px]" />
+        <div className="pointer-events-none absolute left-[942px] top-[388px] size-[488px] rounded-full bg-[rgba(255,64,64,0.10)] blur-[80px]" />
+        <div className="pointer-events-none absolute left-[116px] top-[662px] size-[488px] rounded-full bg-[rgba(255,64,101,0.08)] blur-[90px]" />
+        <div className="relative z-10 mx-auto grid w-full max-w-[1160px] gap-[80px]">
+          <div className="flex flex-col items-start gap-4 tracking-[1px]">
+            <p className="text-[1.25rem] font-medium uppercase leading-8 text-[#f3b5c1]">GOSPEL ECONOMIC SPIRITUALITY</p>
+            <h2 className="text-[3rem] font-medium leading-[3rem] text-[#ffebeb]">8대 경제장애 위험도</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-x-[60px] gap-y-6">
             {riskScores.map((risk) => (
-              <RiskCard key={risk.id} level={risk.level} name={risk.name} percent={risk.percent} subtitle={risk.subtitle} />
+              <RiskCard key={risk.id} level={risk.level} name={risk.name} subtitle={risk.subtitle} />
             ))}
           </div>
         </div>
       </section>
 
       <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">
-        <div className="pointer-events-none absolute -left-36 top-[620px] size-[628px] rounded-full bg-[rgba(255,64,185,0.22)] opacity-25 blur-[30px]" />
-        <div className="mx-auto grid w-full max-w-[1160px] gap-[100px]">
-          <SectionTitle title="MSIG 행동 프로파일" />
+        <div className="pointer-events-none absolute left-[176px] top-[-65px] size-[390px] rounded-full bg-[rgba(255,101,101,0.22)] opacity-25 blur-[24px]" />
+        <div className="pointer-events-none absolute left-[-100px] top-[95px] size-[390px] rounded-full bg-[rgba(197,204,103,0.22)] opacity-25 blur-[24px]" />
+        <div className="pointer-events-none absolute left-[841px] top-[766px] size-[482px] rounded-full bg-[rgba(255,125,64,0.22)] opacity-25 blur-[30px]" />
+        <div className="pointer-events-none absolute left-[-148px] top-[905px] size-[628px] rounded-full bg-[rgba(255,64,185,0.22)] opacity-25 blur-[30px]" />
+        <div className="pointer-events-none absolute left-[850px] top-[-264px] size-[560px] rounded-full bg-[rgba(255,64,195,0.2)] opacity-25 blur-[30px]" />
+        <div className="relative z-10 mx-auto grid w-full max-w-[1160px] gap-[72px]">
+          <div className="flex w-full flex-col items-start gap-4 tracking-[1px]">
+            <p className="text-[1.25rem] font-medium leading-8 text-[#f3b5c1]">GOSPEL ECONOMIC SPIRITUALITY</p>
+            <h2 className="text-[3rem] font-medium leading-[3rem] text-[#313332]">MSIG 행동 프로파일</h2>
+          </div>
           <div className="grid grid-cols-4 gap-5">
             {profileScores.map((row) => (
-              <article className="flex h-[336px] flex-col items-center justify-center gap-10 rounded-[11px] border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] shadow-[0_4px_12px_rgba(154,108,86,0.20)]" key={row.id}>
+              <article className="flex h-[336px] flex-col items-center justify-center gap-10 rounded-[11.2px] border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] shadow-[0_4px_12px_rgba(154,108,86,0.20)]" key={row.id}>
                 <ScoreDonut color={row.color} percent={row.percent} />
-                <div className="text-center">
-                  <p className="text-[20px] font-medium leading-none text-[#b09098]">{row.name}</p>
-                  <p className="mt-3 text-[17px] font-medium leading-none text-[rgba(176,144,152,0.8)]">({row.english})</p>
-                  <p className="mt-6 text-[20px] font-bold leading-none" style={{ color: row.color }}>
+                <div className="flex w-full flex-col items-center gap-[25.2px] text-center">
+                  <div className="flex flex-col items-center gap-[11.2px]">
+                    <p className="text-[1.225rem] font-medium leading-[1.225rem] text-[#b09098]">{row.name}</p>
+                    <p className="text-[1.05rem] font-medium leading-[1.05rem] text-[rgba(176,144,152,0.8)]">({row.english})</p>
+                  </div>
+                  <p className="text-[1.225rem] font-bold leading-[1.225rem]" style={{ color: row.color }}>
                     {row.raw} / 20
                   </p>
                 </div>
               </article>
             ))}
           </div>
-          <p className="text-[24px] font-medium leading-[44px] tracking-[0.04em] text-[rgba(96,49,57,0.8)]">
+          <p className="text-[1.5rem] font-medium leading-[2.75rem] tracking-[1px] text-[rgba(96,49,57,0.8)]">
             M(Making)·S(Spending)·I(Investing)·G(Giving) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
           </p>
         </div>
       </section>
 
-      <section className="flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#fff1f1_0%,#fff7e9_100%)] px-[60px] py-[80px]">
-        <div className="flex w-full max-w-[1160px] flex-col items-center gap-[72px] border-t border-[rgba(177,178,177,0.1)] pb-12 pt-[81px]">
-          <div className="text-center">
-            <h2 className="text-[60px] font-bold leading-none text-[#362f30]">진단을 마치셨습니다</h2>
-            <p className="mt-8 text-[24px] font-medium leading-none tracking-[0.02em] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
+      <section className="flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden px-[60px] py-[100px] [background-image:radial-gradient(ellipse_at_96%_15%,rgba(235,197,138,0.20)_0%,rgba(235,229,138,0)_42%),radial-gradient(ellipse_at_7%_75%,rgba(255,99,216,0.14)_0%,rgba(255,187,187,0)_38%),linear-gradient(180deg,#fff1f1_0%,#fff7e9_100%)]">
+        <div className="flex w-full max-w-[1160px] flex-col items-center justify-center gap-[72px] border-t border-[rgba(177,178,177,0.1)] pb-12 pt-[81px]">
+          <div className="flex flex-col items-center gap-8 whitespace-nowrap text-center">
+            <h2 className="text-[3.75rem] font-bold leading-[3.75rem] text-[#362f30]">진단을 마치셨습니다</h2>
+            <p className="text-[1.5rem] font-medium leading-6 tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
           </div>
           <div className="grid w-[359px] gap-6 print:hidden">
-            <a className="inline-flex h-14 items-center justify-center gap-3 rounded bg-[linear-gradient(163deg,#d47182_31%,#e68798_67%)] text-[18px] font-bold text-[#fff7f7] shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청">
+            <a className="result-action-button inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(163.15deg,#d47182_30.73%,#e68798_67%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청" style={{ color: "#fff" }}>
+              <span aria-hidden="true" className="text-[1.125rem] leading-none">☊</span>
               상담 · 코칭 신청하기
             </a>
-            <button className="inline-flex h-14 items-center justify-center gap-3 rounded bg-[linear-gradient(278deg,#7d545b_2%,#664349_100%)] text-[18px] font-bold text-white shadow-[0_10px_15px_-3px_rgba(81,44,50,0.2),0_4px_6px_-4px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
+            <button className="inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(277.65deg,#7d545b_1.53%,#664349_99.86%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(81,44,50,0.2),0_4px_6px_-4px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
+              <span aria-hidden="true" className="text-[1.125rem] leading-none">▣</span>
               결과지 인쇄하기 / PDF 다운받기
             </button>
-            <Link className="inline-flex h-14 items-center justify-center gap-3 rounded bg-[linear-gradient(277deg,#ffe1e1_0%,#ffcaca_100%)] text-[18px] font-bold text-white shadow-[0_10px_15px_-3px_rgba(151,110,110,0.2),0_4px_6px_-4px_rgba(151,110,110,0.2)]" href="/diagnosis" onClick={reset}>
+            <Link className="inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(276.61deg,#ffe1e1_0.17%,#ffcaca_99.82%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-[#1f1a1b] shadow-[0_10px_15px_-3px_rgba(151,110,110,0.2),0_4px_6px_-4px_rgba(151,110,110,0.2)]" href="/diagnosis" onClick={reset}>
+              <span aria-hidden="true" className="text-[1.125rem] leading-none">↻</span>
               다시 진단하기
             </Link>
           </div>
