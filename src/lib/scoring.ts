@@ -173,7 +173,7 @@ const classifyEconomicArchetype = (
     competencies.abraham.percentage < 50 &&
     competencies.samson.percentage < 50
   ) {
-    return { name: "발람형", subtitle: "물질 숭배 경계형" };
+    return { name: "발람형", subtitle: "물질 숭배" };
   }
 
   if (competencies.david.percentage < 40 && overallPercentage < 50) {

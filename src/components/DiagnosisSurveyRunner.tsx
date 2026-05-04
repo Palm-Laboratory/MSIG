@@ -74,6 +74,7 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
   );
   const displayIndex = currentIndex + 1;
   const progressWidth = `${Math.max(1, (displayIndex / partMeta.questionCount) * 100)}%`;
+  const isLastQuestion = part === "part-3" && currentIndex === questions.length - 1;
 
   useEffect(() => {
     const loadedAnswers = loadJson<Record<string, number>>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers);
@@ -175,50 +176,56 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#fffefe] font-sans text-[#1c1c19]">
-      <div className="pointer-events-none absolute -left-24 -top-24 h-[500px] w-[500px] rounded-full bg-[rgba(249,168,212,0.3)] opacity-25 blur-[40px]" />
-      <div className="pointer-events-none absolute left-[57%] top-[355px] h-[270px] w-[600px] rounded-full bg-[rgba(254,215,170,0.4)] opacity-25 blur-[40px]" />
+    <main className="relative flex min-h-dvh flex-col overflow-hidden bg-[#fffefe] font-sans text-[#1c1c19]">
+      <div className="pointer-events-none absolute left-[-2.9375rem] top-[41.6875rem] h-[17.5rem] w-[17.5rem] rounded-full bg-[rgba(175,97,239,0.2)] opacity-25 blur-[2.5rem]" />
+      <div className="pointer-events-none absolute left-[5.4375rem] top-[-3.375rem] h-[17.5rem] w-[17.5rem] rounded-full bg-[rgba(239,97,97,0.3)] opacity-25 blur-[2.5rem]" />
+      <div className="pointer-events-none absolute left-[2.0625rem] top-[21.4375rem] h-[16.886rem] w-[37.5rem] rounded-full bg-[rgba(254,247,170,0.4)] opacity-25 blur-[2.5rem]" />
 
-      <header className="relative z-10 flex w-full flex-col items-center bg-[rgba(255,249,250,0.8)] pb-2 shadow-[0_1px_1px_rgba(28,28,25,0.05)] backdrop-blur-xl">
-        <div className="flex w-full items-center justify-between gap-4 px-5 py-4 md:px-6">
-          <h1 className="text-[16px] font-medium leading-7 tracking-[-0.025em] md:text-[18px]">
+      <header className="relative z-10 flex w-full flex-col items-center bg-[rgba(255,255,255,0.7)] pb-3 shadow-[0_1px_1px_rgba(28,28,25,0.05)] backdrop-blur-[0.75rem]">
+        <div className="h-[3.125rem] w-full md:hidden" aria-hidden="true" />
+        <div className="flex w-full items-center justify-between gap-4 px-6 pb-3 pt-4">
+          <h1 className="text-[1rem] font-medium leading-none tracking-[-0.028rem]">
             PART {partNumber}. {partMeta.subtitle} ({partMeta.questionCount}문항)
           </h1>
-          <span className="whitespace-nowrap text-[16px] font-medium leading-none text-[#d47182]">
+          <span className="whitespace-nowrap text-[0.75rem] font-medium leading-none text-[#d47182]">
             {displayIndex} / {partMeta.questionCount}
           </span>
         </div>
-        <div className="flex h-[6px] w-[calc(100%-40px)] items-start gap-1 md:w-[calc(100%-48px)]">
+        <div className="flex h-[0.375rem] w-[calc(100%-3rem)] overflow-hidden rounded-full bg-[#efdfdf]">
           <div className="h-full rounded-full bg-[#8c4752] transition-[width]" style={{ width: progressWidth }} />
-          <div className="h-full flex-1 rounded-full bg-[#efdfdf]" />
         </div>
       </header>
 
-      <section className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-[46px] px-5 pb-8 pt-[54px] md:px-8 md:pt-[58px] lg:gap-[60px] lg:px-0 lg:pb-5">
-        <div className="mx-auto flex w-full max-w-[672px] flex-col gap-2.5 lg:mx-0 lg:ml-[304px]">
-          <p className="text-[14px] font-medium uppercase leading-5 tracking-[0.1em] text-[#b6737d]">
+      <section className="relative z-10 mx-auto flex w-full max-w-[80rem] flex-1 flex-col gap-10 px-6 pb-7 pt-12 md:px-8 lg:gap-[3.75rem] lg:px-0 lg:pb-8 lg:pt-[3.625rem]">
+        <div className="mx-auto flex w-full max-w-[42rem] flex-col gap-2.5 lg:mx-0 lg:ml-[19rem]">
+          <p className="text-[0.75rem] font-medium uppercase leading-none tracking-[0.0875rem] text-[#b6737d]">
             {ordinals[groupIndex] ?? `${groupIndex + 1}번째`} {sectionNounByPart[part]}
           </p>
-          <h2 className="text-[28px] font-bold leading-tight tracking-[-0.021em] md:text-[36px] md:leading-[37.5px]">
-            {group.name} - {group.subtitle} ({group.questionCount}문항)
-          </h2>
+          <div className="flex flex-col gap-1.5">
+            <h2 className="text-[1.5rem] font-bold leading-none tracking-[-0.0469rem] md:text-[2.25rem] md:leading-[2.35rem]">
+              {group.name} - {group.subtitle}
+            </h2>
+            <p className="text-[1.25rem] font-medium leading-none tracking-[-0.0469rem] text-[rgba(28,28,25,0.8)]">({group.questionCount}문항)</p>
+          </div>
         </div>
 
         <div className="relative">
-          <article className="mx-auto flex w-full max-w-[672px] flex-col gap-10 rounded-lg border border-[rgba(0,0,0,0.1)] bg-[rgba(255,255,255,0.8)] px-5 py-8 shadow-[0_4px_6px_rgba(0,0,0,0.1)] md:gap-12 md:px-9 md:py-10 lg:mx-0 lg:ml-[304px]">
+          <article className="mx-auto flex w-full max-w-[42rem] flex-col gap-[1.625rem] rounded-lg border border-[rgba(0,0,0,0.1)] bg-[rgba(255,255,255,0.8)] px-5 py-10 shadow-[0_4px_6px_rgba(0,0,0,0.1)] md:px-9 lg:mx-0 lg:ml-[19rem]">
             <div className="flex items-start gap-3">
-              <span className="shrink-0 text-[18px] font-medium leading-7 text-[#8c4752]">{String(question.id).padStart(2, "0")}.</span>
-              <h3 className="text-[18px] font-medium leading-8 md:text-[20px]">{question.label}</h3>
+              <span className="shrink-0 text-[0.75rem] font-medium leading-[1.375rem] text-[#8c4752]">{String(displayIndex).padStart(2, "0")}.</span>
+              <h3 className="text-[1rem] font-medium leading-[1.625rem] text-[#1c1c19]">{question.label}</h3>
             </div>
 
-            <div className="grid gap-3 rounded-lg border border-[rgba(0,0,0,0.04)] bg-[#fffdfd] px-4 py-4 shadow-[0_4px_4px_rgba(0,0,0,0.1)] min-[720px]:grid-cols-5 min-[720px]:gap-0 min-[720px]:px-[31px] min-[720px]:py-[17px]" role="radiogroup" aria-label={`${question.id}번 응답`}>
+            <div className="grid grid-cols-5 gap-0 rounded-lg border border-[rgba(0,0,0,0.04)] bg-[#fffdfd] px-1 py-4 shadow-[0_4px_4px_rgba(0,0,0,0.1)] md:px-[1.9375rem] md:py-[1.0625rem]" role="radiogroup" aria-label={`${question.id}번 응답`}>
               {[1, 2, 3, 4, 5].map((value) => {
                 const selected = currentAnswer === value;
 
                 return (
                   <button
                     aria-checked={selected}
-                    className="flex min-h-12 items-center gap-3 rounded-md px-2 text-left transition hover:bg-[#fff7f7] min-[720px]:flex-col min-[720px]:justify-center min-[720px]:gap-1 min-[720px]:px-0 min-[720px]:text-center"
+                    className={`flex h-12 min-w-0 flex-col items-center justify-center gap-2.5 rounded-md px-1 text-center transition hover:bg-[#fff7f7] ${
+                      selected ? "!text-[#e55f5f]" : "!text-[#1c1c19]"
+                    }`}
                     key={value}
                     onClick={() => selectAnswer(value)}
                     role="radio"
@@ -227,13 +234,17 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
                     <span
                       className={
                         selected
-                          ? "grid size-5 place-items-center rounded-full border-4 border-[rgba(255,169,173,0.4)] bg-[#f27c7c] text-[11px] font-bold leading-none text-white"
-                          : "size-5 rounded-full border border-[#d6c2c3]"
+                          ? "grid size-4 place-items-center rounded-full border-[0.1875rem] border-[rgba(255,169,173,0.4)] bg-[#f27c7c]"
+                          : "size-4 rounded-full border border-[#d6c2c3]"
                       }
                     >
-                      {selected ? "✓" : null}
+                      {selected ? (
+                        <svg aria-hidden="true" className="size-2" fill="none" viewBox="0 0 8 8">
+                          <path d="M1.25 4.15 3.1 6 6.75 2" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />
+                        </svg>
+                      ) : null}
                     </span>
-                    <span className={selected ? "text-[16px] font-medium leading-6 text-[#e55f5f]" : "text-[16px] font-light leading-6 text-[#1c1c19]"}>
+                    <span className="whitespace-nowrap text-[0.75rem] font-light leading-none tracking-[-0.01rem]">
                       {LIKERT_LABELS[value as keyof typeof LIKERT_LABELS]}
                     </span>
                   </button>
@@ -241,38 +252,50 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
               })}
             </div>
 
-            <aside className="relative overflow-hidden rounded-lg border border-[rgba(0,0,0,0.04)] bg-[#fffdfd] px-[30px] py-8 shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-              <div className="pointer-events-none absolute -bottom-12 -right-12 size-48 rounded-full bg-[rgba(140,71,82,0.05)] blur-[32px]" />
-              <div className="relative flex flex-col gap-[15px]">
+            <aside className="relative overflow-hidden rounded-lg border border-[rgba(0,0,0,0.04)] bg-[#fffdfd] px-[1.125rem] py-6 shadow-[0_4px_8px_rgba(0,0,0,0.1)] md:px-[1.875rem] md:py-8">
+              <div className="pointer-events-none absolute -bottom-12 -right-12 size-48 rounded-full bg-[rgba(140,71,82,0.05)] blur-[2rem]" />
+              <div className="relative flex flex-col gap-[0.9375rem]">
                 <div className="flex items-center gap-2">
-                  <span className="grid size-3 place-items-center rounded-full border border-[#6d5750] text-[8px] font-bold leading-none text-[#6d5750]">i</span>
-                  <strong className="text-[12px] font-bold uppercase leading-4 tracking-[0.1em] text-[#6d5750]">RELATED VERSES</strong>
+                  <span className="grid size-3 place-items-center rounded-full border border-[#6d5750]">
+                    <svg aria-hidden="true" className="h-[0.4375rem] w-[0.4375rem]" fill="none" viewBox="0 0 8 8">
+                      <path d="M4 1.2v5.6M1.2 4h5.6" stroke="#6d5750" strokeLinecap="round" strokeWidth="1.1" />
+                    </svg>
+                  </span>
+                  <strong className="text-[0.625rem] font-bold uppercase leading-none tracking-[0.075rem] text-[#6d5750]">RELATED VERSES</strong>
                 </div>
-                <p className="text-[14px] font-medium leading-[22.75px] text-[#6d5750]">{question.scripture}</p>
+                <p className="text-[0.75rem] font-medium leading-[1.375rem] text-[#6d5750]">"{question.scripture}"</p>
               </div>
             </aside>
           </article>
 
-          <nav className="hidden lg:absolute lg:left-[1108px] lg:top-[86px] lg:mt-0 lg:flex lg:justify-start" aria-label="진단 파트 진행 상태">
-            <ol className="flex flex-col items-stretch gap-5">
+          <nav className="mt-10 flex justify-center lg:absolute lg:left-[69.25rem] lg:top-[5.375rem] lg:mt-0 lg:justify-start" aria-label="진단 파트 진행 상태">
+            <ol className="flex items-center gap-5 lg:flex-col lg:items-stretch">
               {SURVEY_PARTS.map((item) => {
                 const active = item.id === part;
                 const completed = SURVEY_QUESTIONS.filter((surveyQuestion) => surveyQuestion.part === item.id).every((surveyQuestion) => answers[String(surveyQuestion.id)]);
 
                 return (
-                  <li className="flex w-[138px] items-center justify-end gap-[11px]" key={item.id}>
-                    <span className={active ? "whitespace-nowrap text-[14px] font-medium uppercase leading-5 tracking-[0.1em] text-[#b6737d]" : "whitespace-nowrap text-[14px] font-medium uppercase leading-5 tracking-[0.1em] text-[#d6c2c3]"}>
-                      PART {partNumbers[item.id]}.
-                    </span>
-                    <span className={active || completed ? "h-px w-8 bg-[#b6737d]" : "h-px w-8 bg-[#d6c2c3]"} />
+                  <li className="flex items-center justify-end gap-[0.6875rem] lg:w-[8.625rem]" key={item.id}>
+                    {active ? (
+                      <>
+                        <span className="whitespace-nowrap text-[0.75rem] font-medium uppercase leading-none tracking-[0.0875rem] text-[#b6737d] lg:text-[0.875rem] lg:leading-5">
+                          PART {partNumbers[item.id]}.
+                        </span>
+                        <span className="h-px w-8 bg-[#b6737d]" />
+                      </>
+                    ) : null}
                     <span
                       className={
                         active || completed
-                          ? "grid size-5 place-items-center rounded-full bg-[linear-gradient(148deg,#e57385_12.31%,#ff8c9e_80.77%)] text-[11px] font-bold leading-none text-white"
+                          ? "grid size-5 place-items-center rounded-full bg-[linear-gradient(148deg,#e57385_12.31%,#ff8c9e_80.77%)]"
                           : "size-5 rounded-full border border-[#d6c2c3]"
                       }
                     >
-                      {completed ? "✓" : null}
+                      {completed ? (
+                        <svg aria-hidden="true" className="size-3" fill="none" viewBox="0 0 12 12">
+                          <path d="M2 6.15 4.7 8.7 10 3.2" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+                        </svg>
+                      ) : null}
                     </span>
                   </li>
                 );
@@ -281,25 +304,35 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
           </nav>
         </div>
 
-        <footer className="mx-auto flex w-full max-w-[672px] flex-col gap-3 border-t border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.7)] pt-6 backdrop-blur-xl lg:mx-0 lg:ml-[304px]">
-          {message ? <p className="text-center text-[14px] font-medium leading-5 text-[#a33d4c]">{message}</p> : null}
-          <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            <button className="inline-flex h-14 flex-1 items-center justify-center gap-2 rounded bg-[linear-gradient(156deg,#ffebeb_30.73%,#fff5f5_67%)] text-[16px] font-medium text-[#524345] shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)] transition hover:-translate-y-0.5" onClick={goPrevious} type="button">
-              <span aria-hidden="true">←</span>
-              이전
-            </button>
-            <button
-              className="inline-flex h-14 flex-1 items-center justify-center gap-2 rounded bg-[linear-gradient(156deg,#d47182_30.73%,#e68798_67%)] text-[16px] font-medium text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-[#d6c2c3] disabled:bg-none disabled:text-white/80 disabled:shadow-none disabled:hover:translate-y-0"
-              disabled={currentAnswer === undefined}
-              onClick={goNext}
-              type="button"
-            >
-              {part === "part-3" && currentIndex === questions.length - 1 ? "결과 분석하기" : "다음"}
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
-        </footer>
+        <div className="flex-1" />
       </section>
+
+      <footer className="relative z-20 flex w-full flex-col gap-3 bg-[rgba(255,255,255,0.7)] px-6 pb-12 pt-3 shadow-[0_-1px_1px_rgba(28,28,25,0.05)] backdrop-blur-[0.75rem]">
+        {message ? <p className="text-center text-[0.875rem] font-medium leading-5 text-[#a33d4c]">{message}</p> : null}
+        <div className="mx-auto flex w-full max-w-[42rem] gap-5">
+          <button
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded bg-[linear-gradient(143deg,#ffebeb_30.73%,#fff5f5_67%)] px-4 py-3 !text-[#524345] shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)] transition hover:-translate-y-0.5"
+            onClick={goPrevious}
+            type="button"
+          >
+            <svg aria-hidden="true" className="h-[0.8125rem] w-[0.875rem]" fill="none" viewBox="0 0 14 13">
+              <path d="M8.6 2.1 4.2 6.5l4.4 4.4" stroke="#524345" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+            </svg>
+            <span className="text-[1rem] font-medium leading-6">이전</span>
+          </button>
+          <button
+            className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded bg-[linear-gradient(156deg,#d47182_30.73%,#e68798_67%)] px-4 py-3 !text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-[#e4e4e4] disabled:bg-none disabled:!text-[#a1a1a1] disabled:shadow-none disabled:hover:translate-y-0"
+            disabled={currentAnswer === undefined}
+            onClick={goNext}
+            type="button"
+          >
+            <span className="text-[1rem] font-medium leading-6">{isLastQuestion ? "결과 분석하기" : "다음"}</span>
+            <svg aria-hidden="true" className="h-[0.8125rem] w-[0.875rem]" fill="none" viewBox="0 0 14 13">
+              <path d="m5.4 2.1 4.4 4.4-4.4 4.4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+            </svg>
+          </button>
+        </div>
+      </footer>
     </main>
   );
 }
