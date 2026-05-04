@@ -452,7 +452,7 @@ export default function InfoPage() {
             <h2 className="pb-[17.6px] text-center text-h2 font-extrabold leading-tight text-white lg:text-h1-desktop">
               지금, 당신의 경제 영성은 어떤지 확인해보세요
             </h2>
-            <a className="relative inline-flex min-h-[4.3rem] items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-extrabold text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/part/1">
+            <a className="relative inline-flex min-h-[4.3rem] items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-extrabold text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/info">
               진단 시작하기
             </a>
           </div>

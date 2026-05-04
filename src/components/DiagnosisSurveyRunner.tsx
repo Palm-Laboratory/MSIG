@@ -159,8 +159,7 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
       <div className="pointer-events-none absolute left-[5.4375rem] top-[-3.375rem] h-[17.5rem] w-[17.5rem] rounded-full bg-[rgba(239,97,97,0.3)] opacity-25 blur-[2.5rem]" />
       <div className="pointer-events-none absolute left-[2.0625rem] top-[21.4375rem] h-[16.886rem] w-[37.5rem] rounded-full bg-[rgba(254,247,170,0.4)] opacity-25 blur-[2.5rem]" />
 
-      <header className="relative z-10 flex w-full flex-col items-center bg-[rgba(255,255,255,0.7)] pb-3 shadow-[0_1px_1px_rgba(28,28,25,0.05)] backdrop-blur-[0.75rem]">
-        <div className="h-[3.125rem] w-full md:hidden" aria-hidden="true" />
+      <header className="relative z-10 flex w-full flex-col items-center bg-[rgba(255,255,255,0.7)] pb-3 pt-[env(safe-area-inset-top)] shadow-[0_1px_1px_rgba(28,28,25,0.05)] backdrop-blur-[0.75rem]">
         <div className="flex w-full items-center justify-between gap-4 px-6 pb-3 pt-4">
           <h1 className="text-[1rem] font-medium leading-none tracking-[-0.028rem]">
             PART {partNumber}. {partMeta.subtitle} ({partMeta.questionCount}문항)
