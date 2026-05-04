@@ -26,9 +26,10 @@ npm run test
 ```text
 src/
   app/
-    page.tsx                    # / 메인 랜딩
-    diagnosis/page.tsx           # /diagnosis, 진단 소개로 redirect
-    diagnosis/info/page.tsx      # /diagnosis/info, 진단 소개/검사 과정 랜딩
+    page.tsx                    # /, /info로 redirect
+    info/page.tsx                # /info, 소개 랜딩
+    diagnosis/page.tsx           # /diagnosis, 검사 과정으로 redirect
+    diagnosis/info/page.tsx      # /diagnosis/info, 검사 과정 랜딩
     diagnosis/part/[part]/page.tsx
     diagnosis/loading/page.tsx
     diagnosis/result/page.tsx
@@ -59,9 +60,10 @@ public/
 
 | URL | Role |
 | --- | --- |
-| `/` | 메인 랜딩. 현재 헤더와 섹션 배경 중심으로 구성 |
-| `/diagnosis` | `/diagnosis/info`로 redirect |
-| `/diagnosis/info` | 진단 소개. Figma 기준 섹션 작업 진행 중 |
+| `/` | `/info`로 redirect |
+| `/info` | 소개 랜딩 |
+| `/diagnosis` | `/diagnosis/info#process`로 redirect |
+| `/diagnosis/info` | 검사 과정 랜딩 |
 | `/diagnosis/part/1` | Part 1 설문 |
 | `/diagnosis/part/2` | Part 2 설문 |
 | `/diagnosis/part/3` | Part 3 설문 |
@@ -185,5 +187,5 @@ npm run test
 - 타이포는 `rem` 기반 타입 토큰을 사용합니다.
 - 공통 요소는 `src/components`로 분리합니다.
 - 라우팅은 Next.js App Router 규칙을 따릅니다.
-- 사용자 플로우는 `/diagnosis/info`에서 시작해 `/diagnosis/part/1`로 진입합니다.
+- 사용자 플로우는 `/info`에서 시작해 `/diagnosis/info`, `/diagnosis/part/1`로 진입합니다.
 - 기존 사용자 변경사항을 임의로 되돌리지 않습니다.
