@@ -1,15 +1,34 @@
 import Link from "next/link";
 
+type NavItem = string | { href: string; label: string };
+
 type LandingHeaderProps = {
   brandHref?: string;
   label?: string;
   activeItem?: string;
-  items?: string[];
+  items?: NavItem[];
 };
 
-const defaultItems = ["진단 소개", "검사 과정", "결과 유형", "FAQ"];
+const defaultItems: NavItem[] = [
+  { label: "진단 소개", href: "/diagnosis/info" },
+  { label: "검사 과정", href: "/diagnosis/info#process" },
+  { label: "결과 유형", href: "/diagnosis/info#archetypes" },
+  { label: "FAQ", href: "/diagnosis/info#faq" },
+];
+
+const defaultItemHrefs: Record<string, string> = {
+  "진단 소개": "/diagnosis/info",
+  "검사 과정": "/diagnosis/info#process",
+  소개: "/diagnosis/info",
+  "결과 유형": "/diagnosis/info#archetypes",
+  FAQ: "/diagnosis/info#faq",
+};
+
+const normalizeItem = (item: NavItem) => (typeof item === "string" ? { label: item, href: defaultItemHrefs[item] ?? "/diagnosis/info" } : item);
 
 export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "진단 소개", items = defaultItems }: LandingHeaderProps) {
+  const navItems = items.map(normalizeItem);
+
   return (
     <nav
       className="fixed inset-x-0 top-0 z-50 flex min-h-20 items-center justify-between border-b border-[rgba(242,218,218,0.42)] bg-[rgba(255,247,245,0.78)] px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
@@ -20,21 +39,15 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
         <span className="text-caption font-light leading-4 text-black lg:whitespace-nowrap lg:text-body-m">한국교회 목회지원센터</span>
       </Link>
       <div className="flex items-center gap-10 max-lg:hidden">
-        {items.map((item) =>
-          item === "진단 소개" ? (
-            <Link
-              className={item === activeItem ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 text-[#be123c]" : "text-base font-semibold leading-6 text-[#78716c]"}
-              href="/diagnosis/info"
-              key={item}
-            >
-              {item}
-            </Link>
-          ) : (
-            <span className={item === activeItem ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 text-[#be123c]" : "text-base font-semibold leading-6 text-[#78716c]"} key={item}>
-              {item}
-            </span>
-          ),
-        )}
+        {navItems.map((item) => (
+          <Link
+            className={item.label === activeItem ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 text-[#be123c]" : "text-base font-semibold leading-6 text-[#78716c]"}
+            href={item.href}
+            key={item.label}
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
       <details className="relative hidden max-lg:block">
         <summary className="flex h-8 w-8 list-none flex-col items-center justify-center gap-[5px] p-1 [&::-webkit-details-marker]:hidden" aria-label="메뉴 열기">
@@ -43,17 +56,11 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
           <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
         </summary>
         <div className="absolute right-0 top-[42px] grid w-40 gap-3 rounded-lg border border-[#f2dada] bg-[rgba(255,247,245,0.96)] p-4 shadow-[0_12px_28px_rgba(97,85,87,0.14)]">
-          {items.map((item) =>
-            item === "진단 소개" ? (
-              <Link className={item === activeItem ? "text-sm font-extrabold leading-5 text-[#be123c]" : "text-sm font-extrabold leading-5 text-[#615557]"} href="/diagnosis/info" key={item}>
-                {item}
-              </Link>
-            ) : (
-              <span className={item === activeItem ? "text-sm font-extrabold leading-5 text-[#be123c]" : "text-sm font-extrabold leading-5 text-[#615557]"} key={item}>
-                {item}
-              </span>
-            ),
-          )}
+          {navItems.map((item) => (
+            <Link className={item.label === activeItem ? "text-sm font-extrabold leading-5 text-[#be123c]" : "text-sm font-extrabold leading-5 text-[#615557]"} href={item.href} key={item.label}>
+              {item.label}
+            </Link>
+          ))}
         </div>
       </details>
     </nav>

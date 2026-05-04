@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { LandingHeader } from "@/components/landing-header";
+import { SiteFooter } from "@/components/site-footer";
 import { scoreSurveyAnswers, type Part1CompetencyKey, type Part2RiskKey, type Part3ProfileKey, type SurveyAnswers } from "@/lib/scoring";
 import { SURVEY_QUESTIONS } from "@/lib/survey-data";
 
@@ -90,13 +92,6 @@ const RADAR_SHORT_LABELS: Record<string, string> = {
 };
 
 const RADAR_ORDER: Part1CompetencyKey[] = ["abraham", "joseph", "david", "nehemiah", "samson", "daniel"];
-
-const RESULT_MOBILE_NAV_ITEMS = [
-  { label: "진단 소개", href: "/diagnosis/info" },
-  { label: "검사 과정", href: "/diagnosis/info#process" },
-  { label: "결과 유형", href: "/diagnosis/info#archetypes" },
-  { label: "FAQ", href: "/diagnosis/info#faq" },
-] as const;
 
 const RESULT_GRADE_THEMES: Record<string, { arcEnd: string; arcStart: string; gradeEnd: string; gradeStart: string; score: string }> = {
   "A+": { arcStart: "#f87f7f", arcEnd: "#ffbcbc", gradeStart: "#ed536c", gradeEnd: "#ffa8b6", score: "#f37d90" },
@@ -190,6 +185,100 @@ const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
 
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
+function useInViewOnce<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || isInView) return;
+
+    const checkVisibility = () => {
+      const rect = node.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const hasSize = rect.width > 0 && rect.height > 0;
+      const isNearViewport = rect.top <= viewportHeight * 0.82 && rect.bottom >= viewportHeight * 0.18;
+
+      if (hasSize && isNearViewport) {
+        setIsInView(true);
+        return true;
+      }
+
+      return false;
+    };
+
+    const initialFrame = window.requestAnimationFrame(checkVisibility);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-18% 0px -18% 0px", threshold: 0 },
+    );
+
+    observer.observe(node);
+    const fallbackInterval = window.setInterval(checkVisibility, 250);
+
+    window.addEventListener("scroll", checkVisibility, { capture: true, passive: true });
+    window.addEventListener("resize", checkVisibility);
+
+    return () => {
+      window.cancelAnimationFrame(initialFrame);
+      observer.disconnect();
+      window.clearInterval(fallbackInterval);
+      window.removeEventListener("scroll", checkVisibility, { capture: true });
+      window.removeEventListener("resize", checkVisibility);
+    };
+  }, [isInView]);
+
+  return [ref, isInView] as const;
+}
+
+function useAnimatedPercent(percent: number, active: boolean) {
+  const target = Math.round(clamp(percent));
+  const [displayPercent, setDisplayPercent] = useState(active ? target : 0);
+
+  useEffect(() => {
+    if (!active) {
+      setDisplayPercent(0);
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setDisplayPercent(target);
+      return;
+    }
+
+    let animationFrame = 0;
+    let startTime: number | null = null;
+    const duration = 900;
+    const easeOut = (value: number) => 1 - Math.pow(1 - value, 3);
+
+    const update = (timestamp: number) => {
+      if (startTime === null) startTime = timestamp;
+
+      const ratio = clamp((timestamp - startTime) / duration, 0, 1);
+      setDisplayPercent(Math.round(target * easeOut(ratio)));
+
+      if (ratio < 1) {
+        animationFrame = window.requestAnimationFrame(update);
+      }
+    };
+
+    setDisplayPercent(0);
+    animationFrame = window.requestAnimationFrame(update);
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [active, target]);
+
+  return displayPercent;
+}
+
 function SectionTitle({ align = "left", dark = false, title }: { align?: "left" | "center"; dark?: boolean; title: string }) {
   return (
     <div className={`flex flex-col gap-[25.2px] ${align === "center" ? "items-center text-center" : "items-start"}`}>
@@ -199,21 +288,23 @@ function SectionTitle({ align = "left", dark = false, title }: { align?: "left" 
   );
 }
 
-function ScoreDonut({ color, percent, showValue = true, size = 140 }: { color: string; percent: number; showValue?: boolean; size?: number }) {
+function ScoreDonut({ animate = false, color, percent, showValue = true, size = 140 }: { animate?: boolean; color: string; percent: number; showValue?: boolean; size?: number }) {
+  const [donutRef, isDonutInView] = useInViewOnce<HTMLDivElement>();
+  const displayPercent = useAnimatedPercent(percent, animate || isDonutInView);
   const stroke = 10;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const dash = (clamp(percent) / 100) * circumference;
+  const dash = (displayPercent / 100) * circumference;
 
   return (
-    <div className="relative grid place-items-center" style={{ height: size, width: size }}>
+    <div className="relative grid place-items-center" ref={donutRef} style={{ height: size, width: size }}>
       <svg aria-hidden="true" className="-rotate-90" height={size} viewBox={`0 0 ${size} ${size}`} width={size}>
         <circle cx={size / 2} cy={size / 2} fill="none" r={radius} stroke="#f0dfde" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} fill="none" r={radius} stroke={color} strokeDasharray={`${dash} ${circumference - dash}`} strokeLinecap="round" strokeWidth={stroke} />
       </svg>
       {showValue ? (
         <strong className="absolute text-[1.5625rem] font-bold leading-none" style={{ color }}>
-          {Math.round(percent)}%
+          {displayPercent}%
         </strong>
       ) : null}
     </div>
@@ -736,12 +827,13 @@ function MobileRiskCard({ level, name, subtitle }: { level: string; name: string
   );
 }
 
-function MobileProfileDonut({ color, percent }: { color: string; percent: number }) {
+function MobileProfileDonut({ animate = false, color, percent }: { animate?: boolean; color: string; percent: number }) {
+  const displayPercent = useAnimatedPercent(percent, animate);
   const size = 88.2;
   const stroke = 6.3;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const dash = (clamp(percent) / 100) * circumference;
+  const dash = (displayPercent / 100) * circumference;
 
   return (
     <div className="relative grid h-[88.2px] w-[89.523px] place-items-center">
@@ -750,20 +842,20 @@ function MobileProfileDonut({ color, percent }: { color: string; percent: number
         <circle cx={size / 2} cy={size / 2} fill="none" r={radius} stroke={color} strokeDasharray={`${dash} ${circumference - dash}`} strokeLinecap="round" strokeWidth={stroke} />
       </svg>
       <strong className="absolute text-[0.63rem] font-bold leading-[0.63rem] whitespace-nowrap" style={{ color }}>
-        {Math.round(percent)}%
+        {displayPercent}%
       </strong>
     </div>
   );
 }
 
-function MobileProfileCard({ row }: { row: ScoreRow & { color: string; english: string; raw: number } }) {
+function MobileProfileCard({ animate, row }: { animate: boolean; row: ScoreRow & { color: string; english: string; raw: number } }) {
   return (
-    <article className="flex aspect-square min-h-40 flex-col items-center justify-center gap-6 rounded-xl border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] shadow-[0_3px_8px_rgba(154,108,86,0.20)]">
-      <MobileProfileDonut color={row.color} percent={row.percent} />
+    <article className="flex min-h-[13.5rem] flex-col items-center justify-center gap-7 rounded-xl border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] px-4 py-7 shadow-[0_3px_8px_rgba(154,108,86,0.20)]">
+      <MobileProfileDonut animate={animate} color={row.color} percent={row.percent} />
       <div className="text-center">
         <p className="text-xs font-medium leading-4 text-[#b09098]">{row.name}</p>
         <p className="mt-2 text-[0.625rem] font-medium leading-4 text-[rgba(176,144,152,0.8)]">({row.english})</p>
-        <p className="mt-4 text-xs font-bold leading-4" style={{ color: row.color }}>
+        <p className="mt-5 text-xs font-bold leading-4" style={{ color: row.color }}>
           {row.raw} / 20
         </p>
       </div>
@@ -793,37 +885,12 @@ function MobileResultView({
   const topCapacityLabel = topCapacities.map((row) => RADAR_SHORT_LABELS[row.id] ?? row.name).join(" · ");
   const topCapacityLabelClass = topCapacities.length > 1 ? "text-xs leading-5" : "text-sm leading-5";
   const topCapacityStyle = CAPACITY_CARD_STYLES[topCapacity.id as Part1CompetencyKey] ?? CAPACITY_CARD_STYLES.abraham;
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const closeMenu = () => setIsMenuOpen(false);
+  const [profileSectionRef, isProfileSectionInView] = useInViewOnce<HTMLElement>();
 
   return (
     <main className="relative flex min-h-screen w-full flex-col overflow-hidden bg-white font-sans text-[#312225] md:hidden">
       <div className="absolute left-[-124px] top-[489px] size-[400px] rounded-full bg-[rgba(233,187,134,0.08)] blur-2xl" />
       <div className="absolute left-[254px] top-[172px] size-[260px] rounded-full bg-[rgba(215,111,130,0.06)] blur-2xl" />
-
-      <header className="relative z-10 flex flex-col gap-4 pb-9">
-        <div className="w-full" />
-        <div className="flex items-center justify-between px-6">
-          <div className="grid gap-2">
-            <p className="text-[1rem] font-medium leading-4 tracking-[-0.6px] text-[#292524]">복음경제영성 종합 진단</p>
-            <p className="text-[0.875rem] font-light leading-[0.875rem] text-black">한국교회 목회지원센터</p>
-          </div>
-          <details className="relative" onToggle={(event) => setIsMenuOpen(event.currentTarget.open)} open={isMenuOpen}>
-            <summary className="flex h-8 w-8 list-none flex-col items-center justify-center gap-[5px] p-1 [&::-webkit-details-marker]:hidden" aria-label="메뉴 열기">
-              <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
-              <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
-              <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
-            </summary>
-            <div className="absolute right-0 top-[42px] z-50 grid w-40 gap-3 rounded-lg border border-[#f2dada] bg-[rgba(255,247,245,0.96)] p-4 shadow-[0_12px_28px_rgba(97,85,87,0.14)]">
-              {RESULT_MOBILE_NAV_ITEMS.map((item) => (
-                <Link className="text-sm font-extrabold leading-5 text-[#615557]" href={item.href} key={item.label} onClick={closeMenu}>
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </details>
-        </div>
-      </header>
 
       <section className="result-hero relative flex min-h-[100svh] w-full flex-col items-center justify-center px-6 pb-[clamp(6rem,16svh,11rem)]">
         <div className="result-hero-content flex flex-col items-center gap-[44.1px]">
@@ -885,7 +952,7 @@ function MobileResultView({
         </div>
       </section>
 
-      <section className="relative flex w-full flex-col items-center gap-14 overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-6 py-[clamp(7rem,22svh,12.5rem)]">
+      <section className="relative flex w-full flex-col items-center gap-14 overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-6 py-[clamp(7rem,22svh,12.5rem)]" ref={profileSectionRef}>
         <div className="absolute left-[89.8px] top-[-80px] size-[312.32px] rounded-full bg-[rgba(255,101,101,0.22)] opacity-25 blur-[19.2px]" />
         <div className="absolute left-[-131px] top-[48px] size-[312.32px] rounded-full bg-[rgba(197,204,103,0.22)] opacity-25 blur-[19.2px]" />
         <div className="absolute left-[134px] top-[973px] size-[337.4px] rounded-full bg-[rgba(255,125,64,0.22)] opacity-25 blur-[21px]" />
@@ -898,9 +965,9 @@ function MobileResultView({
         <p className="relative z-10 w-full text-[0.875rem] font-medium leading-7 tracking-[1px] text-[rgba(96,49,57,0.8)]">
           M(Making) · S(Spending) · I(Investing) · G(Giving) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
         </p>
-        <div className="relative z-10 grid w-full grid-cols-2 gap-3">
+        <div className="relative z-10 grid w-full grid-cols-2 gap-x-4 gap-y-6">
           {profileScores.map((row) => (
-            <MobileProfileCard key={row.id} row={row} />
+            <MobileProfileCard animate={isProfileSectionInView} key={row.id} row={row} />
           ))}
         </div>
       </section>
@@ -937,14 +1004,6 @@ function MobileResultView({
         </div>
       </section>
 
-      <footer className="w-full bg-[#423739] px-6 pb-12 pt-5 text-white">
-        <div className="grid gap-3 text-[0.5rem] font-light leading-3">
-          <p className="text-[0.75rem] font-medium leading-3">한국목회지원센터</p>
-          <p>서울 강남구 OO로 OO길 OO타워 OO호</p>
-          <p>TEL: 010-0000-0000</p>
-          <p>copyright (c) (사)한국목회지원회 All rights reserved.</p>
-        </div>
-      </footer>
     </main>
   );
 }
@@ -1007,6 +1066,7 @@ export function ResultView() {
   const topCapacityLabel = topCapacities.map((row) => RADAR_SHORT_LABELS[row.id] ?? row.name).join(" · ");
   const topCapacityStyle = CAPACITY_CARD_STYLES[topCapacity.id as Part1CompetencyKey] ?? CAPACITY_CARD_STYLES.abraham;
   const weakestCapacity = [...capacityScores].sort((a, b) => a.percent - b.percent)[0];
+  const [desktopProfileSectionRef, isDesktopProfileSectionInView] = useInViewOnce<HTMLDivElement>();
 
   const reset = () => {
     window.localStorage.removeItem(STORAGE_KEYS.answers);
@@ -1039,6 +1099,7 @@ export function ResultView() {
 
   return (
     <>
+      <LandingHeader activeItem="결과 유형" brandHref="/diagnosis/info" label="결과 페이지 내비게이션" />
       <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
       <main className="hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
         <section className="result-hero relative flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">
@@ -1187,10 +1248,10 @@ export function ResultView() {
               <p className="text-[1.25rem] font-medium leading-8 text-[#f3b5c1]">GOSPEL ECONOMIC SPIRITUALITY</p>
               <h2 className="text-[3rem] font-medium leading-[3rem] text-[#313332]">MSIG 행동 프로파일</h2>
             </div>
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid grid-cols-4 gap-5" ref={desktopProfileSectionRef}>
               {profileScores.map((row) => (
                 <article className="flex h-[336px] flex-col items-center justify-center gap-10 rounded-[11.2px] border border-[rgba(232,96,122,0.10)] bg-[#fcf8f6] shadow-[0_4px_12px_rgba(154,108,86,0.20)]" key={row.id}>
-                  <ScoreDonut color={row.color} percent={row.percent} />
+                  <ScoreDonut animate={isDesktopProfileSectionInView} color={row.color} percent={row.percent} />
                   <div className="flex w-full flex-col items-center gap-[25.2px] text-center">
                     <div className="flex flex-col items-center gap-[11.2px]">
                       <p className="text-[1.225rem] font-medium leading-[1.225rem] text-[#b09098]">{row.name}</p>
@@ -1232,6 +1293,7 @@ export function ResultView() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </>
   );
 }
