@@ -11,13 +11,13 @@ type LandingHeaderProps = {
 
 const defaultItems: NavItem[] = [
   { label: "진단 소개", href: "/diagnosis/info" },
-  { label: "검사 과정", href: "/diagnosis/info#process" },
+  { label: "검사 과정", href: "/diagnosis/info" },
   { label: "FAQ", href: "/diagnosis/info#faq" },
 ];
 
 const defaultItemHrefs: Record<string, string> = {
   "진단 소개": "/diagnosis/info",
-  "검사 과정": "/diagnosis/info#process",
+  "검사 과정": "/diagnosis/info",
   소개: "/diagnosis/info",
   FAQ: "/diagnosis/info#faq",
 };

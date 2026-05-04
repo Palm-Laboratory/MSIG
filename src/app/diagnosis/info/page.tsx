@@ -126,10 +126,6 @@ export default function DiagnosisInfoPage() {
             </article>
           ))}
         </div>
-
-        <Link className="landing-outline-button" href="/diagnosis/result">
-          전체 유형 보기
-        </Link>
       </section>
 
       <section className="landing-cta">

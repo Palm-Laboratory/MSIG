@@ -238,7 +238,7 @@ p {
   --process-tab-bg: #f9e4e7;
   background: transparent;
   border: 0;
-  color: #ba9098;
+  color: #BA9098;
   display: inline-flex;
   font-size: 1.5rem;
   font-weight: 900;
@@ -269,7 +269,6 @@ p {
 
 .process-tabs button:nth-child(2) {
   --process-tab-bg: #fdc8d1;
-  color: #b6848d;
   z-index: 2;
 }
 
@@ -277,7 +276,6 @@ p {
   --process-tab-bg: #fba9b6;
 }
 
-.process-tabs button:hover,
 .process-tabs button.selected {
   color: #79474f;
 }
@@ -818,6 +816,14 @@ input[type="button"] *,
 input[type="reset"] *,
 input[type="submit"] * {
   color: inherit !important;
+}
+
+.process-tabs button {
+  color: #BA9098 !important;
+}
+
+.process-tabs button.selected {
+  color: #79474F !important;
 }
 
 .result-action-button,
