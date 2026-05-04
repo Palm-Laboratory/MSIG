@@ -98,6 +98,18 @@ const RESULT_MOBILE_NAV_ITEMS = [
   { label: "FAQ", href: "/diagnosis/info#faq" },
 ] as const;
 
+const RESULT_GRADE_THEMES: Record<string, { arcEnd: string; arcStart: string; gradeEnd: string; gradeStart: string; score: string }> = {
+  "A+": { arcStart: "#f87f7f", arcEnd: "#ffbcbc", gradeStart: "#ed536c", gradeEnd: "#ffa8b6", score: "#f37d90" },
+  A: { arcStart: "#f87f7f", arcEnd: "#ffbcbc", gradeStart: "#ed536c", gradeEnd: "#ffa8b6", score: "#f37d90" },
+  "B+": { arcStart: "#35b779", arcEnd: "#b9efd8", gradeStart: "#1f9f68", gradeEnd: "#8be5bc", score: "#2fb97b" },
+  B: { arcStart: "#4f9af1", arcEnd: "#b9d9ff", gradeStart: "#3b82f6", gradeEnd: "#9ecbff", score: "#4f9af1" },
+  C: { arcStart: "#f59e42", arcEnd: "#ffd7a8", gradeStart: "#e07830", gradeEnd: "#ffc083", score: "#f59e42" },
+  D: { arcStart: "#ef4444", arcEnd: "#ffb4b4", gradeStart: "#dc2626", gradeEnd: "#ff9b9b", score: "#ef4444" },
+  F: { arcStart: "#991b1b", arcEnd: "#d48a8a", gradeStart: "#991b1b", gradeEnd: "#ef7777", score: "#b91c1c" },
+};
+
+const getResultGradeTheme = (grade: string) => RESULT_GRADE_THEMES[grade] ?? RESULT_GRADE_THEMES.A;
+
 const CAPACITY_CARD_STYLES: Record<Part1CompetencyKey, { accent: string; bg: string; text: string }> = {
   abraham: { accent: "#9b4250", bg: "#fffafa", text: "#603139" },
   david: { accent: "#77584e", bg: "#fffdfc", text: "#563c34" },
@@ -214,6 +226,7 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
   const progressLength = (progress / 100) * arcLength;
   const arcStartAngle = 145;
   const [displayPercent, setDisplayPercent] = useState(0);
+  const theme = getResultGradeTheme(grade);
   const animatedArcStyle = {
     "--result-arc-offset": progressLength,
     strokeDashoffset: progressLength,
@@ -289,23 +302,27 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
         />
         <defs>
           <linearGradient gradientUnits="userSpaceOnUse" id="overall-rank-gradient" x1="286" x2="22" y1="154" y2="154">
-            <stop stopColor="#ffbcbc" />
-            <stop offset="1" stopColor="#f87f7f" />
+            <stop stopColor={theme.arcEnd} />
+            <stop offset="1" stopColor={theme.arcStart} />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute left-1/2 top-[100.72px] flex -translate-x-1/2 flex-col items-center gap-[45.36px] text-center">
-        <strong className="bg-gradient-to-b from-[#ed536c] to-[#ffa8b6] bg-clip-text text-[5.67rem] font-bold leading-[5.67rem] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]">
+        <strong className="bg-clip-text text-[5.67rem] font-bold leading-[5.67rem] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]" style={{ backgroundImage: `linear-gradient(180deg, ${theme.gradeStart}, ${theme.gradeEnd})` }}>
           {grade}
         </strong>
         <div className="flex flex-col items-center gap-[12.3px]">
           <p className="flex items-end justify-center gap-[8.456px] whitespace-nowrap text-center tracking-[0.3459px]">
-            <span className="text-[2.10213rem] font-bold leading-[2.10213rem] text-[#f37d90]">{displayPercent}</span>
+            <span className="text-[2.10213rem] font-bold leading-[2.10213rem]" style={{ color: theme.score }}>
+              {displayPercent}
+            </span>
             <span className="text-[1.20119rem] font-medium leading-[1.20119rem] text-[#949494]">/ 100점</span>
           </p>
           <p className="flex items-center justify-center gap-[12.3px] whitespace-nowrap text-center tracking-[0.3459px]">
             <span className="text-[1.15312rem] font-medium leading-[1.34537rem] text-[#78716c]">등급:</span>
-            <span className="text-[1.20119rem] font-medium leading-[1.20119rem] text-[#e57385]">{label}</span>
+            <span className="text-[1.20119rem] font-medium leading-[1.20119rem]" style={{ color: theme.score }}>
+              {label}
+            </span>
           </p>
         </div>
       </div>
@@ -473,6 +490,7 @@ function MobileOverallRankCircle({ grade, label, percent }: { grade: string; lab
   const arcStartAngle = 145;
   const progressLength = (progress / 100) * arcLength;
   const [displayPercent, setDisplayPercent] = useState(0);
+  const theme = getResultGradeTheme(grade);
   const animatedArcStyle = {
     "--result-arc-offset": progressLength,
     strokeDashoffset: progressLength,
@@ -548,23 +566,27 @@ function MobileOverallRankCircle({ grade, label, percent }: { grade: string; lab
         />
         <defs>
           <linearGradient gradientUnits="userSpaceOnUse" id="mobile-overall-rank-gradient" x1="207" x2="8" y1="90" y2="90">
-            <stop stopColor="#ffbcbc" />
-            <stop offset="1" stopColor="#f87f7f" />
+            <stop stopColor={theme.arcEnd} />
+            <stop offset="1" stopColor={theme.arcStart} />
           </linearGradient>
         </defs>
       </svg>
       <div className="absolute left-1/2 top-[74.03px] flex -translate-x-1/2 flex-col items-center gap-[33.34px] text-center">
-        <strong className="bg-gradient-to-b from-[#ed536c] to-[#ffa8b6] bg-clip-text text-[4.25rem] font-bold leading-[4.25rem] tracking-[0.2543px] text-transparent drop-shadow-[0_2.26px_4.52px_rgba(0,0,0,0.15)]">
+        <strong className="bg-clip-text text-[4.25rem] font-bold leading-[4.25rem] tracking-[0.2543px] text-transparent drop-shadow-[0_2.26px_4.52px_rgba(0,0,0,0.15)]" style={{ backgroundImage: `linear-gradient(180deg, ${theme.gradeStart}, ${theme.gradeEnd})` }}>
           {grade}
         </strong>
         <div className="flex flex-col items-center gap-[9.041px]">
           <p className="flex items-end justify-center gap-[6.215px] whitespace-nowrap text-center tracking-[0.2543px]">
-            <span className="text-[1.5rem] font-bold leading-6 text-[#f37d90]">{displayPercent}</span>
+            <span className="text-[1.5rem] font-bold leading-6" style={{ color: theme.score }}>
+              {displayPercent}
+            </span>
             <span className="text-[0.875rem] font-medium leading-[0.875rem] text-[#949494]">/ 100점</span>
           </p>
           <p className="flex items-center justify-center gap-[9.041px] whitespace-nowrap text-center tracking-[0.2543px]">
             <span className="text-[0.875rem] font-medium leading-[0.875rem] text-[#78716c]">등급:</span>
-            <span className="text-[0.875rem] font-medium leading-[0.875rem] text-[#e57385]">{label}</span>
+            <span className="text-[0.875rem] font-medium leading-[0.875rem]" style={{ color: theme.score }}>
+              {label}
+            </span>
           </p>
         </div>
       </div>
