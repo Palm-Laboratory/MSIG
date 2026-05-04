@@ -34,14 +34,14 @@ const processParts = [
 ];
 
 const archetypes = [
-  ["아브라함", "믿음의 모험가", "/images/아브라함_.png"],
-  ["나발", "수전노", "/images/나발_.png"],
-  ["야곱형", "전략적 사냥꾼", "/images/야곱_.png"],
-  ["발람", "물질 숭배", "/images/발람_.png"],
-  ["엘리야", "지친 전사", "/images/엘리야_.png"],
-  ["아간", "일확천금 추구", "/images/아간_.png"],
-  ["탕자", "낭비가", "/images/탕자_.png"],
-  ["므비보셋", "경제적 미성숙", "/images/므비보셋_.png"],
+  ["아브라함", "믿음의 모험가", "/images/abraham.png"],
+  ["나발", "수전노", "/images/nabal.png"],
+  ["야곱형", "전략적 사냥꾼", "/images/jacob.png"],
+  ["발람", "물질 숭배", "/images/balaam.png"],
+  ["엘리야", "지친 전사", "/images/elijah.png"],
+  ["아간", "일확천금 추구", "/images/achan.png"],
+  ["탕자", "낭비가", "/images/prodigal.png"],
+  ["므비보셋", "경제적 미성숙", "/images/mephibosheth.png"],
 ];
 
 export default function DiagnosisInfoPage() {

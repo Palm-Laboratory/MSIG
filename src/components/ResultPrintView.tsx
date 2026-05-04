@@ -75,14 +75,14 @@ const CAPACITY_CARD_STYLES: Record<Part1CompetencyKey, { accent: string; bg: str
 };
 
 const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string; weakness: string; prescription: string; image: string }> = {
-  아브라함형: { description: "높은 믿음과 도전 정신을 바탕으로 경제적 위험도 감수하며, 하나님의 인도하심을 믿고 과감하게 결정을 내리고 나아가는 유형입니다.", strength: "강한 믿음, 도전 정신, 낙관성", weakness: "무모한 투자 위험, 현실 감각 부족", prescription: "요셉의 지혜와 느헤미야의 전략을 보강해 믿음과 계획을 함께 세우세요.", image: "/images/아브라함_.png" },
-  나발형: { description: "관리와 축적 능력은 있으나 나눔과 관계의 기쁨이 약해질 수 있는 유형입니다.", strength: "저축 능력, 절약 정신", weakness: "인색함, 관계 단절, 나눔의 기쁨 상실", prescription: "작은 것부터 나누는 연습을 시작하세요.", image: "/images/나발_.png" },
-  야곱형: { description: "현실 감각과 실행력이 좋고 목표 달성을 위한 방법을 빠르게 찾는 유형입니다.", strength: "전략적 사고, 실행력, 적응력", weakness: "편법 유혹, 윤리적 경계 모호", prescription: "다니엘의 일관성을 본받아 정직한 방식으로 경제활동을 정렬하세요.", image: "/images/야곱_.png" },
-  발람형: { description: "기회 포착력은 있으나 돈이 신앙의 중심을 밀어낼 수 있어 주의가 필요합니다.", strength: "경제적 감각, 기회 포착력", weakness: "맘몬 숭배 위험, 영적 타협", prescription: "아브라함의 믿음으로 돌아가 재정의 주인을 다시 확인하세요.", image: "/images/발람_.png" },
-  엘리야형: { description: "경험과 분별은 있으나 현재 에너지와 회복 탄력성이 낮아질 수 있는 유형입니다.", strength: "과거 경험과 지혜", weakness: "무기력, 포기 심리", prescription: "다윗의 열정을 회복하세요. 안식과 재충전의 시간이 필요합니다.", image: "/images/엘리야_.png" },
-  아간형: { description: "대담하게 움직이지만 위험한 투자나 욕심에 노출될 가능성이 높은 유형입니다.", strength: "추진력, 대담함", weakness: "도박성 투자, 탐욕, 법적 위험", prescription: "느헤미야의 전략과 삼손의 위험 경계 훈련을 우선순위에 두세요.", image: "/images/아간_.png" },
-  탕자형: { description: "관대하고 사교적이지만 수입 대비 지출 통제가 약해 미래 불안으로 이어질 수 있습니다.", strength: "관대함, 사교성", weakness: "무절제, 저축 부족, 미래 불안", prescription: "요셉의 지혜로 수입 대비 지출 관리를 시작하세요.", image: "/images/탕자_.png" },
-  므비보셋형: { description: "겸손하고 순종적인 태도는 있으나 경제적 자립과 선택 훈련이 더 필요한 유형입니다.", strength: "겸손함, 순종적 태도", weakness: "의존성, 자립 능력 부족, 소극성", prescription: "다윗의 열정으로 작은 목표부터 스스로 달성해보세요.", image: "/images/므비보셋_.png" },
+  아브라함형: { description: "높은 믿음과 도전 정신을 바탕으로 경제적 위험도 감수하며, 하나님의 인도하심을 믿고 과감하게 결정을 내리고 나아가는 유형입니다.", strength: "강한 믿음, 도전 정신, 낙관성", weakness: "무모한 투자 위험, 현실 감각 부족", prescription: "요셉의 지혜와 느헤미야의 전략을 보강해 믿음과 계획을 함께 세우세요.", image: "/images/abraham.png" },
+  나발형: { description: "관리와 축적 능력은 있으나 나눔과 관계의 기쁨이 약해질 수 있는 유형입니다.", strength: "저축 능력, 절약 정신", weakness: "인색함, 관계 단절, 나눔의 기쁨 상실", prescription: "작은 것부터 나누는 연습을 시작하세요.", image: "/images/nabal.png" },
+  야곱형: { description: "현실 감각과 실행력이 좋고 목표 달성을 위한 방법을 빠르게 찾는 유형입니다.", strength: "전략적 사고, 실행력, 적응력", weakness: "편법 유혹, 윤리적 경계 모호", prescription: "다니엘의 일관성을 본받아 정직한 방식으로 경제활동을 정렬하세요.", image: "/images/jacob.png" },
+  발람형: { description: "기회 포착력은 있으나 돈이 신앙의 중심을 밀어낼 수 있어 주의가 필요합니다.", strength: "경제적 감각, 기회 포착력", weakness: "맘몬 숭배 위험, 영적 타협", prescription: "아브라함의 믿음으로 돌아가 재정의 주인을 다시 확인하세요.", image: "/images/balaam.png" },
+  엘리야형: { description: "경험과 분별은 있으나 현재 에너지와 회복 탄력성이 낮아질 수 있는 유형입니다.", strength: "과거 경험과 지혜", weakness: "무기력, 포기 심리", prescription: "다윗의 열정을 회복하세요. 안식과 재충전의 시간이 필요합니다.", image: "/images/elijah.png" },
+  아간형: { description: "대담하게 움직이지만 위험한 투자나 욕심에 노출될 가능성이 높은 유형입니다.", strength: "추진력, 대담함", weakness: "도박성 투자, 탐욕, 법적 위험", prescription: "느헤미야의 전략과 삼손의 위험 경계 훈련을 우선순위에 두세요.", image: "/images/achan.png" },
+  탕자형: { description: "관대하고 사교적이지만 수입 대비 지출 통제가 약해 미래 불안으로 이어질 수 있습니다.", strength: "관대함, 사교성", weakness: "무절제, 저축 부족, 미래 불안", prescription: "요셉의 지혜로 수입 대비 지출 관리를 시작하세요.", image: "/images/prodigal.png" },
+  므비보셋형: { description: "겸손하고 순종적인 태도는 있으나 경제적 자립과 선택 훈련이 더 필요한 유형입니다.", strength: "겸손함, 순종적 태도", weakness: "의존성, 자립 능력 부족, 소극성", prescription: "다윗의 열정으로 작은 목표부터 스스로 달성해보세요.", image: "/images/mephibosheth.png" },
 };
 
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
