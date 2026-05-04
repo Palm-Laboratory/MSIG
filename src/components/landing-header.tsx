@@ -37,7 +37,7 @@ export function LandingHeader({ brandHref = "/info", label = "메인 내비게�
 
   return (
     <nav
-      className="fixed inset-x-0 top-0 z-50 flex min-h-20 items-center justify-between border-b border-[rgba(242,218,218,0.42)] bg-[rgba(255,247,245,0.78)] px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
+      className="landing-header fixed inset-x-0 top-0 z-50 flex min-h-20 items-center justify-between border-b border-[rgba(242,218,218,0.42)] bg-[rgba(255,247,245,0.78)] px-8 backdrop-blur-[12px] transition-[min-height,padding,background-color] duration-200 max-lg:px-6"
       aria-label={label}
     >
       <Link className="flex min-w-0 max-w-[calc(100vw-5rem)] flex-col text-[#292524]" href={brandHref}>

@@ -23,6 +23,7 @@ type ScoreRow = {
 };
 
 const RESULT_BACK_WARNING = "다운받지 않은 결과는 저장되지 않습니다.";
+const PRINT_FRAME_ID = "msig-result-print-frame";
 
 const COMPETENCY_LABELS: Record<Part1CompetencyKey, { name: string; low: string; high: string }> = {
   abraham: {
@@ -220,6 +221,30 @@ function useInViewOnce<T extends HTMLElement>() {
   return [ref, isInView] as const;
 }
 
+function useIsPrinting() {
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  useEffect(() => {
+    const printQuery = window.matchMedia("print");
+    const updatePrintState = () => setIsPrinting(printQuery.matches);
+    const startPrinting = () => setIsPrinting(true);
+    const finishPrinting = () => setIsPrinting(false);
+
+    updatePrintState();
+    printQuery.addEventListener("change", updatePrintState);
+    window.addEventListener("beforeprint", startPrinting);
+    window.addEventListener("afterprint", finishPrinting);
+
+    return () => {
+      printQuery.removeEventListener("change", updatePrintState);
+      window.removeEventListener("beforeprint", startPrinting);
+      window.removeEventListener("afterprint", finishPrinting);
+    };
+  }, []);
+
+  return isPrinting;
+}
+
 function useAnimatedPercent(percent: number, active: boolean) {
   const target = Math.round(clamp(percent));
   const [displayPercent, setDisplayPercent] = useState(active ? target : 0);
@@ -273,7 +298,9 @@ function SectionTitle({ align = "left", dark = false, title }: { align?: "left" 
 
 function ScoreDonut({ animate = false, color, percent, showValue = true, size = 140 }: { animate?: boolean; color: string; percent: number; showValue?: boolean; size?: number }) {
   const [donutRef, isDonutInView] = useInViewOnce<HTMLDivElement>();
-  const displayPercent = useAnimatedPercent(percent, animate || isDonutInView);
+  const isPrinting = useIsPrinting();
+  const animatedPercent = useAnimatedPercent(percent, animate || isDonutInView);
+  const displayPercent = isPrinting ? Math.round(clamp(percent)) : animatedPercent;
   const stroke = 10;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -348,7 +375,7 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
   }, [progress]);
 
   return (
-    <div className="relative h-[316px] w-[292px] rounded-[9.225px]">
+    <div className="result-overall-circle relative h-[316px] w-[292px] rounded-[9.225px]">
       <svg aria-hidden="true" className="absolute left-[-8px] top-[-8px] h-[292px] w-[308px] overflow-visible" fill="none" viewBox="0 0 308 292">
         <circle
           cx="154"
@@ -382,7 +409,15 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
         </defs>
       </svg>
       <div className="absolute left-1/2 top-[100.72px] flex -translate-x-1/2 flex-col items-center gap-[45.36px] text-center">
-        <strong className="bg-clip-text text-[5.67rem] font-bold leading-[5.67rem] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]" style={{ backgroundImage: `linear-gradient(180deg, ${theme.gradeStart}, ${theme.gradeEnd})` }}>
+        <strong
+          className="result-overall-grade bg-clip-text text-[5.67rem] font-bold leading-[5.67rem] tracking-[0.3459px] text-transparent drop-shadow-[0_3.075px_6.15px_rgba(0,0,0,0.15)]"
+          style={
+            {
+              "--result-grade-print-color": theme.gradeStart,
+              backgroundImage: `linear-gradient(180deg, ${theme.gradeStart}, ${theme.gradeEnd})`,
+            } as CSSProperties
+          }
+        >
           {grade}
         </strong>
         <div className="flex flex-col items-center gap-[12.3px]">
@@ -406,6 +441,7 @@ function OverallRankCircle({ grade, label, percent }: { grade: string; label: st
 
 function RadarChart({ rows }: { rows: ScoreRow[] }) {
   const orderedRows = RADAR_ORDER.map((id) => rows.find((row) => row.id === id)).filter((row): row is ScoreRow => Boolean(row));
+  const topPercent = Math.max(...orderedRows.map((row) => row.percent));
   const width = 554;
   const height = 320;
   const centerX = width / 2;
@@ -437,11 +473,12 @@ function RadarChart({ rows }: { rows: ScoreRow[] }) {
       <polygon fill="rgba(155,66,80,0.16)" points={points.join(" ")} stroke="#ff6f8a" strokeLinejoin="round" strokeWidth="6.8" />
       {points.map((point, index) => {
         const [x, y] = point.split(",").map(Number);
-        return <circle cx={x} cy={y} fill="#ff5f7d" key={`${point}-${index}`} r="8.2" />;
+        const isTopCapacity = orderedRows[index]?.percent === topPercent;
+        return <circle cx={x} cy={y} fill={isTopCapacity ? "#ff5f7d" : "#d6a1aa"} key={`${point}-${index}`} r={isTopCapacity ? "8.2" : "6.4"} />;
       })}
       {orderedRows.map((row, index) => {
         const label = labelPositions[index] ?? labelPositions[0];
-        const isTop = index === 0;
+        const isTop = row.percent === topPercent;
         return (
           <text dominantBaseline="middle" fill={isTop ? "#f36b80" : "#7c5050"} fontSize="18.3" fontWeight={isTop ? 700 : 500} key={row.id} textAnchor={label.anchor} x={label.x} y={label.y}>
             {RADAR_SHORT_LABELS[row.id] ?? row.name} ({row.percent}%)
@@ -850,6 +887,7 @@ function MobileResultView({
   archetype,
   capacityScores,
   overall,
+  printPdf,
   profileScores,
   reset,
   result,
@@ -858,6 +896,7 @@ function MobileResultView({
   archetype: { description: string; name: string; prescription: string; strength: string; subtitle: string; weakness: string };
   capacityScores: ScoreRow[];
   overall: number;
+  printPdf: () => void;
   profileScores: Array<ScoreRow & { color: string; english: string; raw: number }>;
   reset: () => void;
   result: ReturnType<typeof scoreSurveyAnswers>;
@@ -871,7 +910,7 @@ function MobileResultView({
   const [profileSectionRef, isProfileSectionInView] = useInViewOnce<HTMLElement>();
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col overflow-hidden bg-white font-sans text-[#312225] md:hidden">
+    <main className="result-mobile-view relative flex min-h-screen w-full flex-col overflow-hidden bg-white font-sans text-[#312225] md:hidden">
       <div className="absolute left-[-124px] top-[489px] size-[400px] rounded-full bg-[rgba(233,187,134,0.08)] blur-2xl" />
       <div className="absolute left-[254px] top-[172px] size-[260px] rounded-full bg-[rgba(215,111,130,0.06)] blur-2xl" />
 
@@ -961,15 +1000,15 @@ function MobileResultView({
           <p className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
         </div>
         <div className="grid w-full max-w-[18rem] gap-5 print:hidden">
-          <a className="result-action-button inline-flex h-11 items-center justify-center gap-2.5 overflow-hidden rounded bg-[linear-gradient(163.147deg,#d47182_30.726%,#e68798_66.995%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2),0_3.2px_4.8px_-3.2px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청" style={{ color: "#fff" }}>
+          <button className="result-action-button inline-flex h-11 items-center justify-center gap-2.5 overflow-hidden rounded bg-[linear-gradient(163.147deg,#d47182_30.726%,#e68798_66.995%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2),0_3.2px_4.8px_-3.2px_rgba(140,71,82,0.2)]" onClick={() => window.alert("준비중입니다.")} style={{ color: "#fff" }} type="button">
             <svg aria-hidden="true" className="h-[14.4px] w-4 shrink-0" fill="none" viewBox="0 0 16 14.4">
               <path d="M2.4 8.6V6.5a5.6 5.6 0 0 1 11.2 0v2.1" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" />
               <path d="M2.4 8.2a1.6 1.6 0 0 1 1.6-1.6h.8v4H4a1.6 1.6 0 0 1-1.6-1.6v-.8ZM13.6 8.2A1.6 1.6 0 0 0 12 6.6h-.8v4h.8a1.6 1.6 0 0 0 1.6-1.6v-.8Z" stroke="currentColor" strokeWidth="1.4" />
               <path d="M10.9 12.2H8.7" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
             </svg>
             상담 · 코칭 신청하기
-          </a>
-          <button className="inline-flex h-11 items-center justify-center gap-1.5 overflow-hidden rounded bg-[linear-gradient(277.653deg,#7d545b_1.526%,#664349_99.86%)] px-4 text-[0.75rem] font-medium leading-[0.75rem] text-white shadow-[0_8px_12px_-2.4px_rgba(81,44,50,0.2),0_3.2px_4.8px_-3.2px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
+          </button>
+          <button className="inline-flex h-11 items-center justify-center gap-1.5 overflow-hidden rounded bg-[linear-gradient(277.653deg,#7d545b_1.526%,#664349_99.86%)] px-4 text-[0.75rem] font-medium leading-[0.75rem] text-white shadow-[0_8px_12px_-2.4px_rgba(81,44,50,0.2),0_3.2px_4.8px_-3.2px_rgba(81,44,50,0.2)]" onClick={printPdf} type="button">
             <svg aria-hidden="true" className="size-[14px] shrink-0" fill="none" viewBox="0 0 16 16">
               <path d="M3 2.5h7.2L13 5.3v8.2H3V2.5Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.4" />
               <path d="M10.2 2.5v2.8H13" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.4" />
@@ -1001,16 +1040,6 @@ export function ResultView() {
     setAnswers(readJsonWithTtl<SurveyAnswers>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers));
     setProfile(readJsonWithTtl<Profile>(RESULT_STORAGE_KEYS.profile, { name: "", church: "" }, RESULT_STORAGE_KEYS.legacyProfile));
     setHasLoadedStoredResult(true);
-  }, []);
-
-  useEffect(() => {
-    const clearOnPageHide = () => removeResultStorage();
-
-    window.addEventListener("pagehide", clearOnPageHide);
-    return () => {
-      window.removeEventListener("pagehide", clearOnPageHide);
-      removeResultStorage();
-    };
   }, []);
 
   useEffect(() => {
@@ -1065,6 +1094,33 @@ export function ResultView() {
     removeResultStorage();
   };
 
+  const printPdf = () => {
+    document.getElementById(PRINT_FRAME_ID)?.remove();
+
+    const frame = document.createElement("iframe");
+    frame.id = PRINT_FRAME_ID;
+    frame.src = "/diagnosis/result/print";
+    frame.style.position = "fixed";
+    frame.style.right = "0";
+    frame.style.bottom = "0";
+    frame.style.width = "297mm";
+    frame.style.height = "210mm";
+    frame.style.border = "0";
+    frame.style.opacity = "0";
+    frame.style.pointerEvents = "none";
+    frame.style.zIndex = "-1";
+    frame.setAttribute("aria-hidden", "true");
+
+    frame.onload = () => {
+      window.setTimeout(() => {
+        frame.contentWindow?.focus();
+        frame.contentWindow?.print();
+      }, 350);
+    };
+
+    document.body.appendChild(frame);
+  };
+
   if (!hasLoadedStoredResult) {
     return <main className="min-h-screen bg-[#fff7f5]" aria-label="결과 불러오는 중" />;
   }
@@ -1089,8 +1145,8 @@ export function ResultView() {
   return (
     <>
       <LandingHeader activeItem="" label="결과 페이지 내비게이션" />
-      <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
-      <main className="hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
+      <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} printPdf={printPdf} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
+      <main className="result-desktop-view hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
         <section className="result-hero relative flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">
           <div className="pointer-events-none absolute -left-20 -top-3 size-[348px] rotate-[-25deg] rounded-full bg-[rgba(255,170,51,0.22)] opacity-25 blur-[21px]" />
           <div className="pointer-events-none absolute left-[63%] top-[-217px] size-[583px] rounded-full bg-[rgba(255,64,68,0.22)] opacity-25 blur-[30px]" />
@@ -1259,18 +1315,18 @@ export function ResultView() {
           </div>
         </section>
 
-        <section className="flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden px-[60px] py-[100px] [background-image:radial-gradient(ellipse_at_96%_15%,rgba(235,197,138,0.20)_0%,rgba(235,229,138,0)_42%),radial-gradient(ellipse_at_7%_75%,rgba(255,99,216,0.14)_0%,rgba(255,187,187,0)_38%),linear-gradient(180deg,#fff1f1_0%,#fff7e9_100%)]">
+        <section className="result-completion-section flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden px-[60px] py-[100px] [background-image:radial-gradient(ellipse_at_96%_15%,rgba(235,197,138,0.20)_0%,rgba(235,229,138,0)_42%),radial-gradient(ellipse_at_7%_75%,rgba(255,99,216,0.14)_0%,rgba(255,187,187,0)_38%),linear-gradient(180deg,#fff1f1_0%,#fff7e9_100%)]">
           <div className="flex w-full max-w-[1160px] flex-col items-center justify-center gap-[72px] border-t border-[rgba(177,178,177,0.1)] pb-12 pt-[81px]">
             <div className="flex flex-col items-center gap-8 whitespace-nowrap text-center">
               <h2 className="text-[3.75rem] font-bold leading-[3.75rem] text-[#362f30]">진단을 마치셨습니다</h2>
               <p className="text-[1.5rem] font-medium leading-6 tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
             </div>
             <div className="grid w-[359px] gap-6 print:hidden">
-              <a className="result-action-button inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(163.15deg,#d47182_30.73%,#e68798_67%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" href="mailto:contact@example.com?subject=MSIG%20상담%20신청" style={{ color: "#fff" }}>
+              <button className="result-action-button inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(163.15deg,#d47182_30.73%,#e68798_67%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" onClick={() => window.alert("준비중입니다.")} style={{ color: "#fff" }} type="button">
                 <span aria-hidden="true" className="text-[1.125rem] leading-none">☊</span>
                 상담 · 코칭 신청하기
-              </a>
-              <button className="inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(277.65deg,#7d545b_1.53%,#664349_99.86%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(81,44,50,0.2),0_4px_6px_-4px_rgba(81,44,50,0.2)]" onClick={() => window.print()} type="button">
+              </button>
+              <button className="inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(277.65deg,#7d545b_1.53%,#664349_99.86%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(81,44,50,0.2),0_4px_6px_-4px_rgba(81,44,50,0.2)]" onClick={printPdf} type="button">
                 <span aria-hidden="true" className="text-[1.125rem] leading-none">▣</span>
                 결과지 인쇄하기 / PDF 다운받기
               </button>
