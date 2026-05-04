@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import type { MouseEvent } from "react";
 
 type NavItem = string | { href: string; label: string };
 
@@ -26,6 +29,12 @@ const normalizeItem = (item: NavItem) => (typeof item === "string" ? { label: it
 
 export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "진단 소개", items = defaultItems }: LandingHeaderProps) {
   const navItems = items.map(normalizeItem);
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, item: { label: string }) => {
+    if (item.label !== "FAQ") return;
+
+    event.preventDefault();
+    window.alert("준비중입니다.");
+  };
 
   return (
     <nav
@@ -45,6 +54,7 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
               className={isActive ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 !text-[#BE123C]" : "text-base font-semibold leading-6 text-[#78716c]"}
               href={item.href}
               key={item.label}
+              onClick={(event) => handleNavClick(event, item)}
               style={isActive ? { color: "#BE123C" } : undefined}
             >
               {item.label}
@@ -63,7 +73,7 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
             const isActive = item.label === activeItem;
 
             return (
-              <Link className={isActive ? "text-sm font-extrabold leading-5 !text-[#BE123C]" : "text-sm font-extrabold leading-5 text-[#615557]"} href={item.href} key={item.label} style={isActive ? { color: "#BE123C" } : undefined}>
+              <Link className={isActive ? "text-sm font-extrabold leading-5 !text-[#BE123C]" : "text-sm font-extrabold leading-5 text-[#615557]"} href={item.href} key={item.label} onClick={(event) => handleNavClick(event, item)} style={isActive ? { color: "#BE123C" } : undefined}>
                 {item.label}
               </Link>
             );
