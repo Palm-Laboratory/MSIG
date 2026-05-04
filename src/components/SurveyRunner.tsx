@@ -3,25 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { readJsonWithTtl, RESULT_STORAGE_KEYS, writeJsonWithTtl } from "@/lib/storage";
 import { LIKERT_LABELS, SURVEY_PARTS, SURVEY_QUESTIONS, type PartId } from "@/lib/survey-data";
 
 type Props = {
   part: PartId;
-};
-
-const STORAGE_KEYS = {
-  answers: "ges_answers",
-  legacyAnswers: "msig.answers",
-} as const;
-
-const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
-  if (typeof window === "undefined") return fallback;
-  try {
-    const stored = window.localStorage.getItem(key) ?? (legacyKey ? window.localStorage.getItem(legacyKey) : null);
-    return stored ? (JSON.parse(stored) as T) : fallback;
-  } catch {
-    return fallback;
-  }
 };
 
 export function SurveyRunner({ part }: Props) {
@@ -32,11 +18,11 @@ export function SurveyRunner({ part }: Props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setAnswers(loadJson<Record<string, number>>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers));
+    setAnswers(readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers));
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEYS.answers, JSON.stringify(answers));
+    writeJsonWithTtl(RESULT_STORAGE_KEYS.answers, answers);
   }, [answers]);
 
   const answeredInPart = questions.filter((question) => answers[String(question.id)]).length;

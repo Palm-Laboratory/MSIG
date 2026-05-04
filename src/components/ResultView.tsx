@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
 import { scoreSurveyAnswers, type Part1CompetencyKey, type Part2RiskKey, type Part3ProfileKey, type SurveyAnswers } from "@/lib/scoring";
+import { readJsonWithTtl, removeResultStorage, RESULT_STORAGE_KEYS } from "@/lib/storage";
 import { SURVEY_QUESTIONS } from "@/lib/survey-data";
 
 type Profile = {
@@ -20,14 +21,6 @@ type ScoreRow = {
   percent: number;
   feedback?: string;
 };
-
-const STORAGE_KEYS = {
-  answers: "ges_answers",
-  profile: "ges_user",
-  legacyAnswers: "msig.answers",
-  legacyProfile: "msig.profile",
-  partIndex: "ges_part_index",
-} as const;
 
 const RESULT_BACK_WARNING = "다운받지 않은 결과는 저장되지 않습니다.";
 
@@ -171,16 +164,6 @@ const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string;
     prescription: "다윗의 열정으로 경제적 자립 의지를 키우고 작은 목표부터 스스로 달성해보세요.",
     image: "/images/므비보셋_.png",
   },
-};
-
-const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
-  if (typeof window === "undefined") return fallback;
-  try {
-    const stored = window.localStorage.getItem(key) ?? (legacyKey ? window.localStorage.getItem(legacyKey) : null);
-    return stored ? (JSON.parse(stored) as T) : fallback;
-  } catch {
-    return fallback;
-  }
 };
 
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
@@ -1015,9 +998,19 @@ export function ResultView() {
   const [hasLoadedStoredResult, setHasLoadedStoredResult] = useState(false);
 
   useEffect(() => {
-    setAnswers(loadJson<SurveyAnswers>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers));
-    setProfile(loadJson<Profile>(STORAGE_KEYS.profile, { name: "", church: "" }, STORAGE_KEYS.legacyProfile));
+    setAnswers(readJsonWithTtl<SurveyAnswers>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers));
+    setProfile(readJsonWithTtl<Profile>(RESULT_STORAGE_KEYS.profile, { name: "", church: "" }, RESULT_STORAGE_KEYS.legacyProfile));
     setHasLoadedStoredResult(true);
+  }, []);
+
+  useEffect(() => {
+    const clearOnPageHide = () => removeResultStorage();
+
+    window.addEventListener("pagehide", clearOnPageHide);
+    return () => {
+      window.removeEventListener("pagehide", clearOnPageHide);
+      removeResultStorage();
+    };
   }, []);
 
   useEffect(() => {
@@ -1069,11 +1062,7 @@ export function ResultView() {
   const [desktopProfileSectionRef, isDesktopProfileSectionInView] = useInViewOnce<HTMLDivElement>();
 
   const reset = () => {
-    window.localStorage.removeItem(STORAGE_KEYS.answers);
-    window.localStorage.removeItem(STORAGE_KEYS.profile);
-    window.localStorage.removeItem(STORAGE_KEYS.legacyAnswers);
-    window.localStorage.removeItem(STORAGE_KEYS.legacyProfile);
-    window.localStorage.removeItem(STORAGE_KEYS.partIndex);
+    removeResultStorage();
   };
 
   if (!hasLoadedStoredResult) {
@@ -1099,7 +1088,7 @@ export function ResultView() {
 
   return (
     <>
-      <LandingHeader activeItem="결과 유형" brandHref="/diagnosis/info" label="결과 페이지 내비게이션" />
+      <LandingHeader activeItem="" brandHref="/diagnosis/info" label="결과 페이지 내비게이션" />
       <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
       <main className="hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
         <section className="result-hero relative flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">

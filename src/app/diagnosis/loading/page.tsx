@@ -4,17 +4,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LottieAnimation } from "@/components/LottieAnimation";
+import { readJsonWithTtl, RESULT_STORAGE_KEYS } from "@/lib/storage";
 import { SURVEY_QUESTIONS } from "@/lib/survey-data";
-
-const STORAGE_KEY = "ges_answers";
 
 export default function DiagnosisLoadingPage() {
   const router = useRouter();
   const [hasAnswers, setHasAnswers] = useState(true);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    const answers = stored ? (JSON.parse(stored) as Record<string, number>) : {};
+    const answers = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers);
     const answered = SURVEY_QUESTIONS.filter((question) => answers[String(question.id)]).length;
     if (answered < SURVEY_QUESTIONS.length) {
       setHasAnswers(false);

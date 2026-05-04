@@ -12,7 +12,6 @@ type LandingHeaderProps = {
 const defaultItems: NavItem[] = [
   { label: "진단 소개", href: "/diagnosis/info" },
   { label: "검사 과정", href: "/diagnosis/info#process" },
-  { label: "결과 유형", href: "/diagnosis/info#archetypes" },
   { label: "FAQ", href: "/diagnosis/info#faq" },
 ];
 
@@ -20,7 +19,6 @@ const defaultItemHrefs: Record<string, string> = {
   "진단 소개": "/diagnosis/info",
   "검사 과정": "/diagnosis/info#process",
   소개: "/diagnosis/info",
-  "결과 유형": "/diagnosis/info#archetypes",
   FAQ: "/diagnosis/info#faq",
 };
 
@@ -39,15 +37,20 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
         <span className="text-caption font-light leading-4 text-black lg:whitespace-nowrap lg:text-body-m">한국교회 목회지원센터</span>
       </Link>
       <div className="flex items-center gap-10 max-lg:hidden">
-        {navItems.map((item) => (
-          <Link
-            className={item.label === activeItem ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 text-[#be123c]" : "text-base font-semibold leading-6 text-[#78716c]"}
-            href={item.href}
-            key={item.label}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const isActive = item.label === activeItem;
+
+          return (
+            <Link
+              className={isActive ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 !text-[#BE123C]" : "text-base font-semibold leading-6 text-[#78716c]"}
+              href={item.href}
+              key={item.label}
+              style={isActive ? { color: "#BE123C" } : undefined}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </div>
       <details className="relative hidden max-lg:block">
         <summary className="flex h-8 w-8 list-none flex-col items-center justify-center gap-[5px] p-1 [&::-webkit-details-marker]:hidden" aria-label="메뉴 열기">
@@ -56,11 +59,15 @@ export function LandingHeader({ brandHref = "/", label = "메인 내비게이션
           <span className="block h-0.5 w-6 rounded-full bg-[#615557]" />
         </summary>
         <div className="absolute right-0 top-[42px] grid w-40 gap-3 rounded-lg border border-[#f2dada] bg-[rgba(255,247,245,0.96)] p-4 shadow-[0_12px_28px_rgba(97,85,87,0.14)]">
-          {navItems.map((item) => (
-            <Link className={item.label === activeItem ? "text-sm font-extrabold leading-5 text-[#be123c]" : "text-sm font-extrabold leading-5 text-[#615557]"} href={item.href} key={item.label}>
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = item.label === activeItem;
+
+            return (
+              <Link className={isActive ? "text-sm font-extrabold leading-5 !text-[#BE123C]" : "text-sm font-extrabold leading-5 text-[#615557]"} href={item.href} key={item.label} style={isActive ? { color: "#BE123C" } : undefined}>
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
       </details>
     </nav>

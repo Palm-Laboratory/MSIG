@@ -2,18 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { readJsonWithTtl, removeResultStorage, RESULT_STORAGE_KEYS, writeJsonWithTtl } from "@/lib/storage";
 import { LIKERT_LABELS, SURVEY_GROUPS, SURVEY_PARTS, SURVEY_QUESTIONS, type PartId } from "@/lib/survey-data";
 
 type Props = {
   part: PartId;
   partNumber: "1" | "2" | "3";
 };
-
-const STORAGE_KEYS = {
-  answers: "ges_answers",
-  legacyAnswers: "msig.answers",
-  partIndex: "ges_part_index",
-} as const;
 
 const AUTO_ADVANCE_DELAY_MS = 180;
 
@@ -35,23 +30,6 @@ const sectionNounByPart: Record<PartId, string> = {
   "part-1": "인물",
   "part-2": "위험 유형",
   "part-3": "행동 영역",
-};
-
-const loadJson = <T,>(key: string, fallback: T, legacyKey?: string): T => {
-  if (typeof window === "undefined") return fallback;
-
-  try {
-    const stored = window.localStorage.getItem(key) ?? (legacyKey ? window.localStorage.getItem(legacyKey) : null);
-    return stored ? (JSON.parse(stored) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-const clearSurveyStorage = () => {
-  window.localStorage.removeItem(STORAGE_KEYS.answers);
-  window.localStorage.removeItem(STORAGE_KEYS.legacyAnswers);
-  window.localStorage.removeItem(STORAGE_KEYS.partIndex);
 };
 
 export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
@@ -77,8 +55,8 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
   const isLastQuestion = part === "part-3" && currentIndex === questions.length - 1;
 
   useEffect(() => {
-    const loadedAnswers = loadJson<Record<string, number>>(STORAGE_KEYS.answers, {}, STORAGE_KEYS.legacyAnswers);
-    const storedIndex = loadJson<Record<string, number>>(STORAGE_KEYS.partIndex, {});
+    const loadedAnswers = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers);
+    const storedIndex = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.partIndex, {});
     const firstUnansweredIndex = questions.findIndex((item) => !loadedAnswers[String(item.id)]);
     const preferredIndex = storedIndex[part] ?? (firstUnansweredIndex >= 0 ? firstUnansweredIndex : 0);
 
@@ -89,13 +67,13 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
 
   useEffect(() => {
     if (!loaded) return;
-    window.localStorage.setItem(STORAGE_KEYS.answers, JSON.stringify(answers));
+    writeJsonWithTtl(RESULT_STORAGE_KEYS.answers, answers);
   }, [answers, loaded]);
 
   useEffect(() => {
     if (!loaded) return;
-    const storedIndex = loadJson<Record<string, number>>(STORAGE_KEYS.partIndex, {});
-    window.localStorage.setItem(STORAGE_KEYS.partIndex, JSON.stringify({ ...storedIndex, [part]: currentIndex }));
+    const storedIndex = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.partIndex, {});
+    writeJsonWithTtl(RESULT_STORAGE_KEYS.partIndex, { ...storedIndex, [part]: currentIndex });
   }, [currentIndex, loaded, part]);
 
   useEffect(() => {
@@ -130,7 +108,7 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
 
     setAnswers((current) => {
       const nextAnswers = { ...current, [question.id]: value };
-      window.localStorage.setItem(STORAGE_KEYS.answers, JSON.stringify(nextAnswers));
+      writeJsonWithTtl(RESULT_STORAGE_KEYS.answers, nextAnswers);
       return nextAnswers;
     });
 
@@ -151,15 +129,15 @@ export function DiagnosisSurveyRunner({ part, partNumber }: Props) {
     }
 
     if (part === "part-1") {
-      clearSurveyStorage();
+      removeResultStorage();
       router.push("/diagnosis/info");
       return;
     }
 
     const previousPart = part === "part-2" ? "part-1" : "part-2";
     const previousPartQuestions = SURVEY_QUESTIONS.filter((item) => item.part === previousPart);
-    const storedIndex = loadJson<Record<string, number>>(STORAGE_KEYS.partIndex, {});
-    window.localStorage.setItem(STORAGE_KEYS.partIndex, JSON.stringify({ ...storedIndex, [previousPart]: previousPartQuestions.length - 1 }));
+    const storedIndex = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.partIndex, {});
+    writeJsonWithTtl(RESULT_STORAGE_KEYS.partIndex, { ...storedIndex, [previousPart]: previousPartQuestions.length - 1 });
     router.push(`/diagnosis/part/${routePartById[previousPart]}`);
   };
 
