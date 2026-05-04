@@ -652,9 +652,10 @@ function MobileEconomicCard({
 
 function MobileRadarChart({ rows }: { rows: ScoreRow[] }) {
   const orderedRows = RADAR_ORDER.map((id) => rows.find((row) => row.id === id)).filter((row): row is ScoreRow => Boolean(row));
-  const size = 176;
+  const size = 220;
   const center = size / 2;
   const radius = 62;
+  const topPercent = Math.max(...orderedRows.map((row) => row.percent));
   const points = orderedRows.map((row, index) => {
     const angle = -Math.PI / 2 + (index * Math.PI * 2) / orderedRows.length;
     const value = clamp(row.percent) / 100;
@@ -662,7 +663,7 @@ function MobileRadarChart({ rows }: { rows: ScoreRow[] }) {
   });
 
   return (
-    <svg className="h-[176px] w-[176px] overflow-visible" viewBox={`0 0 ${size} ${size}`}>
+    <svg className="h-[220px] w-[220px] overflow-visible" viewBox={`0 0 ${size} ${size}`}>
       {[1, 0.66, 0.33].map((scale) => (
         <circle cx={center} cy={center} fill="none" key={scale} r={radius * scale} stroke="rgba(255,126,126,0.28)" strokeWidth="0.6" />
       ))}
@@ -673,10 +674,11 @@ function MobileRadarChart({ rows }: { rows: ScoreRow[] }) {
       <polygon fill="rgba(232,96,122,0.24)" points={points.join(" ")} stroke="#e8607a" strokeWidth="1.8" />
       {orderedRows.map((row, index) => {
         const angle = -Math.PI / 2 + (index * Math.PI * 2) / orderedRows.length;
-        const x = center + Math.cos(angle) * (radius + 22);
-        const y = center + Math.sin(angle) * (radius + 22);
+        const isTopCapacity = row.percent === topPercent;
+        const x = center + Math.cos(angle) * (radius + 42);
+        const y = center + Math.sin(angle) * (radius + 42);
         return (
-          <text fill={index === 0 ? "#f36b80" : "#7c5050"} fontSize="8.8" fontWeight={index === 0 ? 700 : 500} key={row.id} textAnchor="middle" x={x} y={y}>
+          <text fill={isTopCapacity ? "#f36b80" : "#7c5050"} fontSize="10.5" fontWeight={isTopCapacity ? 700 : 500} key={row.id} textAnchor="middle" x={x} y={y}>
             {RADAR_SHORT_LABELS[row.id] ?? row.name} ({row.percent}%)
           </text>
         );
@@ -787,6 +789,10 @@ function MobileResultView({
   riskScores: Array<ScoreRow & { level: string; subtitle: string }>;
 }) {
   const topCapacity = [...capacityScores].sort((a, b) => b.percent - a.percent)[0];
+  const topCapacities = capacityScores.filter((row) => row.percent === topCapacity.percent);
+  const topCapacityLabel = topCapacities.map((row) => RADAR_SHORT_LABELS[row.id] ?? row.name).join(" · ");
+  const topCapacityLabelClass = topCapacities.length > 1 ? "text-xs leading-5" : "text-sm leading-5";
+  const topCapacityStyle = CAPACITY_CARD_STYLES[topCapacity.id as Part1CompetencyKey] ?? CAPACITY_CARD_STYLES.abraham;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -841,12 +847,18 @@ function MobileResultView({
           <div className="grid w-full place-items-center py-5">
             <MobileRadarChart rows={capacityScores} />
           </div>
-          <div className="flex w-full items-center justify-between rounded-lg border-l-4 border-[#9b4250] bg-[rgba(155,66,80,0.08)] py-3 pl-4 pr-3 shadow-[0_3px_6px_rgba(0,0,0,0.10)]">
-            <div className="grid gap-1.5 whitespace-nowrap">
-              <p className="text-xs font-medium leading-4 text-[#ab6d78]">주요 유형</p>
-              <p className="text-sm font-bold leading-5 text-[#9b4250]">{RADAR_SHORT_LABELS[topCapacity.id] ?? topCapacity.name}</p>
+          <div className="flex w-full items-center justify-between gap-3 rounded-lg border-l-4 py-3 pl-4 pr-3 shadow-[0_3px_6px_rgba(0,0,0,0.10)]" style={{ backgroundColor: topCapacityStyle.bg, borderLeftColor: topCapacityStyle.accent }}>
+            <div className="grid min-w-0 gap-1.5">
+              <p className="text-xs font-medium leading-4" style={{ color: `${topCapacityStyle.text}b3` }}>
+                주요 유형
+              </p>
+              <p className={`font-bold ${topCapacityLabelClass}`} style={{ color: topCapacityStyle.text }}>
+                {topCapacityLabel}
+              </p>
             </div>
-            <span className="rounded-full bg-[#ffe0e0] px-3 py-1.5 text-xs font-bold leading-4 text-[#9b4250]">{topCapacity.percent}% 일치</span>
+            <span className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold leading-4" style={{ backgroundColor: `${topCapacityStyle.accent}1f`, color: topCapacityStyle.accent }}>
+              {topCapacity.percent}% 일치
+            </span>
           </div>
         </div>
         <div className="grid w-full gap-3">
@@ -991,6 +1003,9 @@ export function ResultView() {
     ...(ARCHETYPE_DETAILS[result.economicArchetype.name] ?? ARCHETYPE_DETAILS.엘리야형),
   };
   const topCapacity = [...capacityScores].sort((a, b) => b.percent - a.percent)[0];
+  const topCapacities = capacityScores.filter((row) => row.percent === topCapacity.percent);
+  const topCapacityLabel = topCapacities.map((row) => RADAR_SHORT_LABELS[row.id] ?? row.name).join(" · ");
+  const topCapacityStyle = CAPACITY_CARD_STYLES[topCapacity.id as Part1CompetencyKey] ?? CAPACITY_CARD_STYLES.abraham;
   const weakestCapacity = [...capacityScores].sort((a, b) => a.percent - b.percent)[0];
 
   const reset = () => {
@@ -1103,32 +1118,38 @@ export function ResultView() {
           </article>
         </section>
 
-        <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-[#ffedf0] to-[#fff5ee] px-[60px] py-10">
+        <section className="relative grid h-dvh max-h-dvh place-items-center overflow-hidden bg-gradient-to-b from-[#ffedf0] to-[#fff5ee] px-6 py-10 xl:px-[60px]">
           <div className="pointer-events-none absolute left-[174px] top-[1031px] size-[488px] rounded-full bg-[rgba(255,104,104,0.22)] opacity-25 blur-[30px]" />
           <div className="pointer-events-none absolute left-[900px] top-[530px] size-[488px] rounded-full bg-[rgba(255,242,64,0.22)] opacity-25 blur-[30px]" />
           <div className="pointer-events-none absolute left-[705px] top-[37px] size-[488px] rounded-full bg-[rgba(255,64,157,0.22)] opacity-25 blur-[30px]" />
           <div className="pointer-events-none absolute left-[-70px] top-[304px] size-[488px] rounded-full bg-[rgba(255,217,64,0.22)] opacity-25 blur-[30px]" />
-          <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-[600px_minmax(0,1fr)] items-start gap-[72px]">
+          <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-[minmax(0,1.08fr)_minmax(0,1fr)] items-start gap-8 xl:gap-[72px]">
             <div className="flex flex-col items-start gap-9">
               <div className="flex flex-col items-start gap-4 tracking-[1px]">
                 <p className="text-[1.25rem] font-medium uppercase leading-8 text-[#cf7989]">GOSPEL ECONOMIC SPIRITUALITY</p>
                 <h2 className="whitespace-nowrap text-[3rem] font-medium leading-[3rem] text-[#533030]">6대 성경인물 역량 분석</h2>
               </div>
-              <div className="flex w-full flex-col items-start gap-6 rounded-[20px] bg-white px-10 py-7 shadow-[0_4px_12px_rgba(255,159,159,0.15)]">
+              <div className="flex w-full flex-col items-start gap-6 rounded-[20px] bg-white px-6 py-7 shadow-[0_4px_12px_rgba(255,159,159,0.15)] xl:px-10">
                 <div className="grid w-full place-items-center">
                   <RadarChart rows={capacityScores} />
                 </div>
-                <div className="flex w-full items-center justify-between rounded-[12px] border-l-4 border-[#9b4250] bg-[rgba(155,66,80,0.08)] py-5 pl-9 pr-8 shadow-[0_4px_4px_rgba(0,0,0,0.10)]">
+                <div className="flex w-full items-center justify-between rounded-[12px] border-l-4 py-5 pl-9 pr-8 shadow-[0_4px_4px_rgba(0,0,0,0.10)]" style={{ backgroundColor: topCapacityStyle.bg, borderLeftColor: topCapacityStyle.accent }}>
                   <div className="grid gap-3">
-                    <p className="text-[1.125rem] font-medium leading-[1.125rem] text-[#ab6d78]">주요 유형</p>
-                    <p className="text-[1.5rem] font-bold leading-6 text-[#9b4250]">{RADAR_SHORT_LABELS[topCapacity.id] ?? topCapacity.name}</p>
+                    <p className="text-[1.125rem] font-medium leading-[1.125rem]" style={{ color: `${topCapacityStyle.text}b3` }}>
+                      주요 유형
+                    </p>
+                    <p className="text-[1rem] font-bold leading-6" style={{ color: topCapacityStyle.text }}>
+                      {topCapacityLabel}
+                    </p>
                   </div>
-                  <span className="rounded-full bg-[#ffe0e0] px-3 py-1.5 text-[1rem] font-bold leading-6 text-[#9b4250]">{topCapacity.percent}% 일치</span>
+                  <span className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[1rem] font-bold leading-6" style={{ backgroundColor: `${topCapacityStyle.accent}1f`, color: topCapacityStyle.accent }}>
+                    {topCapacity.percent}% 일치
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="grid content-start gap-4">
+            <div className="grid min-w-0 content-start gap-4">
               {capacityScores.map((row) => (
                 <CapacityAnalysisCard key={row.id} row={row} />
               ))}
