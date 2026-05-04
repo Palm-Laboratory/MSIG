@@ -51,7 +51,7 @@ export default function DiagnosisInfoPage() {
         <div className="absolute -left-[12rem] bottom-[-10rem] h-[28rem] w-[28rem] rounded-full bg-[rgba(193,133,144,0.12)] blur-[2rem] lg:-left-[164px] lg:bottom-auto lg:top-[584px] lg:h-[800px] lg:w-[800px]" />
         <div className="absolute right-[-10rem] top-[6rem] h-[22rem] w-[22rem] rounded-full bg-[rgba(255,172,117,0.12)] blur-[2rem] lg:left-[728px] lg:right-auto lg:top-16 lg:h-[520px] lg:w-[520px]" />
 
-        <LandingHeader activeItem="검사 과정" brandHref="/diagnosis/info" items={["소개", "검사 과정", "FAQ"]} label="진단 소개 내비게이션" />
+        <LandingHeader activeItem="검사 과정" label="소개 페이지 내비게이션" />
 
         <div className="relative z-20 mx-auto flex w-full max-w-[1280px] justify-center px-0 lg:px-[60px]">
           <div className="mx-auto flex min-w-0 max-w-[72rem] flex-1 flex-col items-center gap-10 text-center">

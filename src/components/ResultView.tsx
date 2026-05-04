@@ -1088,7 +1088,7 @@ export function ResultView() {
 
   return (
     <>
-      <LandingHeader activeItem="" brandHref="/diagnosis/info" label="결과 페이지 내비게이션" />
+      <LandingHeader activeItem="" label="결과 페이지 내비게이션" />
       <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
       <main className="hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
         <section className="result-hero relative flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">

@@ -13,21 +13,20 @@ type LandingHeaderProps = {
 };
 
 const defaultItems: NavItem[] = [
-  { label: "진단 소개", href: "/diagnosis/info" },
+  { label: "소개", href: "/" },
   { label: "검사 과정", href: "/diagnosis/info" },
   { label: "FAQ", href: "/diagnosis/info#faq" },
 ];
 
 const defaultItemHrefs: Record<string, string> = {
-  "진단 소개": "/diagnosis/info",
   "검사 과정": "/diagnosis/info",
-  소개: "/diagnosis/info",
+  소개: "/",
   FAQ: "/diagnosis/info#faq",
 };
 
 const normalizeItem = (item: NavItem) => (typeof item === "string" ? { label: item, href: defaultItemHrefs[item] ?? "/diagnosis/info" } : item);
 
-export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "진단 소개", items = defaultItems }: LandingHeaderProps) {
+export function LandingHeader({ brandHref = "/", label = "메인 내비게이션", activeItem = "소개", items = defaultItems }: LandingHeaderProps) {
   const navItems = items.map(normalizeItem);
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, item: { label: string }) => {
     if (item.label !== "FAQ") return;
