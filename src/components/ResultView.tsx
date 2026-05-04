@@ -414,14 +414,14 @@ function DesktopTraitRow({ icon, items, tone, title }: { icon: string; items: st
       };
 
   return (
-    <div className={`flex h-[74.2px] w-full items-center gap-[54.6px] rounded-[4.2px] ${styles.rowBg}`}>
-      <div className="flex h-full shrink-0 items-center gap-[16.8px]">
-        <span className={`grid h-full w-[74.2px] place-items-center rounded-[4.2px] text-[1.75rem] font-medium ${styles.iconBg} ${styles.text}`}>{icon}</span>
-        <strong className={`text-[1.18125rem] font-medium leading-[1.18125rem] tracking-[1.05px] ${styles.text}`}>{title}</strong>
+    <div className={`flex min-h-[74.2px] w-full items-center gap-[54.6px] rounded-[4.2px] max-[1210px]:gap-5 max-[1210px]:p-4 ${styles.rowBg}`}>
+      <div className="flex min-h-[74.2px] shrink-0 items-center gap-[16.8px] max-[1210px]:min-h-16 max-[1210px]:gap-3">
+        <span className={`grid min-h-[74.2px] w-[74.2px] place-items-center rounded-[4.2px] text-[1.75rem] font-medium max-[1210px]:min-h-16 max-[1210px]:w-16 ${styles.iconBg} ${styles.text}`}>{icon}</span>
+        <strong className={`text-[1.18125rem] font-medium leading-[1.18125rem] tracking-[1.05px] max-[1210px]:text-base ${styles.text}`}>{title}</strong>
       </div>
-      <div className="flex flex-wrap items-center gap-[29.4px]">
+      <div className="flex flex-wrap items-center gap-[29.4px] max-[1210px]:gap-3 max-[1210px]:py-1">
         {items.map((item) => (
-          <span className={`rounded-full px-[21px] py-[10.5px] text-[0.91875rem] font-medium leading-[1.05rem] tracking-[1.05px] ${styles.chip}`} key={item}>
+          <span className={`rounded-full px-[21px] py-[10.5px] text-[0.91875rem] font-medium leading-[1.05rem] tracking-[1.05px] max-[1210px]:px-4 max-[1210px]:py-2 max-[1210px]:text-sm ${styles.chip}`} key={item}>
             {item}
           </span>
         ))}
@@ -1039,12 +1039,13 @@ export function ResultView() {
           </div>
         </section>
 
-        <section className="grid h-dvh max-h-dvh place-items-center overflow-hidden bg-[#fbf9f8] px-[60px] py-[40px]">
-          <article className="relative z-10 flex h-[calc(100dvh-80px)] min-h-[620px] w-full max-w-[1106px] overflow-hidden rounded-[14px] border border-[rgba(104,41,41,0.2)] bg-[linear-gradient(146.73deg,#fffdfd_0%,#fff6eb_99%)] pl-[42px] shadow-[0_4px_12px_rgba(110,25,25,0.15)]">
-            <div className="flex flex-1 items-center self-stretch pr-0">
-              <div className="flex h-full w-full flex-col justify-center">
-                <div className="flex w-full flex-col gap-[63px]">
-                  <div className="flex w-full flex-col gap-[37.8px]">
+        {/* 섹션2 */}
+        <section className="grid min-h-dvh place-items-center overflow-hidden bg-[#fbf9f8] px-6 py-[40px] xl:px-[60px]">
+          <article className="relative z-10 flex w-full max-w-[1106px] overflow-hidden rounded-[14px] border border-[rgba(104,41,41,0.2)] bg-[linear-gradient(146.73deg,#fffdfd_0%,#fff6eb_99%)] shadow-[0_4px_12px_rgba(110,25,25,0.15)]">
+            <div className="flex min-w-0 flex-1 items-center self-stretch pr-0">
+              <div className="flex h-full w-full min-w-0 flex-col justify-center px-8 py-8 xl:px-12 xl:py-10">
+                <div className="flex w-full min-w-0 flex-col gap-10 xl:gap-[63px]">
+                  <div className="flex w-full min-w-0 flex-col gap-6 xl:gap-[37.8px]">
                     <div className="grid justify-start gap-[10.5px]">
                       <h3 className="text-[2.625rem] font-bold leading-[2.625rem] tracking-[2.1px] text-[#432424]">{archetype.name}</h3>
                       <div className="flex w-full items-center justify-center gap-[8.4px]">
@@ -1053,7 +1054,7 @@ export function ResultView() {
                         <span className="h-px flex-1 bg-[rgba(96,49,57,0.55)]" />
                       </div>
                     </div>
-                    <p className="max-w-[600px] text-[1.05rem] font-medium leading-[1.70625rem] tracking-[1.05px] text-[rgba(64,55,55,0.8)]">{archetype.description}</p>
+                    <p className="max-w-[600px] text-[1rem] font-medium leading-7 tracking-[0.4px] text-[rgba(64,55,55,0.8)] xl:text-[1.05rem] xl:leading-[1.70625rem] xl:tracking-[1.05px]">{archetype.description}</p>
                   </div>
 
                   <div className="flex w-full flex-col gap-9 pt-[10.5px]">
@@ -1061,14 +1062,14 @@ export function ResultView() {
                     <div className="flex w-full flex-col gap-[21px]">
                       <DesktopTraitRow icon="↗" items={archetype.strength.split(",").map((item) => item.trim())} title="강점" tone="green" />
                       <DesktopTraitRow icon="◇" items={archetype.weakness.split(",").map((item) => item.trim())} title="약점" tone="orange" />
-                      <div className="flex w-full items-center gap-[54.6px] rounded-[4.2px] bg-[#fff4f4]">
+                      <div className="flex w-full items-center gap-5 rounded-[4.2px] bg-[#fff4f4] max-[1210px]:p-4 xl:gap-[54.6px]">
                         <div className="flex self-stretch">
-                          <div className="flex h-full items-center gap-[16.8px]">
-                            <span className="grid h-full min-h-[74.2px] w-[74.2px] place-items-center rounded-[5.6px] bg-[#ffe0e0] text-[1.625rem] font-medium text-[#b03030]">✚</span>
-                            <strong className="text-[1.18125rem] font-medium leading-[1.18125rem] tracking-[1.05px] text-[#b03030]">처방</strong>
+                          <div className="flex h-full items-center gap-3 xl:gap-[16.8px]">
+                            <span className="grid min-h-16 w-16 place-items-center rounded-[5.6px] bg-[#ffe0e0] text-[1.625rem] font-medium text-[#b03030] xl:min-h-[74.2px] xl:w-[74.2px]">✚</span>
+                            <strong className="text-base font-medium leading-5 tracking-[0.4px] text-[#b03030] xl:text-[1.18125rem] xl:leading-[1.18125rem] xl:tracking-[1.05px]">처방</strong>
                           </div>
                         </div>
-                        <p className="flex-1 py-[14px] pr-[42px] text-[0.91875rem] font-medium leading-[1.44375rem] tracking-[1.05px] text-[rgba(176,48,48,0.8)]">{archetype.prescription}</p>
+                        <p className="min-w-0 flex-1 text-sm font-medium leading-6 tracking-[0.4px] text-[rgba(176,48,48,0.8)] xl:py-[14px] xl:pr-[42px] xl:text-[0.91875rem] xl:leading-[1.44375rem] xl:tracking-[1.05px]">{archetype.prescription}</p>
                       </div>
                     </div>
                   </div>
@@ -1076,15 +1077,15 @@ export function ResultView() {
               </div>
             </div>
 
-            <aside className="flex shrink-0 items-center overflow-hidden rounded-r-[14px] bg-[linear-gradient(167.65deg,#20242f_1%,rgba(37,0,24,0.969)_99%)] p-[42px]">
-              <div className="flex w-[346px] flex-col items-center gap-[36.4px] rounded-[14px] border border-[rgba(255,255,255,0.2)] bg-[rgba(0,0,0,0.2)] px-[33.6px] py-[42px]">
+            <aside className="flex shrink-0 items-center overflow-hidden rounded-r-[14px] bg-[linear-gradient(167.65deg,#20242f_1%,rgba(37,0,24,0.969)_99%)] p-5 xl:p-[42px]">
+              <div className="flex w-[270px] flex-col items-center gap-7 rounded-[14px] border border-[rgba(255,255,255,0.2)] bg-[rgba(0,0,0,0.2)] px-6 py-8 xl:w-[346px] xl:gap-[36.4px] xl:px-[33.6px] xl:py-[42px]">
                 <div className="flex flex-col items-center gap-3 text-center tracking-[0.315px]">
                   <p className="text-[0.875rem] font-medium leading-[0.875rem] text-[#ffdede]">ECONOMIC TYPE</p>
                   <p className="text-[1.5rem] font-medium leading-[1.5rem] text-[#ffa1a1]">나의 경제유형</p>
                 </div>
                 <div className="flex flex-col items-center gap-[25.2px]">
                   <div className="bg-[#2a2e3b] p-[7px]">
-                    <div className="grid h-[351.071px] w-[264.813px] place-items-center overflow-hidden rounded-[2.352px] border border-[rgba(214,204,205,0.1)] bg-[#1f222b]">
+                    <div className="grid h-[292px] w-[220px] place-items-center overflow-hidden rounded-[2.352px] border border-[rgba(214,204,205,0.1)] bg-[#1f222b] xl:h-[351.071px] xl:w-[264.813px]">
                       <img alt={`${archetype.name} 이미지`} className="h-full w-full object-cover object-top" src={archetype.image} />
                     </div>
                   </div>
