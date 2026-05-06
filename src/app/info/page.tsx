@@ -1,3 +1,4 @@
+import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -249,7 +250,16 @@ export default function InfoPage() {
             </p>
             <a className="mt-[16.7px] inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#d47182] px-7 py-4 text-center text-h4 font-extrabold !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/info">
               테스트 시작
-              <img className="h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
+              <FallbackImage
+                alt=""
+                className="inline-flex h-[15px] w-[15px] items-center justify-center brightness-0 invert"
+                fallback={
+                  <svg aria-hidden="true" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 16 16">
+                    <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                  </svg>
+                }
+                src={arrowIcon}
+              />
             </a>
           </div>
 

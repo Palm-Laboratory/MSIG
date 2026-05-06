@@ -10,6 +10,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "lottie-web": "^5.13.0",
     "next": "15.5.12",
     "react": "19.0.0",

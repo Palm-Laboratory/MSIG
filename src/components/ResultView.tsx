@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ConsultationRequestDialog } from "@/components/ConsultationRequestDialog";
 import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
 import { scoreSurveyAnswers, type Part1CompetencyKey, type Part2RiskKey, type Part3ProfileKey, type SurveyAnswers } from "@/lib/scoring";
@@ -892,6 +893,7 @@ function MobileResultView({
   reset,
   result,
   riskScores,
+  onConsultationRequest,
 }: {
   archetype: { description: string; name: string; prescription: string; strength: string; subtitle: string; weakness: string };
   capacityScores: ScoreRow[];
@@ -901,6 +903,7 @@ function MobileResultView({
   reset: () => void;
   result: ReturnType<typeof scoreSurveyAnswers>;
   riskScores: Array<ScoreRow & { level: string; subtitle: string }>;
+  onConsultationRequest: () => void;
 }) {
   const topCapacity = [...capacityScores].sort((a, b) => b.percent - a.percent)[0];
   const topCapacities = capacityScores.filter((row) => row.percent === topCapacity.percent);
@@ -1000,7 +1003,7 @@ function MobileResultView({
           <p className="text-[0.875rem] font-medium leading-[0.875rem] tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
         </div>
         <div className="grid w-full max-w-[18rem] gap-5 print:hidden">
-          <button className="result-action-button inline-flex h-11 items-center justify-center gap-2.5 overflow-hidden rounded bg-[linear-gradient(163.147deg,#d47182_30.726%,#e68798_66.995%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2),0_3.2px_4.8px_-3.2px_rgba(140,71,82,0.2)]" onClick={() => window.alert("준비중입니다.")} style={{ color: "#fff" }} type="button">
+          <button className="result-action-button inline-flex h-11 items-center justify-center gap-2.5 overflow-hidden rounded bg-[linear-gradient(163.147deg,#d47182_30.726%,#e68798_66.995%)] text-[0.875rem] font-medium leading-[0.875rem] text-white shadow-[0_8px_12px_-2.4px_rgba(140,71,82,0.2),0_3.2px_4.8px_-3.2px_rgba(140,71,82,0.2)]" onClick={onConsultationRequest} style={{ color: "#fff" }} type="button">
             <svg aria-hidden="true" className="h-[14.4px] w-4 shrink-0" fill="none" viewBox="0 0 16 14.4">
               <path d="M2.4 8.6V6.5a5.6 5.6 0 0 1 11.2 0v2.1" stroke="currentColor" strokeLinecap="round" strokeWidth="1.6" />
               <path d="M2.4 8.2a1.6 1.6 0 0 1 1.6-1.6h.8v4H4a1.6 1.6 0 0 1-1.6-1.6v-.8ZM13.6 8.2A1.6 1.6 0 0 0 12 6.6h-.8v4h.8a1.6 1.6 0 0 0 1.6-1.6v-.8Z" stroke="currentColor" strokeWidth="1.4" />
@@ -1035,6 +1038,7 @@ export function ResultView() {
   const [answers, setAnswers] = useState<SurveyAnswers>({});
   const [profile, setProfile] = useState<Profile>({ name: "", church: "" });
   const [hasLoadedStoredResult, setHasLoadedStoredResult] = useState(false);
+  const [consultationDialogOpen, setConsultationDialogOpen] = useState(false);
 
   useEffect(() => {
     setAnswers(readJsonWithTtl<SurveyAnswers>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers));
@@ -1121,6 +1125,10 @@ export function ResultView() {
     document.body.appendChild(frame);
   };
 
+  const openConsultationDialog = () => {
+    setConsultationDialogOpen(true);
+  };
+
   if (!hasLoadedStoredResult) {
     return <main className="min-h-screen bg-[#fff7f5]" aria-label="결과 불러오는 중" />;
   }
@@ -1145,7 +1153,7 @@ export function ResultView() {
   return (
     <>
       <LandingHeader activeItem="" label="결과 페이지 내비게이션" />
-      <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} printPdf={printPdf} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} />
+      <MobileResultView archetype={archetype} capacityScores={capacityScores} overall={overall} printPdf={printPdf} profileScores={profileScores} reset={reset} result={result} riskScores={riskScores} onConsultationRequest={openConsultationDialog} />
       <main className="result-desktop-view hidden overflow-hidden bg-[#fbf9f8] font-sans text-[#312225] md:block">
         <section className="result-hero relative flex h-dvh max-h-dvh flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-[#fbf9f8] px-[60px] py-[80px]">
           <div className="pointer-events-none absolute -left-20 -top-3 size-[348px] rotate-[-25deg] rounded-full bg-[rgba(255,170,51,0.22)] opacity-25 blur-[21px]" />
@@ -1322,7 +1330,7 @@ export function ResultView() {
               <p className="text-[1.5rem] font-medium leading-6 tracking-[0.4px] text-[#615557]">결과를 저장하거나 전문가와 함께 더 깊이 나눠보세요</p>
             </div>
             <div className="grid w-[359px] gap-6 print:hidden">
-              <button className="result-action-button inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(163.15deg,#d47182_30.73%,#e68798_67%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" onClick={() => window.alert("준비중입니다.")} style={{ color: "#fff" }} type="button">
+              <button className="result-action-button inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded bg-[linear-gradient(163.15deg,#d47182_30.73%,#e68798_67%)] px-8 py-4 text-[1.125rem] font-medium leading-[1.125rem] text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)]" onClick={openConsultationDialog} style={{ color: "#fff" }} type="button">
                 <span aria-hidden="true" className="text-[1.125rem] leading-none">☊</span>
                 상담 · 코칭 신청하기
               </button>
@@ -1338,6 +1346,7 @@ export function ResultView() {
           </div>
         </section>
       </main>
+      <ConsultationRequestDialog onOpenChange={setConsultationDialogOpen} open={consultationDialogOpen} />
       <SiteFooter />
     </>
   );

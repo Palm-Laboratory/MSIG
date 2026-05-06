@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ConsultationRequestCta } from "@/components/ConsultationRequestCta";
+import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
 import { SiteFooter } from "@/components/site-footer";
@@ -72,7 +74,16 @@ export default function DiagnosisInfoPage() {
             <div className="flex w-full justify-center pt-[46px]">
               <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
                 <span className="text-h4">테스트 시작</span>
-                <img className="text-h4 h-[15px] w-[15px] brightness-0 invert" alt="" src={arrowIcon} />
+                <FallbackImage
+                  alt=""
+                  className="inline-flex h-[15px] w-[15px] items-center justify-center brightness-0 invert"
+                  fallback={
+                    <svg aria-hidden="true" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 16 16">
+                      <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                    </svg>
+                  }
+                  src={arrowIcon}
+                />
               </Link>
             </div>
           </div>
@@ -137,9 +148,9 @@ export default function DiagnosisInfoPage() {
           <Link className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
             <span className="text-h4">진단 시작하기 (무료)</span>
           </Link>
-          <a className="inline-flex min-h-12 items-center justify-center rounded bg-[#7d545b] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="mailto:contact@example.com?subject=MSIG%20정밀%20상담%20신청">
+          <ConsultationRequestCta className="inline-flex min-h-12 items-center justify-center rounded bg-[#7d545b] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop">
             <span className="text-h4">정밀 상담 신청하기</span>
-          </a>
+          </ConsultationRequestCta>
         </div>
       </section>
 
