@@ -3,6 +3,8 @@
 import emailjs from "@emailjs/browser";
 import type { FormEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import { readJsonWithTtl, RESULT_STORAGE_KEYS } from "@/lib/storage";
+import { SURVEY_QUESTIONS } from "@/lib/survey-data";
 
 type ConsultationRequestDialogProps = {
   open: boolean;
@@ -62,6 +64,26 @@ const getEmailJsErrorMessage = (error: unknown) => {
   } catch {
     return String(error);
   }
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const formatSurveyAnswersTableForEmail = () => {
+  const answers = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers);
+  const scoreColumns = [1, 2, 3, 4, 5];
+  const rows = SURVEY_QUESTIONS.map((question) => {
+    const answer = answers[String(question.id)];
+
+    return `<tr><td align="center" width="38">${question.id}</td><td>${escapeHtml(question.label)}</td>${scoreColumns.map((score) => `<td align="center" width="38">${answer === score ? "✓" : score}</td>`).join("")}</tr>`;
+  }).join("");
+
+  return `<table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse:collapse;font-family:Arial,'Malgun Gothic',sans-serif;font-size:13px;line-height:1.45"><tbody>${rows}</tbody></table>`;
 };
 
 export function ConsultationRequestDialog({ onOpenChange, open }: ConsultationRequestDialogProps) {
@@ -186,7 +208,17 @@ export function ConsultationRequestDialog({ onOpenChange, open }: ConsultationRe
     setStatus("submitting");
 
     try {
-      await emailjs.sendForm(serviceId, templateId, formRef.current, { publicKey });
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          user_name: userName.trim(),
+          user_phone: userPhone.trim(),
+          privacy_consent: privacyConsent ? "동의" : "미동의",
+          answers: formatSurveyAnswersTableForEmail(),
+        },
+        { publicKey },
+      );
       setStatus("success");
       setUserName("");
       setUserPhone("");
