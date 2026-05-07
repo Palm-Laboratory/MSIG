@@ -4,7 +4,7 @@ import emailjs from "@emailjs/browser";
 import type { FormEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { readJsonWithTtl, RESULT_STORAGE_KEYS } from "@/lib/storage";
-import { SURVEY_QUESTIONS } from "@/lib/survey-data";
+import { SURVEY_PARTS, SURVEY_QUESTIONS } from "@/lib/survey-data";
 
 type ConsultationRequestDialogProps = {
   open: boolean;
@@ -77,10 +77,16 @@ const escapeHtml = (value: string) =>
 const formatSurveyAnswersTableForEmail = () => {
   const answers = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers);
   const scoreColumns = [1, 2, 3, 4, 5];
-  const rows = SURVEY_QUESTIONS.map((question) => {
-    const answer = answers[String(question.id)];
+  const rows = SURVEY_PARTS.flatMap((part) => {
+    const partQuestions = SURVEY_QUESTIONS.filter((question) => question.part === part.id);
+    const partHeader = `<tr><td colspan="7" style="background:#f7e8ea;color:#312225;font-weight:700;padding:10px 8px">${escapeHtml(part.title)} (${part.questionRange[0]}-${part.questionRange[1]}번, ${part.questionCount}문항)</td></tr>`;
+    const questionRows = partQuestions.map((question) => {
+      const answer = answers[String(question.id)];
 
-    return `<tr><td align="center" width="38">${question.id}</td><td>${escapeHtml(question.label)}</td>${scoreColumns.map((score) => `<td align="center" width="38">${answer === score ? "✓" : score}</td>`).join("")}</tr>`;
+      return `<tr><td align="center" width="38">${question.id}</td><td>${escapeHtml(question.label)}</td>${scoreColumns.map((score) => `<td align="center" width="38"${answer === score ? ' style="color:#d92d20;font-weight:700;font-size:15px"' : ""}>${answer === score ? "✓" : score}</td>`).join("")}</tr>`;
+    });
+
+    return [partHeader, ...questionRows];
   }).join("");
 
   return `<table border="1" cellpadding="6" cellspacing="0" width="100%" style="border-collapse:collapse;font-family:Arial,'Malgun Gothic',sans-serif;font-size:13px;line-height:1.45"><tbody>${rows}</tbody></table>`;
