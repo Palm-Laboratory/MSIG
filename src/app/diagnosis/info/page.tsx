@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
+import { ResetDiagnosisLink } from "@/components/ResetDiagnosisLink";
 import { SiteFooter } from "@/components/site-footer";
 
 const badgeIcon = "https://www.figma.com/api/mcp/asset/ca1f999b-965a-4692-8cd9-2958fed5160f";
@@ -71,7 +71,7 @@ export default function DiagnosisInfoPage() {
               성경 속 인물을 통해 해답을 찾아보세요.
             </p>
             <div className="flex w-full justify-center pt-[46px]">
-              <Link className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
+              <ResetDiagnosisLink className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
                 <span className="text-h4">테스트 시작</span>
                 <FallbackImage
                   alt=""
@@ -83,7 +83,7 @@ export default function DiagnosisInfoPage() {
                   }
                   src={arrowIcon}
                 />
-              </Link>
+              </ResetDiagnosisLink>
             </div>
           </div>
         </div>
@@ -145,9 +145,9 @@ export default function DiagnosisInfoPage() {
           <p>더 깊은 상담을 원하신다면 전문가와 함께 정밀한 상담을 받아보세요.</p>
         </div>
         <div className="landing-cta-actions">
-          <Link className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
+          <ResetDiagnosisLink className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
             <span className="text-h4">진단 시작하기 (무료)</span>
-          </Link>
+          </ResetDiagnosisLink>
         </div>
       </section>
 
