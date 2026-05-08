@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ConsultationRequestCta } from "@/components/ConsultationRequestCta";
 import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
@@ -149,9 +148,6 @@ export default function DiagnosisInfoPage() {
           <Link className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/part/1">
             <span className="text-h4">진단 시작하기 (무료)</span>
           </Link>
-          <ConsultationRequestCta className="inline-flex min-h-12 items-center justify-center rounded bg-[#7d545b] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop">
-            <span className="text-h4">정밀 상담 신청하기</span>
-          </ConsultationRequestCta>
         </div>
       </section>
 
