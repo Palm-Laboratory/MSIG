@@ -168,6 +168,16 @@ const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string;
   },
 };
 
+const ARCHETYPE_IMAGE_POSITIONS: Record<string, string> = {
+  아브라함형: "52% center",
+  나발형: "52% center",
+  발람형: "57% center",
+  엘리야형: "56% center",
+  아간형: "47% center",
+  탕자형: "47% center",
+  므비보셋형: "47% center",
+};
+
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
 function useInViewOnce<T extends HTMLElement>() {
@@ -1215,7 +1225,7 @@ export function ResultView() {
                 <div className="flex flex-col items-center gap-[25.2px]">
                   <div className="bg-[#2a2e3b] p-[7px]">
                     <div className="grid h-[292px] w-[220px] place-items-center overflow-hidden rounded-[2.352px] border border-[rgba(214,204,205,0.1)] bg-[#1f222b] xl:h-[351.071px] xl:w-[264.813px]">
-                      <img alt={`${archetype.name} 이미지`} className="h-full w-full object-cover object-top" src={archetype.image} />
+                      <img alt={`${archetype.name} 이미지`} className="h-full w-full object-cover object-top" src={archetype.image} style={ARCHETYPE_IMAGE_POSITIONS[archetype.name] ? { objectPosition: ARCHETYPE_IMAGE_POSITIONS[archetype.name] } : undefined} />
                     </div>
                   </div>
                   <div className="grid justify-items-center gap-[7px]">

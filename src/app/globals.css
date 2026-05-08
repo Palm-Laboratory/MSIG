@@ -436,6 +436,34 @@ p {
   width: 100%;
 }
 
+.character-image-slot img.character-image-abraham {
+  object-position: 52% center;
+}
+
+.character-image-slot img.character-image-nabal {
+  object-position: 52% center;
+}
+
+.character-image-slot img.character-image-elijah {
+  object-position: 56% center;
+}
+
+.character-image-slot img.character-image-balaam {
+  object-position: 57% center;
+}
+
+.character-image-slot img.character-image-achan {
+  object-position: 47% center;
+}
+
+.character-image-slot img.character-image-prodigal {
+  object-position: 47% center;
+}
+
+.character-image-slot img.character-image-mephibosheth {
+  object-position: 47% center;
+}
+
 .character-image-slot span {
   border: 1px dashed rgba(97, 85, 87, 0.2);
   border-radius: 4px;

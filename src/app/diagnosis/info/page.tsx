@@ -36,14 +36,14 @@ const processParts = [
 ];
 
 const archetypes = [
-  ["아브라함", "믿음의 모험가", "/images/abraham.png"],
-  ["나발", "수전노", "/images/nabal.png"],
-  ["야곱형", "전략적 사냥꾼", "/images/jacob.png"],
-  ["발람", "물질 숭배", "/images/balaam.png"],
-  ["엘리야", "지친 전사", "/images/elijah.png"],
-  ["아간", "일확천금 추구", "/images/achan.png"],
-  ["탕자", "낭비가", "/images/prodigal.png"],
-  ["므비보셋", "경제적 미성숙", "/images/mephibosheth.png"],
+  ["아브라함", "믿음의 모험가", "/images/abraham.png", "character-image-abraham"],
+  ["나발", "수전노", "/images/nabal.png", "character-image-nabal"],
+  ["야곱형", "전략적 사냥꾼", "/images/jacob.png", undefined],
+  ["발람", "물질 숭배", "/images/balaam.png", "character-image-balaam"],
+  ["엘리야", "지친 전사", "/images/elijah.png", "character-image-elijah"],
+  ["아간", "일확천금 추구", "/images/achan.png", "character-image-achan"],
+  ["탕자", "낭비가", "/images/prodigal.png", "character-image-prodigal"],
+  ["므비보셋", "경제적 미성숙", "/images/mephibosheth.png", "character-image-mephibosheth"],
 ];
 
 export default function DiagnosisInfoPage() {
@@ -127,16 +127,17 @@ export default function DiagnosisInfoPage() {
         </div>
 
         <div className="landing-character-grid">
-          {archetypes.map(([name, subtitle, imageSrc]) => (
+          {archetypes.map(([name, subtitle, imageSrc, imageClassName]) => (
             <article className="landing-character" key={name}>
               <div className="character-image-slot" aria-label={imageSrc ? `${name} 캐릭터 이미지` : `${name} 캐릭터 이미지 준비 중`}>
-                {imageSrc ? <img alt={`${name} 캐릭터`} src={imageSrc} /> : <span>이미지 준비 중</span>}
+                {imageSrc ? <img alt={`${name} 캐릭터`} className={imageClassName} src={imageSrc} /> : <span>이미지 준비 중</span>}
               </div>
               <h3>{name}</h3>
               <p>{subtitle}</p>
             </article>
           ))}
         </div>
+        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
       </section>
 
       <section className="landing-cta">

@@ -85,6 +85,16 @@ const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string;
   므비보셋형: { description: "겸손하고 순종적인 태도는 있으나 경제적 자립과 선택 훈련이 더 필요한 유형입니다.", strength: "겸손함, 순종적 태도", weakness: "의존성, 자립 능력 부족, 소극성", prescription: "다윗의 열정으로 작은 목표부터 스스로 달성해보세요.", image: "/images/mephibosheth.png" },
 };
 
+const ARCHETYPE_IMAGE_POSITIONS: Record<string, string> = {
+  아브라함형: "52% center",
+  나발형: "52% center",
+  발람형: "57% center",
+  엘리야형: "56% center",
+  아간형: "47% center",
+  탕자형: "47% center",
+  므비보셋형: "47% center",
+};
+
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
 function PrintGauge({ color, label, percent, sublabel }: { color: string; label: string; percent: number; sublabel: string }) {
@@ -227,7 +237,7 @@ export function ResultPrintView() {
             </div>
           </div>
           <div className="print-type-card">
-            <img alt={`${archetype.name} 이미지`} src={archetype.image} />
+            <img alt={`${archetype.name} 이미지`} src={archetype.image} style={ARCHETYPE_IMAGE_POSITIONS[archetype.name] ? { objectPosition: ARCHETYPE_IMAGE_POSITIONS[archetype.name] } : undefined} />
             <strong>{archetype.name}</strong>
             <span>{archetype.subtitle}</span>
           </div>
