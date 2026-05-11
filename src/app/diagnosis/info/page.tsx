@@ -168,7 +168,7 @@ export default function DiagnosisInfoPage() {
             </article>
           ))}
         </div>
-        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
+        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">모든 이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
       </section>
 
       <section className="landing-cta">
