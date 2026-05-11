@@ -68,8 +68,8 @@ const structuredData = {
 };
 
 const heroImage = "/images/info/info_hero.png";
-const badgeIcon = "https://www.figma.com/api/mcp/asset/1104be0c-3e0b-4969-a9dc-2db15bee3f47";
-const arrowIcon = "https://www.figma.com/api/mcp/asset/1468db5d-6b4c-47ff-a666-ccc99c58ca86";
+const badgeIcon = "/icon/badge.png";
+const arrowIcon = "/icon/arrow.png";
 const section2Shape = "https://www.figma.com/api/mcp/asset/290af162-de15-45da-a0c5-7d76b72e4c35";
 const serviceStepIcon1 = "https://www.figma.com/api/mcp/asset/206d573e-6970-4207-9f36-a1bb459311e3";
 const serviceStepIcon2 = "https://www.figma.com/api/mcp/asset/3d967703-f5d2-46d9-9990-c78f313050ff";
@@ -78,7 +78,7 @@ const serviceStepIcon4 = "https://www.figma.com/api/mcp/asset/8d8f4e04-6c11-493a
 
 const hiddenQuestions = [
   {
-    icon: "https://www.figma.com/api/mcp/asset/48c435ff-5ba3-4502-b5c5-6dc2a38d652c",
+    icon: "/icon/arrow_down.png",
     title: "경제적 불안감",
     description: "하나님의 돌보심을 신뢰하지만 내일의 생계를 걱정하는 현실",
   },
