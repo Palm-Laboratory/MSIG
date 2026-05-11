@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영재(靈財) - 영적습관 × 경제구조 통합 앱</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .nav-tab:hover {
+            color: #667eea;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.3em;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .card-header {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .checklist-item.completed {
+            opacity: 0.7;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checkbox.checked {
+            background: #667eea;
+            color: white;
+        }
+
+        .score-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .score-card h3 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .date-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .date-selector button {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .date-selector button:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .date-display {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .spiritual-content {
+            background: #fff9e6;
+            border-left: 4px solid #ffa726;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .spiritual-content h4 {
+            color: #f57c00;
+            margin-bottom: 10px;
+        }
+
+        .spiritual-content p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .weekly-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .summary-item .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .summary-item .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .journal-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .journal-section.morning {
+            border-left: 4px solid #ffa726;
+            background: linear-gradient(to right, #fff9e6 0%, #ffffff 100%);
+        }
+
+        .journal-section.evening {
+            border-left: 4px solid #5c6bc0;
+            background: linear-gradient(to right, #e8eaf6 0%, #ffffff 100%);
+        }
+
+        .journal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .journal-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+            line-height: 1.6;
+        }
+
+        .journal-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .journal-textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .journal-prompt {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .journal-saved {
+            color: #66bb6a;
+            font-size: 0.9em;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .journal-saved.show {
+            opacity: 1;
+        }
+
+        .gratitude-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .gratitude-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #5c6bc0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gratitude-number {
+            background: #5c6bc0;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .gratitude-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            padding: 5px;
+        }
+
+        .gratitude-input:focus {
+            outline: none;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .reading-note-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .add-book-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .add-book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .book-title-input {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #333;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 5px;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+
+        .book-title-input:focus {
+            outline: none;
+            border-bottom-color: #667eea;
+        }
+
+        .book-author-input {
+            font-size: 1em;
+            color: #666;
+            border: none;
+            border-bottom: 1px solid transparent;
+            padding: 5px;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .book-author-input:focus {
+            outline: none;
+            border-bottom-color: #999;
+        }
+
+        .book-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .book-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .book-meta-input {
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 3px 8px;
+            width: 100px;
+            font-size: 0.95em;
+        }
+
+        .book-meta-input:focus {
+            outline: none;
+            border-bottom-color: #667eea;
+        }
+
+        .book-section {
+            margin-bottom: 20px;
+        }
+
+        .book-section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .book-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+            line-height: 1.6;
+        }
+
+        .book-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .book-textarea.summary {
+            min-height: 120px;
+            background: #f8f9fa;
+        }
+
+        .book-textarea.quotes {
+            min-height: 100px;
+            background: #fff9e6;
+            font-style: italic;
+        }
+
+        .book-textarea.insights {
+            min-height: 120px;
+            background: #e8f5e9;
+        }
+
+        .book-textarea.application {
+            min-height: 100px;
+            background: #e3f2fd;
+        }
+
+        .delete-book-btn {
+            padding: 8px 16px;
+            background: #ef5350;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .delete-book-btn:hover {
+            background: #d32f2f;
+        }
+
+        .reading-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-text {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .empty-state-subtext {
+            color: #bbb;
+        }
+
+        .asset-growth-section {
+            margin-top: 40px;
+        }
+
+        .strategy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .strategy-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .strategy-icon {
+            font-size: 2.5em;
+        }
+
+        .strategy-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .strategy-content {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .strategy-allocation {
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 8px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .strategy-principle {
+            background: #fff9e6;
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: #f57c00;
+            font-size: 0.95em;
+            font-style: italic;
+            border-left: 3px solid #ffa726;
+        }
+
+        .detailed-allocation {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .allocation-category {
+            margin-bottom: 20px;
+        }
+
+        .allocation-category-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .allocation-items {
+            list-style: none;
+            margin-left: 15px;
+        }
+
+        .allocation-items li {
+            padding: 8px 0;
+            color: #555;
+            border-left: 3px solid #667eea;
+            padding-left: 12px;
+            margin-bottom: 5px;
+        }
+
+        .crypto-warning {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .crypto-warning-title {
+            color: #c62828;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .tips-box {
+            background: #e8f5e9;
+            border-left: 4px solid #66bb6a;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .tips-box li {
+            color: #2e7d32;
+            padding: 5px 0;
+        }
+
+        .strategy-subtitle {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .strategy-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .strategy-list li {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #66bb6a;
+        }
+
+        .warning-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .warning-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #ffebee;
+            border-radius: 6px;
+            border-left: 3px solid #ef5350;
+            color: #c62828;
+            font-weight: 500;
+        }
+
+        .guide-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .guide-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .guide-steps {
+            list-style: none;
+        }
+
+        .guide-steps li {
+            padding: 10px 0;
+            color: #555;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .tab-section-divider {
+            border-top: 2px solid #e0e0e0;
+            margin: 40px 0 30px 0;
+            position: relative;
+        }
+
+        .tab-section-divider::after {
+            content: "💎";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 15px;
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+            }
+            
+            .score-display {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // 데이터 구조
+        const initialChecklistData = {
+            earning: [
+                "이번 주 나의 강점 3가지 확인했는가?",
+                "소명과 연결된 수입원을 개발하고 있는가?",
+                "월 수입 목표 vs 실제 달성률을 점검했는가?",
+                "부수입 아이디어 1개 이상 실행했는가?"
+            ],
+            spending: [
+                "이번 주 충동구매 0건 달성했는가?",
+                "구매 전 24시간 기다림 원칙을 지켰는가?",
+                "예산 대비 지출 90% 이내를 유지했는가?",
+                "하나님 영광을 위한 소비였는가?"
+            ],
+            saving: [
+                "월 수입의 20% 이상 저축했는가?",
+                "비상금 6개월치 확보 상태를 점검했는가?",
+                "투자 공부를 주 1회 이상 했는가?",
+                "장기 재정 목표를 점검했는가?"
+            ],
+            giving: [
+                "정기 헌금/기부를 실천했는가?",
+                "이번 주 1명 이상 도왔는가?",
+                "비물질적 나눔(시간, 재능)을 했는가?",
+                "나눔 후 감사 기도를 드렸는가?"
+            ],
+            spiritual: [
+                "새벽기도를 드렸는가?",
+                "성경 1장 이상 읽었는가?",
+                "감사 3가지를 기록했는가?",
+                "새로운 친구 한 명 사귀기 위해 노력했는가?",
+                "하루를 기도로 마무리했는가?"
+            ]
+        };
+
+        const psalmsContent = [
+            {
+                psalm: "시편 1편",
+                principle: "복 있는 사람의 재정 원리",
+                content: "악인들의 꾀를 따르지 않고 하나님 말씀을 주야로 묵상하는 사람은 시냇가에 심은 나무처럼 때를 따라 열매를 맺습니다. 재정에서도 세상의 단기적 유혹을 거부하고, 하나님의 청지기 원리를 따를 때 지속가능한 풍요를 경험합니다."
+            },
+            {
+                psalm: "시편 23편",
+                principle: "부족함 없는 삶의 비결",
+                content: "여호와는 나의 목자시니 내게 부족함이 없으리로다. 하나님을 신뢰하는 사람은 물질적 풍요를 넘어 진정한 만족을 경험합니다. '부족함이 없다'는 것은 많이 소유함이 아니라, 하나님 안에서 충분함을 발견하는 것입니다."
+            },
+            {
+                psalm: "시편 37편",
+                principle: "나눔의 경제학",
+                content: "의인은 은혜를 베풀고 꾸어 주는도다. 베푸는 삶이 결국 더 큰 풍요를 가져옵니다. 재정의 흐름을 막지 않고 나눌 때, 하나님은 더 큰 공급의 통로를 여십니다."
+            },
+            {
+                psalm: "시편 112편",
+                principle: "관대함의 축복",
+                content: "은혜를 베풀며 꾸어 주고 자기 일을 정의로 행하는 자에게 복이 있도다. 관대한 자는 영원히 기억되며, 그의 자손이 땅에서 강성할 것입니다. 나눔은 소비가 아니라 영적 투자입니다."
+            },
+            {
+                psalm: "잠언 21:5",
+                principle: "부지런함과 계획의 원리",
+                content: "부지런한 자의 계획은 풍부함에 이를 것이나 조급한 자는 궁핍함에 이를 따름이니라. 성공적인 자산 증식은 조급함이 아니라 꾸준한 계획과 실행에서 나옵니다."
+            },
+            {
+                psalm: "잠언 13:11",
+                principle: "점진적 성장의 지혜",
+                content: "망령되이 얻은 재물은 줄어가고 손으로 모은 것은 늘어가느니라. 일확천금을 노리는 투자보다 꾸준히 모으고 증식하는 지혜로운 투자가 진정한 부를 만듭니다."
+            }
+        ];
+
+        const assetGrowthStrategies = [
+            {
+                title: "1단계: 영적 기초 - 청지기 정신 확립",
+                icon: "🙏",
+                content: "모든 것이 하나님의 것임을 인정하세요. 당신은 관리자입니다. 십일조와 헌금을 먼저 드리는 것이 재정 축복의 시작입니다.",
+                principle: "먼저 드림의 원칙 (잠언 3:9-10)"
+            },
+            {
+                title: "2단계: 비상금 마련 - 안전망 구축",
+                icon: "🛡️",
+                content: "월 생활비의 6개월치를 저축하세요. 이것이 확보되기 전까지는 공격적 투자를 자제하세요. 비상금은 예적금이나 MMF 같은 안전자산에 보관하세요.",
+                allocation: "생활비 × 6개월 (예: 월 300만원 → 1,800만원)",
+                principle: "지혜로운 준비 (잠언 21:20)"
+            },
+            {
+                title: "3단계: 부채 정리 - 재정 자유의 첫걸음",
+                icon: "✂️",
+                content: "고금리 부채(카드론, 마이너스통장)부터 갚으세요. 연 10% 이상 금리 부채는 어떤 투자보다 우선입니다. 부채 상환 자체가 가장 확실한 투자수익입니다.",
+                allocation: "여유자금 우선 투입",
+                principle: "빚 없는 자유 (로마서 13:8)"
+            },
+            {
+                title: "4단계: 자산 배분 - 균형 잡힌 포트폴리오",
+                icon: "📊",
+                content: "나이, 성향, 목표에 따라 자산을 지혜롭게 배분하세요. 한 곳에 몰빵하지 말고 분산하는 것이 성경적 지혜입니다.",
+                strategies: [
+                    {
+                        name: "보수적 포트폴리오 (50대 이상, 안정 추구)",
+                        allocation: "안전자산 60% (예적금 40%, 채권 20%) + 성장자산 25% (국내외 주식, 펀드) + 보험 10% + 대체자산 5% (금)"
+                    },
+                    {
+                        name: "균형 포트폴리오 (40대, 중도 위험)",
+                        allocation: "안전자산 40% (예적금 25%, 채권 15%) + 성장자산 40% (국내외 주식, 해외 ETF) + 보험 10% + 대체자산 10% (금 7%, 해외부동산 펀드 3%)"
+                    },
+                    {
+                        name: "공격적 포트폴리오 (30대, 장기 투자)",
+                        allocation: "안전자산 20% (예적금 15%, 채권 5%) + 성장자산 55% (국내외 주식, 해외 ETF) + 보험 10% + 대체자산 15% (금 8%, 해외부동산 펀드 5%, 코인 2%)"
+                    }
+                ],
+                principle: "지혜로운 분산 (전도서 11:2)",
+                detailedAllocation: {
+                    core: {
+                        title: "핵심 자산 (70-80%)",
+                        items: [
+                            "🏦 예적금: 비상금 + 단기 목표 자금",
+                            "📈 국내 주식/ETF: KODEX 200, 배당주",
+                            "🌎 해외 주식/ETF: 미국 S&P500, 전세계 분산",
+                            "🏛️ 채권: 국고채, 회사채 (안정성)"
+                        ]
+                    },
+                    insurance: {
+                        title: "보험 (10%)",
+                        items: [
+                            "❤️ 종신보험: 사망보장 (가족 보호)",
+                            "🏥 실손의료보험: 필수 (의료비 대비)",
+                            "💰 연금보험: 노후 준비 (세제혜택)",
+                            "⚠️ 주의: 보험은 투자가 아닌 보장 수단"
+                        ]
+                    },
+                    alternative: {
+                        title: "대체 자산 (10-20%)",
+                        items: [
+                            "🥇 금(골드): 인플레이션 헤지, ETF 추천 (KODEX 골드선물)",
+                            "🌏 해외 부동산 펀드: 리츠(REITs), 분산 효과",
+                            "💎 원자재: 은, 구리 등 (소량)",
+                            "₿ 코인: 전체 자산의 2-5% 이내 (고위험)"
+                        ]
+                    }
+                }
+            },
+            {
+                title: "5단계: 성장자산 투자 - 장기 복리의 힘",
+                icon: "📈",
+                content: "성장자산에는 인덱스 펀드, ETF, 우량 배당주를 고려하세요. 단기 수익보다 10년 이상 장기 관점으로 접근하세요.",
+                examples: [
+                    "국내: KODEX 200, TIGER 미국S&P500",
+                    "해외: 미국 ETF (VOO, VTI), 전세계 분산 (VT)",
+                    "배당: 우량 배당주 (통신, 유틸리티)"
+                ],
+                caution: "개별 주식은 전체 투자금의 20% 이내로 제한",
+                principle: "때를 따라 열매 (시편 1:3)"
+            },
+            {
+                title: "5-1단계: 보험 - 가족을 지키는 방패",
+                icon: "🛡️",
+                content: "보험은 투자가 아닌 '보장'입니다. 과도한 보험은 자산 증식을 막고, 부족한 보험은 가족을 위험에 빠뜨립니다.",
+                insuranceTypes: [
+                    {
+                        type: "필수 보험 (반드시 가입)",
+                        items: [
+                            "🏥 실손의료보험: 의료비 실비 보장 (가족 전체)",
+                            "❤️ 종신보험: 가장의 사망 시 가족 생활비 보장",
+                            "🚗 자동차보험: 대인/대물 (법적 의무)"
+                        ]
+                    },
+                    {
+                        type: "권장 보험 (여건에 따라)",
+                        items: [
+                            "💰 연금보험: 세제혜택 + 노후 준비",
+                            "😷 암보험/CI보험: 중대질병 진단비",
+                            "👨‍👩‍👧 어린이보험: 자녀 있는 경우"
+                        ]
+                    },
+                    {
+                        type: "불필요한 보험 (주의)",
+                        items: [
+                            "⚠️ 저축성 보험 과다 가입 (수익률 낮음)",
+                            "⚠️ 중복 보장 (실손 여러 개)",
+                            "⚠️ 불필요한 특약 남발"
+                        ]
+                    }
+                ],
+                principle: "지혜로운 준비 - '슬기로운 자는 재앙을 보면 숨어 피하되' (잠언 22:3)",
+                tips: [
+                    "📌 소득의 10% 이내로 보험료 지출 제한",
+                    "📌 보장성 보험 우선, 저축성은 신중히",
+                    "📌 매년 보장 내용 점검 및 불필요한 특약 해지"
+                ]
+            },
+            {
+                title: "5-2단계: 해외 금융 - 글로벌 분산의 지혜",
+                icon: "🌍",
+                content: "한국 경제에만 의존하지 마세요. 환율 변동과 국가 리스크를 분산하는 것이 지혜입니다.",
+                overseasOptions: [
+                    {
+                        type: "🇺🇸 미국 주식/ETF (추천)",
+                        items: [
+                            "S&P500 ETF: VOO, SPY (미국 대표 500개 기업)",
+                            "전체 미국 시장: VTI (약 4,000개 종목)",
+                            "나스닥 100: QQQ (기술주 중심)",
+                            "배당 귀족: SCHD (배당 성장주)"
+                        ],
+                        howto: "국내 증권사 해외주식 계좌 개설 → 달러 매수 → 직접 매수"
+                    },
+                    {
+                        type: "🌏 글로벌 분산 ETF",
+                        items: [
+                            "VT: 전세계 주식 (미국 60% + 선진국 + 신흥국)",
+                            "VEA: 미국 제외 선진국",
+                            "VWO: 신흥국 (중국, 인도, 브라질 등)"
+                        ]
+                    },
+                    {
+                        type: "🏢 해외 부동산 (리츠 - REITs)",
+                        items: [
+                            "미국 리츠 ETF: VNQ (부동산 임대 수익 배당)",
+                            "글로벌 리츠: VNQI",
+                            "국내 리츠 펀드: 신한REIT, 롯데리츠 등"
+                        ],
+                        benefit: "매월/분기 배당 + 부동산 간접 투자"
+                    }
+                ],
+                principle: "여러 곳에 분산하라 (전도서 11:2)",
+                caution: "환율 변동 리스크 + 양도소득세 22% (250만원 초과분) 고려",
+                tips: [
+                    "💡 해외 자산은 전체의 30-50% 권장",
+                    "💡 환율 저점에서 달러 모으기",
+                    "💡 배당 재투자로 복리 효과 극대화"
+                ]
+            },
+            {
+                title: "5-3단계: 금(Gold) - 위기의 안전자산",
+                icon: "🥇",
+                content: "금은 수천 년간 가치를 유지해온 '영원한 자산'입니다. 인플레이션과 경제 위기 시 방어 역할을 합니다.",
+                goldOptions: [
+                    {
+                        type: "🏆 금 ETF (추천)",
+                        items: [
+                            "KODEX 골드선물: 국내 거래소 상장, 편리",
+                            "TIGER 골드선물: 유사 상품",
+                            "IAU, GLD: 미국 상장 금 ETF (해외주식 계좌 필요)"
+                        ],
+                        benefit: "소액 투자 가능 + 보관 걱정 없음 + 환금성 높음"
+                    },
+                    {
+                        type: "💍 실물 금",
+                        items: [
+                            "금은방 금괴/골드바 구매",
+                            "한국금거래소 KRX 금시장"
+                        ],
+                        caution: "보관 비용 + 매도 시 수수료 + 순도 확인 필요"
+                    }
+                ],
+                allocation: "전체 자산의 5-10% 권장 (안전자산 역할)",
+                when: [
+                    "✅ 인플레이션 우려 시기",
+                    "✅ 주식시장 고점일 때 일부 전환",
+                    "✅ 전쟁, 경제 위기 등 불확실성 증가 시"
+                ],
+                principle: "지혜로운 자는 보화와 기름을 그의 집에 저축하되 (잠언 21:20)",
+                tips: [
+                    "📌 금은 수익을 내는 자산이 아닌 '보험' 역할",
+                    "📌 배당이나 이자가 없으므로 과도한 비중은 비추천",
+                    "📌 10-20년 장기 보유 관점"
+                ]
+            },
+            {
+                title: "5-4단계: 암호화폐(코인) - 초고위험 자산",
+                icon: "₿",
+                content: "비트코인과 알트코인은 가장 변동성이 큰 자산입니다. 성경적 관점에서 '투기'가 아닌 '소액 분산'으로만 접근하세요.",
+                cryptoApproach: [
+                    {
+                        level: "🚫 절대 금지",
+                        items: [
+                            "대출/빚으로 코인 투자",
+                            "생활비나 비상금으로 투자",
+                            "전재산의 30% 이상 투자",
+                            "레버리지 거래 (선물, 마진)"
+                        ]
+                    },
+                    {
+                        level: "⚠️ 신중한 접근 (허용)",
+                        items: [
+                            "전체 자산의 2-5% 이내 (잃어도 생활에 지장 없는 금액)",
+                            "비트코인(BTC), 이더리움(ETH) 위주 (알트코인 최소화)",
+                            "장기 보유 (5-10년) 관점",
+                            "절대 단타/데이트레이딩 금지"
+                        ]
+                    },
+                    {
+                        level: "✅ 권장 방식",
+                        items: [
+                            "비트코인 70% + 이더리움 30% 정도만",
+                            "월 10-30만원 정기 적립식 (DCA 전략)",
+                            "하락장에서도 꾸준히 매수",
+                            "국내 거래소 이용 (업비트, 빗썸 등)"
+                        ]
+                    }
+                ],
+                whyRisky: [
+                    "📉 하루 30% 이상 폭락 가능",
+                    "🏦 정부 규제 리스크 (거래소 폐쇄 가능성)",
+                    "🔐 해킹, 분실 위험",
+                    "💸 거래소 파산 시 자산 손실"
+                ],
+                biblicalWarning: "망령되이 얻은 재물은 줄어가고 (잠언 13:11) - 투기는 결국 손실로 이어집니다.",
+                whenToConsider: [
+                    "💡 비상금 6개월 확보 완료",
+                    "💡 부채 제로 달성",
+                    "💡 주식/채권 등 핵심 자산 70% 이상 확보",
+                    "💡 10년 이상 장기 투자 가능한 마음가짐"
+                ],
+                principle: "조급한 자는 궁핍함에 이를 따름이니라 (잠언 21:5)",
+                finalWord: "코인은 '있으면 좋고, 없어도 괜찮은' 자산입니다. 가족의 생활을 걸지 마세요."
+            },
+            {
+                title: "6단계: 정기 적립식 투자 - 시간의 마법",
+                icon: "💰",
+                content: "매월 일정 금액을 자동으로 투자하세요. 시장 타이밍을 맞추려 하지 말고, 꾸준히 모으세요. 복리의 힘은 시간이 만듭니다.",
+                example: "월 100만원 × 20년 × 연 7% = 약 5억 2천만원",
+                principle: "손으로 모은 것은 늘어가느니라 (잠언 13:11)"
+            },
+            {
+                title: "7단계: 연 1회 리밸런싱 - 균형 유지",
+                icon: "⚖️",
+                content: "1년에 한 번, 목표 자산 배분으로 재조정하세요. 오른 자산은 일부 팔고, 내린 자산을 매수하여 균형을 맞추세요.",
+                when: "매년 1월 첫째 주 또는 생일",
+                principle: "때를 분별하는 지혜 (전도서 3:1)"
+            },
+            {
+                title: "8단계: 절대 하지 말아야 할 것들",
+                icon: "⚠️",
+                warnings: [
+                    "🚫 빚내서 투자하지 마세요 (레버리지 투자 금지)",
+                    "🚫 잘 모르는 상품에 투자하지 마세요 (코인, 선물옵션 등)",
+                    "🚫 단기 수익을 노리고 잦은 매매 금지",
+                    "🚫 '확실한 정보'를 믿고 몰빵 금지",
+                    "🚫 감정적 투자 금지 (공포에 팔고, 탐욕에 사지 마세요)"
+                ],
+                principle: "망령되이 얻은 재물은 줄어가느니라 (잠언 13:11)"
+            }
+        ];
+
+        const practicalInvestmentGuide = {
+            beginner: {
+                title: "초보자를 위한 실전 가이드",
+                steps: [
+                    "1️⃣ 증권 계좌 개설 (NH투자증권, 삼성증권, 키움증권 등)",
+                    "2️⃣ 비상금 6개월치 확보 (저축은행 정기예금 3-4%)",
+                    "3️⃣ 매월 50만원 중 30만원 → KODEX 200 적립식 매수",
+                    "4️⃣ 매월 20만원 → 예적금 (안전자산)",
+                    "5️⃣ 분기별로 투자 성과 확인 및 기도"
+                ]
+            },
+            intermediate: {
+                title: "중급자를 위한 포트폴리오",
+                steps: [
+                    "1️⃣ 비상금 확보 완료 후 시작",
+                    "2️⃣ 한국 주식 30% (KODEX 200)",
+                    "3️⃣ 미국 주식 40% (TIGER 미국S&P500 또는 VOO)",
+                    "4️⃣ 채권 20% (KODEX 국고채10년)",
+                    "5️⃣ 현금성 10% (MMF, 단기채권)",
+                    "6️⃣ 연 1회 리밸런싱 (1월)"
+                ]
+            },
+            advanced: {
+                title: "고급자를 위한 전체 자산 배분 예시",
+                subtitle: "투자 가능 자산 1억원 기준",
+                steps: [
+                    "💰 안전자산 3,000만원 (30%)",
+                    "   - 예적금 2,000만원 (비상금)",
+                    "   - MMF/단기채권 1,000만원",
+                    "",
+                    "📈 성장자산 5,000만원 (50%)",
+                    "   - 국내 주식/ETF 1,500만원 (KODEX 200)",
+                    "   - 미국 주식/ETF 2,500만원 (VOO, VTI)",
+                    "   - 글로벌 ETF 1,000만원 (VT)",
+                    "",
+                    "🛡️ 보험 1,000만원 (10%)",
+                    "   - 종신보험 + 실손보험 + 연금보험 납입",
+                    "",
+                    "💎 대체자산 1,000만원 (10%)",
+                    "   - 금 ETF 500만원 (KODEX 골드선물)",
+                    "   - 해외 리츠 300만원 (VNQ)",
+                    "   - 비트코인 200만원 (초장기 보유)",
+                    "",
+                    "📅 매월 추가 투자금 100만원 분배",
+                    "   - 국내 ETF 30만원",
+                    "   - 미국 ETF 40만원",
+                    "   - 예적금 20만원",
+                    "   - 금 ETF 5만원",
+                    "   - 비트코인 5만원"
+                ]
+            }
+        };
+
+        function App() {
+            const [currentTab, setCurrentTab] = useState('daily');
+            const [selectedDate, setSelectedDate] = useState(new Date());
+            const [dailyData, setDailyData] = useState({});
+
+            // 로컬 스토리지에서 데이터 로드
+            useEffect(() => {
+                const saved = localStorage.getItem('spiritualEconomyData');
+                if (saved) {
+                    setDailyData(JSON.parse(saved));
+                }
+            }, []);
+
+            // 데이터 저장
+            useEffect(() => {
+                localStorage.setItem('spiritualEconomyData', JSON.stringify(dailyData));
+            }, [dailyData]);
+
+            const getDateKey = (date) => {
+                return date.toISOString().split('T')[0];
+            };
+
+            const getCurrentDateData = () => {
+                const key = getDateKey(selectedDate);
+                return dailyData[key] || { 
+                    earning: [],
+                    spending: [],
+                    saving: [],
+                    giving: [],
+                    spiritual: [],
+                    morningPrayer: '',
+                    eveningGratitude: ['', '', '']
+                };
+            };
+
+            const saveJournal = (type, value) => {
+                const key = getDateKey(selectedDate);
+                const currentData = dailyData[key] || { 
+                    earning: [],
+                    spending: [],
+                    saving: [],
+                    giving: [],
+                    spiritual: [],
+                    morningPrayer: '',
+                    eveningGratitude: ['', '', '']
+                };
+
+                setDailyData({
+                    ...dailyData,
+                    [key]: {
+                        ...currentData,
+                        [type]: value
+                    }
+                });
+            };
+
+            const toggleChecklistItem = (category, index) => {
+                const key = getDateKey(selectedDate);
+                const currentData = dailyData[key] || { 
+                    earning: [],
+                    spending: [],
+                    saving: [],
+                    giving: [],
+                    spiritual: [],
+                    morningPrayer: '',
+                    eveningGratitude: ['', '', '']
+                };
+
+                const newData = { ...currentData };
+                if (!newData[category]) newData[category] = [];
+                
+                if (newData[category].includes(index)) {
+                    newData[category] = newData[category].filter(i => i !== index);
+                } else {
+                    newData[category] = [...newData[category], index];
+                }
+
+                setDailyData({
+                    ...dailyData,
+                    [key]: newData
+                });
+            };
+
+            const calculateScore = (category) => {
+                const data = getCurrentDateData();
+                const total = initialChecklistData[category].length;
+                const completed = (data[category] || []).length;
+                return Math.round((completed / total) * 100);
+            };
+
+            const calculateTotalScore = () => {
+                const categories = ['earning', 'spending', 'saving', 'giving', 'spiritual'];
+                const scores = categories.map(cat => calculateScore(cat));
+                return Math.round(scores.reduce((a, b) => a + b, 0) / categories.length);
+            };
+
+            const changeDate = (days) => {
+                const newDate = new Date(selectedDate);
+                newDate.setDate(newDate.getDate() + days);
+                setSelectedDate(newDate);
+            };
+
+            const goToToday = () => {
+                setSelectedDate(new Date());
+            };
+
+            const getWeekData = () => {
+                const weekData = [];
+                const today = new Date(selectedDate);
+                
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - i);
+                    const key = getDateKey(date);
+                    const data = dailyData[key];
+                    
+                    let totalScore = 0;
+                    if (data) {
+                        const categories = ['earning', 'spending', 'saving', 'giving', 'spiritual'];
+                        const scores = categories.map(cat => {
+                            const total = initialChecklistData[cat].length;
+                            const completed = (data[cat] || []).length;
+                            return (completed / total) * 100;
+                        });
+                        totalScore = scores.reduce((a, b) => a + b, 0) / categories.length;
+                    }
+                    
+                    weekData.push({
+                        date: date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
+                        score: Math.round(totalScore)
+                    });
+                }
+                
+                return weekData;
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>🙏 영재(靈財)</h1>
+                        <p>영적 습관과 경제 구조의 통합 성장 플랫폼</p>
+                    </div>
+
+                    <div className="main-content">
+                        <div className="nav-tabs">
+                            <button 
+                                className={`nav-tab ${currentTab === 'daily' ? 'active' : ''}`}
+                                onClick={() => setCurrentTab('daily')}
+                            >
+                                📝 일일 체크
+                            </button>
+                            <button 
+                                className={`nav-tab ${currentTab === 'weekly' ? 'active' : ''}`}
+                                onClick={() => setCurrentTab('weekly')}
+                            >
+                                📊 주간 분석
+                            </button>
+                            <button 
+                                className={`nav-tab ${currentTab === 'reading' ? 'active' : ''}`}
+                                onClick={() => setCurrentTab('reading')}
+                            >
+                                📚 주간 독서노트
+                            </button>
+                            <button 
+                                className={`nav-tab ${currentTab === 'content' ? 'active' : ''}`}
+                                onClick={() => setCurrentTab('content')}
+                            >
+                                📖 시편 재정 원리
+                            </button>
+                        </div>
+
+                        {currentTab === 'daily' && <DailyTab 
+                            selectedDate={selectedDate}
+                            changeDate={changeDate}
+                            goToToday={goToToday}
+                            currentData={getCurrentDateData()}
+                            toggleChecklistItem={toggleChecklistItem}
+                            calculateScore={calculateScore}
+                            calculateTotalScore={calculateTotalScore}
+                            saveJournal={saveJournal}
+                        />}
+
+                        {currentTab === 'weekly' && <WeeklyTab 
+                            weekData={getWeekData()}
+                            calculateScore={calculateScore}
+                            currentData={getCurrentDateData()}
+                        />}
+
+                        {currentTab === 'reading' && <ReadingNoteTab 
+                            dailyData={dailyData}
+                            setDailyData={setDailyData}
+                        />}
+
+                        {currentTab === 'content' && <ContentTab />}
+                    </div>
+                </div>
+            );
+        }
+
+        function DailyTab({ selectedDate, changeDate, goToToday, currentData, toggleChecklistItem, calculateScore, calculateTotalScore, saveJournal }) {
+            const isToday = getDateKey(selectedDate) === getDateKey(new Date());
+
+            return (
+                <>
+                    <div className="date-selector">
+                        <button onClick={() => changeDate(-1)}>◀ 이전</button>
+                        <div className="date-display">
+                            {selectedDate.toLocaleDateString('ko-KR', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric',
+                                weekday: 'short'
+                            })}
+                        </div>
+                        <button onClick={() => changeDate(1)}>다음 ▶</button>
+                        {!isToday && (
+                            <button onClick={goToToday} className="btn-primary">오늘</button>
+                        )}
+                    </div>
+
+                    <div className="score-display">
+                        <div className="score-card">
+                            <h3>총점</h3>
+                            <div className="score">{calculateTotalScore()}</div>
+                        </div>
+                        <div className="score-card">
+                            <h3>영적 습관</h3>
+                            <div className="score">{calculateScore('spiritual')}</div>
+                        </div>
+                        <div className="score-card">
+                            <h3>경제 실천</h3>
+                            <div className="score">
+                                {Math.round((calculateScore('earning') + calculateScore('spending') + calculateScore('saving') + calculateScore('giving')) / 4)}
+                            </div>
+                        </div>
+                    </div>
+
+                    <MorningPrayerNote 
+                        value={currentData.morningPrayer || ''}
+                        onChange={(value) => saveJournal('morningPrayer', value)}
+                    />
+
+                    <ChecklistSection 
+                        title="🌅 영적 습관"
+                        category="spiritual"
+                        items={initialChecklistData.spiritual}
+                        completed={currentData.spiritual || []}
+                        onToggle={toggleChecklistItem}
+                        color="#ffa726"
+                    />
+
+                    <ChecklistSection 
+                        title="💰 벌기 (Earning) - 소명의 씨앗"
+                        category="earning"
+                        items={initialChecklistData.earning}
+                        completed={currentData.earning || []}
+                        onToggle={toggleChecklistItem}
+                        color="#66bb6a"
+                    />
+
+                    <ChecklistSection 
+                        title="🛒 쓰기 (Spending) - 지혜의 관문"
+                        category="spending"
+                        items={initialChecklistData.spending}
+                        completed={currentData.spending || []}
+                        onToggle={toggleChecklistItem}
+                        color="#42a5f5"
+                    />
+
+                    <ChecklistSection 
+                        title="💎 더하기 (Saving) - 미래의 창고"
+                        category="saving"
+                        items={initialChecklistData.saving}
+                        completed={currentData.saving || []}
+                        onToggle={toggleChecklistItem}
+                        color="#ab47bc"
+                    />
+
+                    <ChecklistSection 
+                        title="❤️ 나누기 (Giving) - 흘러넘치는 샘"
+                        category="giving"
+                        items={initialChecklistData.giving}
+                        completed={currentData.giving || []}
+                        onToggle={toggleChecklistItem}
+                        color="#ef5350"
+                    />
+
+                    <EveningGratitudeJournal 
+                        gratitudes={currentData.eveningGratitude || ['', '', '']}
+                        onChange={(gratitudes) => saveJournal('eveningGratitude', gratitudes)}
+                    />
+                </>
+            );
+        }
+
+        function ChecklistSection({ title, category, items, completed, onToggle, color }) {
+            const score = Math.round((completed.length / items.length) * 100);
+
+            return (
+                <div className="card" style={{ borderLeftColor: color }}>
+                    <div className="card-header">
+                        <span>{title}</span>
+                        <span style={{ color: color }}>{score}%</span>
+                    </div>
+                    <div className="progress-bar">
+                        <div className="progress-fill" style={{ width: `${score}%`, background: color }}></div>
+                    </div>
+                    <ul className="checklist">
+                        {items.map((item, index) => (
+                            <li 
+                                key={index}
+                                className={`checklist-item ${completed.includes(index) ? 'completed' : ''}`}
+                                onClick={() => onToggle(category, index)}
+                            >
+                                <div className={`checkbox ${completed.includes(index) ? 'checked' : ''}`}>
+                                    {completed.includes(index) && '✓'}
+                                </div>
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        function WeeklyTab({ weekData, calculateScore, currentData }) {
+            useEffect(() => {
+                const ctx = document.getElementById('weekChart');
+                if (ctx) {
+                    const chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: weekData.map(d => d.date),
+                            datasets: [{
+                                label: '일일 종합 점수',
+                                data: weekData.map(d => d.score),
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+
+                    return () => chart.destroy();
+                }
+            }, [weekData]);
+
+            const avgScore = Math.round(weekData.reduce((a, b) => a + b.score, 0) / weekData.length);
+            const totalDays = weekData.filter(d => d.score > 0).length;
+            const perfectDays = weekData.filter(d => d.score === 100).length;
+
+            return (
+                <>
+                    <div className="section">
+                        <h2 className="section-title">📈 주간 성장 그래프</h2>
+                        <div className="chart-container">
+                            <canvas id="weekChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div className="section">
+                        <h2 className="section-title">📊 주간 요약</h2>
+                        <div className="weekly-summary">
+                            <div className="summary-item">
+                                <div className="label">평균 점수</div>
+                                <div className="value">{avgScore}</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="label">실천일수</div>
+                                <div className="value">{totalDays}/7</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="label">완벽한 날</div>
+                                <div className="value">{perfectDays}일</div>
+                            </div>
+                            <div className="summary-item">
+                                <div className="label">연속 실천</div>
+                                <div className="value">{getStreak(weekData)}일</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="section">
+                        <h2 className="section-title">🎯 영역별 분석</h2>
+                        <div className="score-display">
+                            <div className="score-card">
+                                <h3>영적 습관</h3>
+                                <div className="score">{calculateScore('spiritual')}</div>
+                            </div>
+                            <div className="score-card">
+                                <h3>벌기</h3>
+                                <div className="score">{calculateScore('earning')}</div>
+                            </div>
+                            <div className="score-card">
+                                <h3>쓰기</h3>
+                                <div className="score">{calculateScore('spending')}</div>
+                            </div>
+                            <div className="score-card">
+                                <h3>더하기</h3>
+                                <div className="score">{calculateScore('saving')}</div>
+                            </div>
+                            <div className="score-card">
+                                <h3>나누기</h3>
+                                <div className="score">{calculateScore('giving')}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <AICoaching weekData={weekData} />
+                </>
+            );
+        }
+
+        function AICoaching({ weekData }) {
+            const avgScore = Math.round(weekData.reduce((a, b) => a + b.score, 0) / weekData.length);
+            
+            const getCoachingMessage = () => {
+                if (avgScore >= 90) {
+                    return {
+                        title: "🌟 탁월한 한 주였습니다!",
+                        message: "영적 습관과 경제적 실천이 조화롭게 이루어지고 있습니다. 이 일관성을 유지하며, 다음 단계로 다른 사람들을 멘토링하는 것을 고려해보세요.",
+                        psalm: "시편 1편: '그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며' - 당신의 습관이 열매를 맺고 있습니다."
+                    };
+                } else if (avgScore >= 70) {
+                    return {
+                        title: "👍 좋은 진전을 보이고 있습니다",
+                        message: "일관성 있게 실천하고 계십니다. '나누기' 영역을 좀 더 강화하면 더 큰 영적-경제적 선순환을 경험할 수 있습니다.",
+                        psalm: "시편 112편: '은혜를 베풀며 꾸어 주고' - 나눔은 소비가 아니라 영적 투자입니다."
+                    };
+                } else if (avgScore >= 50) {
+                    return {
+                        title: "💪 꾸준함이 필요합니다",
+                        message: "시작이 반입니다. 특히 '영적 습관' 영역을 먼저 안정화시키세요. 영적 기초가 탄탄해지면 경제 영역도 자연스럽게 개선됩니다.",
+                        psalm: "시편 23편: '여호와는 나의 목자시니 내게 부족함이 없으리로다' - 하나님을 신뢰하며 한 걸음씩 나아가세요."
+                    };
+                } else {
+                    return {
+                        title: "🌱 새로운 시작",
+                        message: "완벽함보다 꾸준함이 중요합니다. 하루에 한 가지 작은 습관부터 시작하세요. 새벽 5분 기도, 감사 1가지 기록하기부터 시작해보세요.",
+                        psalm: "시편 37편: '네 길을 여호와께 맡기라 그를 의지하면 그가 이루시리로다' - 작은 시작이 큰 변화를 만듭니다."
+                    };
+                }
+            };
+
+            const coaching = getCoachingMessage();
+
+            return (
+                <div className="spiritual-content">
+                    <h4>{coaching.title}</h4>
+                    <p>{coaching.message}</p>
+                    <p style={{ marginTop: '10px', fontStyle: 'italic' }}>📖 {coaching.psalm}</p>
+                </div>
+            );
+        }
+
+        function MorningPrayerNote({ value, onChange }) {
+            const [saved, setSaved] = useState(false);
+            const [localValue, setLocalValue] = useState(value);
+
+            useEffect(() => {
+                setLocalValue(value);
+            }, [value]);
+
+            const handleChange = (e) => {
+                const newValue = e.target.value;
+                setLocalValue(newValue);
+                onChange(newValue);
+                setSaved(true);
+                setTimeout(() => setSaved(false), 2000);
+            };
+
+            return (
+                <div className="journal-section morning">
+                    <div className="journal-header">
+                        <span>🌅</span>
+                        <span>오늘 하루 시작 기도 노트</span>
+                    </div>
+                    <div className="journal-prompt">
+                        💭 오늘 하루를 어떻게 시작하시겠습니까? 하나님께 드리고 싶은 기도, 오늘의 소망, 
+                        하나님께 구하는 것들을 자유롭게 적어보세요. 
+                        <br/>
+                        예) "주님, 오늘 중요한 회의가 있습니다. 지혜를 주소서...", 
+                        "이번 주 재정 계획을 주님께 맡깁니다..."
+                    </div>
+                    <textarea 
+                        className="journal-textarea"
+                        placeholder="하나님 아버지, 오늘 하루를...&#10;&#10;오늘 나는...&#10;&#10;주님께서 함께하심을 믿습니다."
+                        value={localValue}
+                        onChange={handleChange}
+                    />
+                    <div className={`journal-saved ${saved ? 'show' : ''}`}>
+                        ✓ 저장되었습니다
+                    </div>
+                </div>
+            );
+        }
+
+        function EveningGratitudeJournal({ gratitudes, onChange }) {
+            const [saved, setSaved] = useState(false);
+            const [localGratitudes, setLocalGratitudes] = useState(gratitudes);
+
+            useEffect(() => {
+                setLocalGratitudes(gratitudes);
+            }, [gratitudes]);
+
+            const handleGratitudeChange = (index, value) => {
+                const newGratitudes = [...localGratitudes];
+                newGratitudes[index] = value;
+                setLocalGratitudes(newGratitudes);
+                onChange(newGratitudes);
+                setSaved(true);
+                setTimeout(() => setSaved(false), 2000);
+            };
+
+            return (
+                <div className="journal-section evening">
+                    <div className="journal-header">
+                        <span>🌙</span>
+                        <span>하루 마감 감사 일기</span>
+                    </div>
+                    <div className="journal-prompt">
+                        💙 오늘 하루를 돌아보며 감사한 것 3가지를 적어주세요. 
+                        작은 것이라도 좋습니다. 감사는 풍요의 시작입니다.
+                        <br/>
+                        예) "동료의 따뜻한 말 한마디", "예산 내에서 지출 성공", "새벽기도의 은혜"
+                    </div>
+                    <ul className="gratitude-list">
+                        {[0, 1, 2].map(index => (
+                            <li key={index} className="gratitude-item">
+                                <div className="gratitude-number">{index + 1}</div>
+                                <input 
+                                    type="text"
+                                    className="gratitude-input"
+                                    placeholder={`감사 ${index + 1}: 오늘 감사한 것은...`}
+                                    value={localGratitudes[index] || ''}
+                                    onChange={(e) => handleGratitudeChange(index, e.target.value)}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                    <div className={`journal-saved ${saved ? 'show' : ''}`}>
+                        ✓ 저장되었습니다
+                    </div>
+                </div>
+            );
+        }
+
+        function ReadingNoteTab({ dailyData, setDailyData }) {
+            const getReadingNotes = () => {
+                return dailyData.readingNotes || [];
+            };
+
+            const addNewBook = () => {
+                const newBook = {
+                    id: Date.now(),
+                    title: '',
+                    author: '',
+                    startDate: new Date().toISOString().split('T')[0],
+                    endDate: '',
+                    pages: '',
+                    summary: '',
+                    keyQuotes: '',
+                    insights: '',
+                    application: ''
+                };
+
+                const readingNotes = getReadingNotes();
+                setDailyData({
+                    ...dailyData,
+                    readingNotes: [newBook, ...readingNotes]
+                });
+            };
+
+            const updateBook = (id, field, value) => {
+                const readingNotes = getReadingNotes();
+                const updatedNotes = readingNotes.map(book => 
+                    book.id === id ? { ...book, [field]: value } : book
+                );
+                setDailyData({
+                    ...dailyData,
+                    readingNotes: updatedNotes
+                });
+            };
+
+            const deleteBook = (id) => {
+                if (confirm('이 독서 노트를 삭제하시겠습니까?')) {
+                    const readingNotes = getReadingNotes();
+                    const updatedNotes = readingNotes.filter(book => book.id !== id);
+                    setDailyData({
+                        ...dailyData,
+                        readingNotes: updatedNotes
+                    });
+                }
+            };
+
+            const readingNotes = getReadingNotes();
+            const totalBooks = readingNotes.length;
+            const completedBooks = readingNotes.filter(book => book.endDate).length;
+            const totalPages = readingNotes.reduce((sum, book) => sum + (parseInt(book.pages) || 0), 0);
+
+            return (
+                <div className="reading-note-container">
+                    <div className="section">
+                        <h2 className="section-title">📚 독서 통계</h2>
+                        <div className="reading-stats">
+                            <div className="stat-card">
+                                <h4>총 독서 기록</h4>
+                                <div className="stat-value">{totalBooks}</div>
+                            </div>
+                            <div className="stat-card">
+                                <h4>완독한 책</h4>
+                                <div className="stat-value">{completedBooks}</div>
+                            </div>
+                            <div className="stat-card">
+                                <h4>총 페이지</h4>
+                                <div className="stat-value">{totalPages}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="section">
+                        <h2 className="section-title">📖 나의 독서 노트</h2>
+                        <button className="add-book-btn" onClick={addNewBook}>
+                            ➕ 새 책 추가하기
+                        </button>
+
+                        {readingNotes.length === 0 ? (
+                            <div className="empty-state">
+                                <div className="empty-state-icon">📚</div>
+                                <div className="empty-state-text">아직 기록된 독서 노트가 없습니다</div>
+                                <div className="empty-state-subtext">
+                                    16년간 주 1권의 독서를 실천해온 목사님의 습관을 이어가세요
+                                </div>
+                            </div>
+                        ) : (
+                            readingNotes.map(book => (
+                                <BookCard 
+                                    key={book.id}
+                                    book={book}
+                                    onUpdate={updateBook}
+                                    onDelete={deleteBook}
+                                />
+                            ))
+                        )}
+                    </div>
+
+                    <div className="spiritual-content">
+                        <h4>💡 복음영성디자이너의 독서 철학</h4>
+                        <p>
+                            16년간 매주 1권의 책을 읽어온 독서모임을 통해 깨달은 것이 있습니다. 
+                            책은 단순한 정보의 나열이 아니라, 하나님이 주시는 지혜의 통로입니다.
+                            <br/><br/>
+                            독서는 세 단계로 완성됩니다:
+                            <br/>
+                            1️⃣ <strong>읽기</strong>: 저자의 생각을 이해하기
+                            <br/>
+                            2️⃣ <strong>묵상하기</strong>: 내 삶과 연결하여 통찰 얻기
+                            <br/>
+                            3️⃣ <strong>적용하기</strong>: 삶으로 실천하기
+                            <br/><br/>
+                            이 독서 노트는 여러분의 영적 성장과 경제적 지혜를 함께 키워갈 것입니다.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        function BookCard({ book, onUpdate, onDelete }) {
+            const handleChange = (field, value) => {
+                onUpdate(book.id, field, value);
+            };
+
+            return (
+                <div className="book-card">
+                    <div className="book-header">
+                        <div style={{ flex: 1 }}>
+                            <input 
+                                type="text"
+                                className="book-title-input"
+                                placeholder="책 제목을 입력하세요"
+                                value={book.title}
+                                onChange={(e) => handleChange('title', e.target.value)}
+                            />
+                            <input 
+                                type="text"
+                                className="book-author-input"
+                                placeholder="저자"
+                                value={book.author}
+                                onChange={(e) => handleChange('author', e.target.value)}
+                            />
+                        </div>
+                        <button className="delete-book-btn" onClick={() => onDelete(book.id)}>
+                            🗑️ 삭제
+                        </button>
+                    </div>
+
+                    <div className="book-meta">
+                        <div className="book-meta-item">
+                            📅 시작: 
+                            <input 
+                                type="date"
+                                className="book-meta-input"
+                                value={book.startDate}
+                                onChange={(e) => handleChange('startDate', e.target.value)}
+                            />
+                        </div>
+                        <div className="book-meta-item">
+                            ✅ 완독: 
+                            <input 
+                                type="date"
+                                className="book-meta-input"
+                                value={book.endDate}
+                                onChange={(e) => handleChange('endDate', e.target.value)}
+                            />
+                        </div>
+                        <div className="book-meta-item">
+                            📄 페이지: 
+                            <input 
+                                type="number"
+                                className="book-meta-input"
+                                placeholder="쪽수"
+                                value={book.pages}
+                                onChange={(e) => handleChange('pages', e.target.value)}
+                                style={{ width: '80px' }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="book-section">
+                        <div className="book-section-title">
+                            📝 책 요약
+                        </div>
+                        <textarea 
+                            className="book-textarea summary"
+                            placeholder="이 책의 핵심 내용을 간단히 요약해보세요..."
+                            value={book.summary}
+                            onChange={(e) => handleChange('summary', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="book-section">
+                        <div className="book-section-title">
+                            💬 인상 깊은 구절
+                        </div>
+                        <textarea 
+                            className="book-textarea quotes"
+                            placeholder="기억하고 싶은 문장이나 구절을 적어보세요..."
+                            value={book.keyQuotes}
+                            onChange={(e) => handleChange('keyQuotes', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="book-section">
+                        <div className="book-section-title">
+                            💡 나의 통찰
+                        </div>
+                        <textarea 
+                            className="book-textarea insights"
+                            placeholder="이 책을 통해 얻은 깨달음, 영감, 생각의 변화를 적어보세요..."
+                            value={book.insights}
+                            onChange={(e) => handleChange('insights', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="book-section">
+                        <div className="book-section-title">
+                            🎯 실천 계획
+                        </div>
+                        <textarea 
+                            className="book-textarea application"
+                            placeholder="이 책의 내용을 어떻게 내 삶에 적용할 것인가요? 구체적인 실천 계획을 세워보세요..."
+                            value={book.application}
+                            onChange={(e) => handleChange('application', e.target.value)}
+                        />
+                    </div>
+                </div>
+            );
+        }
+
+        function ContentTab() {
+            return (
+                <>
+                    <div className="section">
+                        <h2 className="section-title">📖 시편을 통한 영적 재정 원리</h2>
+                        {psalmsContent.map((content, index) => (
+                            <div key={index} className="spiritual-content">
+                                <h4>{content.psalm}: {content.principle}</h4>
+                                <p>{content.content}</p>
+                            </div>
+                        ))}
+                        
+                        <div className="card">
+                            <div className="card-header">💡 복음영성디자이너의 통찰</div>
+                            <p style={{ lineHeight: '1.8', color: '#555' }}>
+                                34년의 목회 경험을 통해 확인한 진리가 있습니다. 영적 습관과 경제적 실천은 별개가 아닙니다. 
+                                새벽기도로 하루를 시작하는 사람은 충동구매를 하지 않습니다. 감사를 기록하는 사람은 
+                                나눔에 인색하지 않습니다. 하나님 말씀을 묵상하는 사람은 장기적 관점에서 재정을 관리합니다.
+                                <br/><br/>
+                                이 앱은 단순한 체크리스트가 아닙니다. 영성과 경제가 하나로 통합되는 
+                                전인적 변화의 도구입니다. 매일의 작은 실천이 당신의 삶 전체를 변화시킬 것입니다.
+                                <br/><br/>
+                                <strong>"시냇가에 심은 나무가 철을 따라 열매를 맺으며" (시편 1:3)</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="tab-section-divider"></div>
+
+                    <div className="asset-growth-section">
+                        <h2 className="section-title">💎 자산을 불리는 8단계 성경적 투자 원리</h2>
+                        
+                        <div className="spiritual-content">
+                            <h4>🙏 시작하기 전에</h4>
+                            <p>
+                                자산 증식은 탐욕이 아닙니다. 하나님께서 맡기신 자원을 지혜롭게 관리하는 청지기의 책임입니다. 
+                                "달란트 비유"(마태복음 25:14-30)에서 보듯, 하나님은 우리가 맡은 것을 잘 관리하고 불려나가기를 원하십니다.
+                                <br/><br/>
+                                투자의 목적은 단순히 돈을 버는 것이 아니라, 하나님 나라를 위해 더 많이 나눌 수 있는 
+                                능력을 키우는 것입니다. 이 원칙을 마음에 새기고 시작하세요.
+                            </p>
+                        </div>
+
+                        {assetGrowthStrategies.map((strategy, index) => (
+                            <div key={index} className="strategy-card">
+                                <div className="strategy-header">
+                                    <div className="strategy-icon">{strategy.icon}</div>
+                                    <div className="strategy-title">{strategy.title}</div>
+                                </div>
+                                
+                                <div className="strategy-content">{strategy.content}</div>
+                                
+                                {strategy.allocation && (
+                                    <div className="strategy-allocation">
+                                        💰 {strategy.allocation}
+                                    </div>
+                                )}
+                                
+                                {strategy.strategies && (
+                                    <ul className="strategy-list">
+                                        {strategy.strategies.map((s, i) => (
+                                            <li key={i}>
+                                                <strong>{s.name}</strong><br/>
+                                                {s.allocation}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+
+                                {strategy.detailedAllocation && (
+                                    <div className="detailed-allocation">
+                                        <div className="allocation-category">
+                                            <div className="allocation-category-title">{strategy.detailedAllocation.core.title}</div>
+                                            <ul className="allocation-items">
+                                                {strategy.detailedAllocation.core.items.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="allocation-category">
+                                            <div className="allocation-category-title">{strategy.detailedAllocation.insurance.title}</div>
+                                            <ul className="allocation-items">
+                                                {strategy.detailedAllocation.insurance.items.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="allocation-category">
+                                            <div className="allocation-category-title">{strategy.detailedAllocation.alternative.title}</div>
+                                            <ul className="allocation-items">
+                                                {strategy.detailedAllocation.alternative.items.map((item, i) => (
+                                                    <li key={i}>{item}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {strategy.insuranceTypes && strategy.insuranceTypes.map((type, i) => (
+                                    <div key={i} style={{ marginBottom: '15px' }}>
+                                        <div style={{ fontWeight: '600', color: '#667eea', marginBottom: '8px' }}>{type.type}</div>
+                                        <ul className="strategy-list">
+                                            {type.items.map((item, j) => (
+                                                <li key={j}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+
+                                {strategy.overseasOptions && strategy.overseasOptions.map((option, i) => (
+                                    <div key={i} style={{ marginBottom: '20px' }}>
+                                        <div style={{ fontWeight: '600', color: '#667eea', marginBottom: '8px' }}>{option.type}</div>
+                                        <ul className="strategy-list">
+                                            {option.items.map((item, j) => (
+                                                <li key={j}>{item}</li>
+                                            ))}
+                                        </ul>
+                                        {option.howto && (
+                                            <div className="strategy-allocation" style={{ background: '#e3f2fd', color: '#1565c0' }}>
+                                                💡 방법: {option.howto}
+                                            </div>
+                                        )}
+                                        {option.benefit && (
+                                            <div className="strategy-allocation" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                                                ✅ 장점: {option.benefit}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+
+                                {strategy.goldOptions && strategy.goldOptions.map((option, i) => (
+                                    <div key={i} style={{ marginBottom: '20px' }}>
+                                        <div style={{ fontWeight: '600', color: '#667eea', marginBottom: '8px' }}>{option.type}</div>
+                                        <ul className="strategy-list">
+                                            {option.items.map((item, j) => (
+                                                <li key={j}>{item}</li>
+                                            ))}
+                                        </ul>
+                                        {option.benefit && (
+                                            <div className="strategy-allocation" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                                                ✅ {option.benefit}
+                                            </div>
+                                        )}
+                                        {option.caution && (
+                                            <div className="strategy-allocation" style={{ background: '#fff3e0', color: '#e65100' }}>
+                                                ⚠️ {option.caution}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+
+                                {strategy.cryptoApproach && strategy.cryptoApproach.map((approach, i) => (
+                                    <div key={i} className={approach.level.includes('금지') ? 'crypto-warning' : ''} style={{ marginBottom: '15px', padding: approach.level.includes('금지') ? '15px' : '0' }}>
+                                        <div className="crypto-warning-title" style={{ 
+                                            color: approach.level.includes('금지') ? '#c62828' : approach.level.includes('신중') ? '#f57c00' : '#2e7d32',
+                                            fontWeight: '600',
+                                            marginBottom: '8px'
+                                        }}>{approach.level}</div>
+                                        <ul className="strategy-list">
+                                            {approach.items.map((item, j) => (
+                                                <li key={j}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+
+                                {strategy.whyRisky && (
+                                    <div style={{ marginTop: '15px' }}>
+                                        <div style={{ fontWeight: '600', color: '#d32f2f', marginBottom: '8px' }}>⚠️ 왜 위험한가?</div>
+                                        <ul className="warning-list">
+                                            {strategy.whyRisky.map((risk, i) => (
+                                                <li key={i}>{risk}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {strategy.biblicalWarning && (
+                                    <div className="strategy-allocation" style={{ background: '#ffebee', color: '#c62828', marginTop: '10px' }}>
+                                        📖 {strategy.biblicalWarning}
+                                    </div>
+                                )}
+
+                                {strategy.whenToConsider && (
+                                    <div style={{ marginTop: '15px' }}>
+                                        <div style={{ fontWeight: '600', color: '#667eea', marginBottom: '8px' }}>✅ 코인 투자 고려 시점</div>
+                                        <ul className="strategy-list">
+                                            {strategy.whenToConsider.map((item, i) => (
+                                                <li key={i}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {strategy.finalWord && (
+                                    <div className="strategy-allocation" style={{ background: '#e8f5e9', color: '#2e7d32', marginTop: '10px', fontSize: '1.05em', fontWeight: '600' }}>
+                                        💚 {strategy.finalWord}
+                                    </div>
+                                )}
+
+                                {strategy.when && (
+                                    <div style={{ marginTop: '15px' }}>
+                                        <div style={{ fontWeight: '600', color: '#667eea', marginBottom: '8px' }}>📅 금 투자 시기</div>
+                                        <ul className="strategy-list">
+                                            {strategy.when.map((item, i) => (
+                                                <li key={i}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {strategy.tips && (
+                                    <div className="tips-box">
+                                        <ul className="allocation-items">
+                                            {strategy.tips.map((tip, i) => (
+                                                <li key={i}>{tip}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                
+                                {strategy.examples && (
+                                    <ul className="strategy-list">
+                                        {strategy.examples.map((ex, i) => (
+                                            <li key={i}>{ex}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                                
+                                {strategy.caution && (
+                                    <div className="strategy-allocation" style={{ background: '#fff3e0', color: '#e65100' }}>
+                                        ⚠️ {strategy.caution}
+                                    </div>
+                                )}
+                                
+                                {strategy.example && (
+                                    <div className="strategy-allocation" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                                        📊 {strategy.example}
+                                    </div>
+                                )}
+                                
+                                {strategy.when && (
+                                    <div className="strategy-allocation" style={{ background: '#f3e5f5', color: '#6a1b9a' }}>
+                                        📅 {strategy.when}
+                                    </div>
+                                )}
+                                
+                                {strategy.warnings && (
+                                    <ul className="warning-list">
+                                        {strategy.warnings.map((warning, i) => (
+                                            <li key={i}>{warning}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                                
+                                {strategy.principle && (
+                                    <div className="strategy-principle">
+                                        📖 {strategy.principle}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+
+                        <div className="guide-box">
+                            <div className="guide-title">{practicalInvestmentGuide.beginner.title}</div>
+                            <ul className="guide-steps">
+                                {practicalInvestmentGuide.beginner.steps.map((step, i) => (
+                                    <li key={i}>{step}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="guide-box">
+                            <div className="guide-title">{practicalInvestmentGuide.intermediate.title}</div>
+                            <ul className="guide-steps">
+                                {practicalInvestmentGuide.intermediate.steps.map((step, i) => (
+                                    <li key={i}>{step}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="guide-box">
+                            <div className="guide-title">{practicalInvestmentGuide.advanced.title}</div>
+                            <div className="strategy-subtitle">{practicalInvestmentGuide.advanced.subtitle}</div>
+                            <ul className="guide-steps">
+                                {practicalInvestmentGuide.advanced.steps.map((step, i) => (
+                                    <li key={i}>{step}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="spiritual-content" style={{ marginTop: '30px' }}>
+                            <h4>🌟 마지막 당부</h4>
+                            <p>
+                                투자는 마라톤입니다. 단기간에 큰 수익을 노리는 것이 아니라, 
+                                10년, 20년, 30년의 긴 호흡으로 꾸준히 모으고 불려가세요.
+                                <br/><br/>
+                                <strong>복리의 마법 공식: 72의 법칙</strong><br/>
+                                연 수익률로 72를 나누면 원금이 2배가 되는 기간을 알 수 있습니다.<br/>
+                                - 연 7% 수익: 72 ÷ 7 = 약 10년<br/>
+                                - 연 9% 수익: 72 ÷ 9 = 약 8년<br/>
+                                <br/>
+                                매일 기도하며, 하나님께 맡기고, 인내로 기다리세요.<br/>
+                                "부지런한 자의 계획은 풍부함에 이를 것이요" (잠언 21:5)
+                            </p>
+                        </div>
+                    </div>
+                </>
+            );
+        }
+
+        function getDateKey(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function getStreak(weekData) {
+            let streak = 0;
+            for (let i = weekData.length - 1; i >= 0; i--) {
+                if (weekData[i].score > 0) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
