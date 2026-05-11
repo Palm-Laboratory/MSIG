@@ -70,7 +70,6 @@ const structuredData = {
 const heroImage = "/images/info/info_hero.png";
 const badgeIcon = "/icon/badge.png";
 const arrowIcon = "/icon/arrow.png";
-const section2Shape = "https://www.figma.com/api/mcp/asset/290af162-de15-45da-a0c5-7d76b72e4c35";
 const serviceStepIcon1 = "/icon/brain.png";
 const serviceStepIcon2 = "/icon/bible.png";
 const serviceStepIcon3 = "/icon/check.png";
@@ -345,8 +344,6 @@ export default function InfoPage() {
         className="relative flex min-h-[52.625rem] flex-col items-start justify-center overflow-hidden bg-[#433739] px-6 py-28 text-[#fff5f0] lg:px-[60px] lg:py-[120px]"
         id="process"
       >
-        <img className="pointer-events-none absolute left-[860px] top-[820px] h-[500px] w-[720px] max-w-none" alt="" src={section2Shape} />
-
         <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-[72px]">
           <div className="flex max-w-[880px] flex-col items-start gap-6">
             <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">WHY IT MATTERS</span>
