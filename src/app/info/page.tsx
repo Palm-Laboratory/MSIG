@@ -83,17 +83,17 @@ const hiddenQuestions = [
     description: "하나님의 돌보심을 신뢰하지만 내일의 생계를 걱정하는 현실",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/4af6143d-b19a-4dc5-94f3-0c18e34cd376",
+    icon: "/icon/family.png",
     title: "가족 간의 갈등",
     description: "소비, 부채, 투자 실패로 가정 내 경제 갈등이 반복",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/ae8d614d-55ed-4664-8dc9-06bc0bd2cded",
+    icon: "/icon/unlink.png",
     title: "신앙과 경제의 괴리",
     description: "주일 예배의 고백과 월요일 경제 상황이 일치하지 않는 이중성",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/fda45d2d-d864-41c1-ab0e-35986e8389c4",
+    icon: "/icon/giving.png",
     title: "나눔의 부담감",
     description: "기쁨의 헌신이 아닌, 의무와 계산에 사로 잡힌 인색한 마음",
   },
