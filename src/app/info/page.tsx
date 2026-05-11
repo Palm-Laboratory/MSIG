@@ -67,7 +67,7 @@ const structuredData = {
   ],
 };
 
-const heroImage = "https://www.figma.com/api/mcp/asset/e25fe8f4-de54-42bc-9c64-7185c6736aaf";
+const heroImage = "/images/info/info_hero.png";
 const badgeIcon = "https://www.figma.com/api/mcp/asset/1104be0c-3e0b-4969-a9dc-2db15bee3f47";
 const arrowIcon = "https://www.figma.com/api/mcp/asset/1468db5d-6b4c-47ff-a666-ccc99c58ca86";
 const section2Shape = "https://www.figma.com/api/mcp/asset/290af162-de15-45da-a0c5-7d76b72e4c35";
