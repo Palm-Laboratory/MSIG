@@ -71,10 +71,10 @@ const heroImage = "/images/info/info_hero.png";
 const badgeIcon = "/icon/badge.png";
 const arrowIcon = "/icon/arrow.png";
 const section2Shape = "https://www.figma.com/api/mcp/asset/290af162-de15-45da-a0c5-7d76b72e4c35";
-const serviceStepIcon1 = "https://www.figma.com/api/mcp/asset/206d573e-6970-4207-9f36-a1bb459311e3";
-const serviceStepIcon2 = "https://www.figma.com/api/mcp/asset/3d967703-f5d2-46d9-9990-c78f313050ff";
-const serviceStepIcon3 = "https://www.figma.com/api/mcp/asset/3c706c7f-d108-4066-bc92-ee9ed3faf091";
-const serviceStepIcon4 = "https://www.figma.com/api/mcp/asset/8d8f4e04-6c11-493a-b652-5d0388ad22d8";
+const serviceStepIcon1 = "/icon/brain.png";
+const serviceStepIcon2 = "/icon/bible.png";
+const serviceStepIcon3 = "/icon/check.png";
+const serviceStepIcon4 = "/icon/message.png";
 
 const hiddenQuestions = [
   {
