@@ -1,8 +1,40 @@
+import type { Metadata } from "next";
 import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { LandingProcessCard } from "@/components/landing-process-card";
 import { ResetDiagnosisLink } from "@/components/ResetDiagnosisLink";
 import { SiteFooter } from "@/components/site-footer";
+import { OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
+
+const pageDescription =
+  "80개 문항으로 재정 태도, 성경 인물 유형, 경제장애 위험도, MSIG 행동 프로파일을 확인하는 복음경제영성 진단 안내 페이지입니다.";
+
+export const metadata: Metadata = {
+  title: "무료 경제영성 진단 시작",
+  description: pageDescription,
+  alternates: {
+    canonical: "/diagnosis/info",
+  },
+  openGraph: {
+    title: "무료 경제영성 진단 시작 | MSIG 복음경제영성 진단",
+    description: pageDescription,
+    url: "/diagnosis/info",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: "MSIG 복음경제영성 진단",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "무료 경제영성 진단 시작 | MSIG 복음경제영성 진단",
+    description: pageDescription,
+    images: [OG_IMAGE],
+  },
+};
 
 const badgeIcon = "https://www.figma.com/api/mcp/asset/ca1f999b-965a-4692-8cd9-2958fed5160f";
 const arrowIcon = "https://www.figma.com/api/mcp/asset/83745a12-4bac-4633-b2b0-1faf42dbd1fd";

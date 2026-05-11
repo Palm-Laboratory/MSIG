@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DiagnosisSurveyRunner } from "@/components/DiagnosisSurveyRunner";
 import type { PartId } from "@/lib/survey-data";
+
+export const metadata: Metadata = {
+  title: "진단 진행",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 type Props = {
   params: Promise<{ part: string }>;

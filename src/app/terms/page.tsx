@@ -3,8 +3,11 @@ import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "이용약관 | MSIG 복음경제영성 진단",
+  title: "이용약관",
   description: "MSIG 복음경제영성 진단 서비스 이용약관입니다.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 const sections = [

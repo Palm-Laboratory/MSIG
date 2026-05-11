@@ -3,8 +3,11 @@ import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
-  title: "개인정보처리방침 | MSIG 복음경제영성 진단",
+  title: "개인정보처리방침",
   description: "MSIG 복음경제영성 진단 개인정보처리방침입니다.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 const sections = [

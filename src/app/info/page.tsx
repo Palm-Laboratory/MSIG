@@ -1,6 +1,71 @@
+import type { Metadata } from "next";
 import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
 import { SiteFooter } from "@/components/site-footer";
+import { DEFAULT_DESCRIPTION, OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: SITE_NAME,
+  },
+  description: DEFAULT_DESCRIPTION,
+  alternates: {
+    canonical: "/info",
+  },
+  openGraph: {
+    title: SITE_NAME,
+    description: DEFAULT_DESCRIPTION,
+    url: "/info",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: SITE_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      inLanguage: "ko-KR",
+      description: DEFAULT_DESCRIPTION,
+    },
+    {
+      "@type": "WebApplication",
+      "@id": `${SITE_URL}/info#webapplication`,
+      name: SITE_NAME,
+      url: `${SITE_URL}/info`,
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web",
+      inLanguage: "ko-KR",
+      description: DEFAULT_DESCRIPTION,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "KRW",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "복음경제영성연구소",
+        url: SITE_URL,
+      },
+    },
+  ],
+};
 
 const heroImage = "https://www.figma.com/api/mcp/asset/e25fe8f4-de54-42bc-9c64-7185c6736aaf";
 const badgeIcon = "https://www.figma.com/api/mcp/asset/1104be0c-3e0b-4969-a9dc-2db15bee3f47";
@@ -227,6 +292,7 @@ function BubbleTail({ align = "left", color, flip = false }: { align?: "center" 
 export default function InfoPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <section className="relative flex min-h-[720px] items-center justify-center overflow-hidden bg-[#fff7f5] px-0 pb-32 pt-40 [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-lg:px-6 max-lg:pb-18 max-lg:pt-28">
         <div className="absolute -left-[164px] top-[584px] h-[800px] w-[800px] rounded-full bg-[rgba(193,133,144,0.1)] blur-[32px]" />
         <div className="absolute left-[728px] top-16 h-[520px] w-[520px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[32px]" />
