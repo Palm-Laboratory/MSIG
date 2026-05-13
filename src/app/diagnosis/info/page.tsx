@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
-const badgeIcon = "https://www.figma.com/api/mcp/asset/ca1f999b-965a-4692-8cd9-2958fed5160f";
-const arrowIcon = "https://www.figma.com/api/mcp/asset/83745a12-4bac-4633-b2b0-1faf42dbd1fd";
+const badgeIcon = "/icon/badge.png";
+const arrowIcon = "/icon/arrow.png";
 
 const processParts = [
   {
@@ -168,7 +168,7 @@ export default function DiagnosisInfoPage() {
             </article>
           ))}
         </div>
-        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
+        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">모든 이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
       </section>
 
       <section className="landing-cta">

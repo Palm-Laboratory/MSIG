@@ -68,32 +68,31 @@ const structuredData = {
 };
 
 const heroImage = "/images/info/info_hero.png";
-const badgeIcon = "https://www.figma.com/api/mcp/asset/1104be0c-3e0b-4969-a9dc-2db15bee3f47";
-const arrowIcon = "https://www.figma.com/api/mcp/asset/1468db5d-6b4c-47ff-a666-ccc99c58ca86";
-const section2Shape = "https://www.figma.com/api/mcp/asset/290af162-de15-45da-a0c5-7d76b72e4c35";
-const serviceStepIcon1 = "https://www.figma.com/api/mcp/asset/206d573e-6970-4207-9f36-a1bb459311e3";
-const serviceStepIcon2 = "https://www.figma.com/api/mcp/asset/3d967703-f5d2-46d9-9990-c78f313050ff";
-const serviceStepIcon3 = "https://www.figma.com/api/mcp/asset/3c706c7f-d108-4066-bc92-ee9ed3faf091";
-const serviceStepIcon4 = "https://www.figma.com/api/mcp/asset/8d8f4e04-6c11-493a-b652-5d0388ad22d8";
+const badgeIcon = "/icon/badge.png";
+const arrowIcon = "/icon/arrow.png";
+const serviceStepIcon1 = "/icon/brain.png";
+const serviceStepIcon2 = "/icon/bible.png";
+const serviceStepIcon3 = "/icon/check.png";
+const serviceStepIcon4 = "/icon/message.png";
 
 const hiddenQuestions = [
   {
-    icon: "https://www.figma.com/api/mcp/asset/48c435ff-5ba3-4502-b5c5-6dc2a38d652c",
+    icon: "/icon/arrow_down.png",
     title: "경제적 불안감",
     description: "하나님의 돌보심을 신뢰하지만 내일의 생계를 걱정하는 현실",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/4af6143d-b19a-4dc5-94f3-0c18e34cd376",
+    icon: "/icon/family.png",
     title: "가족 간의 갈등",
     description: "소비, 부채, 투자 실패로 가정 내 경제 갈등이 반복",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/ae8d614d-55ed-4664-8dc9-06bc0bd2cded",
+    icon: "/icon/unlink.png",
     title: "신앙과 경제의 괴리",
     description: "주일 예배의 고백과 월요일 경제 상황이 일치하지 않는 이중성",
   },
   {
-    icon: "https://www.figma.com/api/mcp/asset/fda45d2d-d864-41c1-ab0e-35986e8389c4",
+    icon: "/icon/giving.png",
     title: "나눔의 부담감",
     description: "기쁨의 헌신이 아닌, 의무와 계산에 사로 잡힌 인색한 마음",
   },
@@ -345,8 +344,6 @@ export default function InfoPage() {
         className="relative flex min-h-[52.625rem] flex-col items-start justify-center overflow-hidden bg-[#433739] px-6 py-28 text-[#fff5f0] lg:px-[60px] lg:py-[120px]"
         id="process"
       >
-        <img className="pointer-events-none absolute left-[860px] top-[820px] h-[500px] w-[720px] max-w-none" alt="" src={section2Shape} />
-
         <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-[72px]">
           <div className="flex max-w-[880px] flex-col items-start gap-6">
             <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">WHY IT MATTERS</span>
