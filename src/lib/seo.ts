@@ -1,4 +1,4 @@
-export const SITE_URL = "https://happyzion.com";
+export const SITE_URL = "https://www.msig.kr";
 
 export const SITE_NAME = "MSIG 복음경제영성 진단";
 
@@ -17,7 +17,7 @@ export const SEO_KEYWORDS = [
   "경제 습관 진단",
 ];
 
-export const OG_IMAGE = "/og-image.png";
+export const OG_IMAGE = "/images/og_image_real.png";
 
 export const OG_IMAGE_WIDTH = 2400;
 
