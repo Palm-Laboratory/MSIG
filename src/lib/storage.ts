@@ -3,8 +3,8 @@ export const RESULT_STORAGE_TTL_MS = 30 * 60 * 1000;
 export const RESULT_STORAGE_KEYS = {
   answers: "ges_answers",
   profile: "ges_user",
-  legacyAnswers: "msig.answers",
-  legacyProfile: "msig.profile",
+  legacyAnswers: "msbf.answers",
+  legacyProfile: "msbf.profile",
   partIndex: "ges_part_index",
 } as const;
 

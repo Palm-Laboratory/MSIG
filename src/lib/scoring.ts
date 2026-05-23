@@ -29,7 +29,7 @@ export type Part2RiskKey =
   | "oneTalentServant"
   | "martha";
 
-export type Part3ProfileKey = "making" | "spending" | "investing" | "giving";
+export type Part3ProfileKey = "mission" | "stewardship" | "building" | "flowing";
 
 export type Part1Score = Score & {
   grade: {
@@ -98,10 +98,10 @@ const PART2_GROUPS: readonly GroupDefinition<Part2RiskKey>[] = [
 ];
 
 const PART3_GROUPS: readonly GroupDefinition<Part3ProfileKey>[] = [
-  { key: "making", name: "Making", start: 65, end: 68 },
-  { key: "spending", name: "Spending", start: 69, end: 72 },
-  { key: "investing", name: "Investing", start: 73, end: 76 },
-  { key: "giving", name: "Giving", start: 77, end: 80 },
+  { key: "mission", name: "Mission", start: 65, end: 68 },
+  { key: "stewardship", name: "Stewardship", start: 69, end: 72 },
+  { key: "building", name: "Building", start: 73, end: 76 },
+  { key: "flowing", name: "Flowing", start: 77, end: 80 },
 ];
 
 const scorePercent = (rawScore: number, maxScore: number) =>

@@ -92,17 +92,17 @@ const hiddenQuestions = [
     description: "주일 예배의 고백과 월요일 경제 상황이 일치하지 않는 이중성",
   },
   {
-    icon: "/icon/giving.png",
+    icon: "/icon/flowing.png",
     title: "나눔의 부담감",
     description: "기쁨의 헌신이 아닌, 의무와 계산에 사로 잡힌 인색한 마음",
   },
 ];
 
-const msigAreas = [
-  ["M", "Mission Income", "소득", "하나님이 맡기신 역할과 사명 안에서 건강하게 소득을 형성하고 유지하는 태도 점검"],
-  ["S", "Stewardship Management", "관리", "청지기적 관점에서 수입, 지출, 소비 습관, 예산 운영, 재정 질서와 관리 역량 점검"],
-  ["I", "Investment Growth", "투자", "분별력과 책임감을 바탕으로 자산을 형성하는 태도 점검, 무리한 투기 방지"],
-  ["G", "Giving & Generosity", "나눔", "헌금, 나눔, 섬김, 흘려보냄의 태도 점검, 신앙과 경제의 연결성 회복"],
+const msbfAreas = [
+  ["M", "Mission", "부르심", "하나님으로부터 받은 미션을 일터와 삶 속에서 어떻게 수행하고 있는지 점검"],
+  ["S", "Stewardship", "청지기", "그리스도인으로서 맡겨진 것을 지키고 관리하는 청지기 사명의 태도 점검"],
+  ["B", "Building", "세움", "하나님이 주신 은사와 재능, 재정을 어떻게 세우고 키워 성장시키는지 점검"],
+  ["F", "Flowing", "흘려보냄", "하나님이 허락하신 아버지의 마음으로 나누고 기부하며 흘려보내는 삶의 태도 점검"],
 ];
 
 const generationLabels = [
@@ -470,18 +470,18 @@ export default function InfoPage() {
         <div className="pointer-events-none absolute -right-[200px] top-[120px] h-[420px] w-[620px] rotate-[28deg] rounded-[48%] border-4 border-[rgba(207,190,190,0.22)]" />
         <div className="relative z-10 mx-auto grid w-full max-w-[1120px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div className="flex flex-col gap-6">
-            <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">MSIG Framework</span>
+            <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">MSBF Framework</span>
             <h2 className="text-display font-extrabold leading-tight text-[#e7dede] lg:text-h1-desktop xl:text-display-desktop">
-              MSIG 경제영성 진단 프로그램이란
+              MSBF 경제영성 진단 프로그램이란
             </h2>
             <p className="text-body-m font-light text-[rgba(255,247,245,0.76)] lg:text-body-l-desktop">
-              MSIG는 성도의 경제영성을 네 가지 핵심 영역으로 분석하는 진단 프로그램입니다. 단순히 재정 상태만을 파악하는 것이 아니라, 삶 속에서 재정을 어떻게 이해하고 관리하며 흘려보내고
-              있는지를 입체적으로 점검하도록 설계되어 있습니다. 경제는 신앙의 열매라는 관점에서, 성도들이 하나님이 맡기신 재정을 지혜롭게 관리하고 성장하도록 돕는 도구입니다.
+              MSBF는 성도의 경제영성을 네 가지 핵심 영역으로 분석하는 진단 프로그램입니다. 단순히 재정 상태만을 파악하는 것이 아니라, 삶 속에서 부르심을 어떻게 수행하고 맡겨진 것을
+              지키며, 하나님이 주신 것을 세우고 흘려보내고 있는지를 입체적으로 점검하도록 설계되어 있습니다.
             </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            {msigAreas.map(([initial, label, title, description]) => (
+            {msbfAreas.map(([initial, label, title, description]) => (
               <article className="rounded-lg border border-[rgba(255,247,245,0.12)] bg-[#5f5557] p-6 shadow-[0_18px_40px_rgba(36,25,26,0.18)]" key={label}>
                 <div className="mb-8 flex items-center justify-between gap-4">
                   <strong className="flex h-12 w-12 items-center justify-center rounded bg-[#f3b5c1] text-h3 font-extrabold text-[#52494b]">{initial}</strong>

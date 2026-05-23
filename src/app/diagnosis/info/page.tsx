@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from "@/lib/seo";
 
 const pageDescription =
-  "80개 문항으로 재정 태도, 성경 인물 유형, 경제장애 위험도, MSIG 행동 프로파일을 확인하는 복음경제영성 진단 안내 페이지입니다.";
+  "80개 문항으로 재정 태도, 성경 인물 유형, 경제장애 위험도, MSBF 행동 프로파일을 확인하는 복음경제영성 진단 안내 페이지입니다.";
 
 export const metadata: Metadata = {
   title: "무료 경제영성 진단 시작",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     canonical: "/diagnosis/info",
   },
   openGraph: {
-    title: "무료 경제영성 진단 시작 | MSIG 복음경제영성 진단",
+    title: "무료 경제영성 진단 시작 | MSBF 복음경제영성 진단",
     description: pageDescription,
     url: "/diagnosis/info",
     images: [
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: OG_IMAGE_WIDTH,
         height: OG_IMAGE_HEIGHT,
-        alt: "MSIG 복음경제영성 진단",
+        alt: "MSBF 복음경제영성 진단",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "무료 경제영성 진단 시작 | MSIG 복음경제영성 진단",
+    title: "무료 경제영성 진단 시작 | MSBF 복음경제영성 진단",
     description: pageDescription,
     images: [OG_IMAGE],
   },
@@ -58,9 +58,9 @@ const processParts = [
   },
   {
     label: "Part 03",
-    title: "MSIG 행동 프로파일 진단 (16문항)",
+    title: "MSBF 행동 프로파일 진단 (16문항)",
     bullets: [
-      "돈 버는 행동(Making), 쓰는 행동(Spending), 불리는 행동(Investing), 나누는 행동(Giving) — 4가지 재정 행동의 균형을 측정합니다.",
+      "나의 부르심(Mission), 청지기 사명(Stewardship), 세움과 성장(Building), 나눔과 기부(Flowing) — 4가지 경제영성 행동의 균형을 측정합니다.",
       "건강한 경제영성은 4개 영역의 균형에서 시작됩니다. 나의 강한 영역과 보완이 필요한 영역을 확인해보세요.",
     ],
   },

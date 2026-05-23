@@ -50,7 +50,7 @@ export function SurveyRunner({ part }: Props) {
     <main className="mx-auto grid min-h-screen w-full max-w-[1080px] gap-6 bg-[#fff7f5] px-6 py-8 text-[#1c1c19]">
       <header className="flex items-center justify-between gap-4 max-[640px]:flex-col max-[640px]:items-stretch">
         <Link className="inline-flex h-10 min-w-[74px] items-center justify-center rounded-md bg-[#423739] px-3.5 font-black text-[#fff7f5]" href="/diagnosis">
-          MSIG
+          MSBF
         </Link>
         <div className="grid min-w-[260px] grid-cols-[auto_1fr_auto] items-center gap-3 text-[0.8125rem] font-black text-[#423739] max-[640px]:grid-cols-[1fr_auto]" aria-label={`전체 진행률 ${progress}%`}>
           <span>{partMeta.id}</span>
@@ -71,7 +71,7 @@ export function SurveyRunner({ part }: Props) {
             ? "복음경제영성의 기반이 되는 믿음, 활력, 지혜, 전략, 위험 감지, 일관성을 점검합니다."
             : part === "part-2"
               ? "경제 의사결정을 흔드는 반복 패턴과 위험 신호를 확인합니다."
-              : "버는 행동, 쓰는 행동, 불리는 행동, 나누는 행동의 균형을 살핍니다."}
+              : "부르심, 청지기 사명, 세움과 성장, 흘려보냄의 균형을 살핍니다."}
         </span>
       </section>
 

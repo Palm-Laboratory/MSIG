@@ -211,7 +211,7 @@ describe("scoreSurveyAnswers", () => {
     });
   });
 
-  it("computes Part 3 MSIG profile percentages and identifies the lowest area", () => {
+  it("computes Part 3 MSBF profile percentages and identifies the lowest area", () => {
     const answers = answersWith(1);
 
     setRange(answers, 65, 68, 5);
@@ -222,14 +222,14 @@ describe("scoreSurveyAnswers", () => {
     const result = scoreSurveyAnswers(answers);
 
     expect(result.part3.profile).toMatchObject({
-      making: { rawScore: 20, maxScore: 20, percentage: 100 },
-      spending: { rawScore: 8, maxScore: 20, percentage: 40 },
-      investing: { rawScore: 16, maxScore: 20, percentage: 80 },
-      giving: { rawScore: 12, maxScore: 20, percentage: 60 },
+      mission: { rawScore: 20, maxScore: 20, percentage: 100 },
+      stewardship: { rawScore: 8, maxScore: 20, percentage: 40 },
+      building: { rawScore: 16, maxScore: 20, percentage: 80 },
+      flowing: { rawScore: 12, maxScore: 20, percentage: 60 },
     });
     expect(result.part3.lowestArea).toMatchObject({
-      key: "spending",
-      name: "Spending",
+      key: "stewardship",
+      name: "Stewardship",
       rawScore: 8,
       percentage: 40,
     });

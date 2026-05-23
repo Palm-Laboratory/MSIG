@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
-  description: "MSIG 복음경제영성 진단 개인정보처리방침입니다.",
+  description: "MSBF 복음경제영성 진단 개인정보처리방침입니다.",
   alternates: {
     canonical: "/privacy",
   },
@@ -14,7 +14,7 @@ const sections = [
   {
     title: "1. 개인정보 처리방침의 목적",
     body: [
-      "복음경제영성연구소(이하 “운영자”)는 MSIG 복음경제영성 진단 웹서비스(이하 “서비스”) 이용자의 자유와 권리 보호를 위해 개인정보 보호법 및 관계 법령을 준수합니다.",
+      "복음경제영성연구소(이하 “운영자”)는 MSBF 복음경제영성 진단 웹서비스(이하 “서비스”) 이용자의 자유와 권리 보호를 위해 개인정보 보호법 및 관계 법령을 준수합니다.",
       "본 개인정보처리방침은 이용자의 개인정보가 어떤 목적으로 수집·이용되고, 어떻게 보관·파기되며, 이용자가 어떤 권리를 행사할 수 있는지 안내하기 위해 마련되었습니다.",
     ],
   },
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
             <p className="text-caption font-extrabold uppercase tracking-[0.14rem] text-[#be123c]">Privacy Policy</p>
             <h1 className="text-h1 font-extrabold leading-[1.2] text-[#312225] lg:text-display">개인정보처리방침</h1>
             <p className="max-w-[48rem] text-body-m leading-[1.8] text-[#615557]">
-              본 방침은 MSIG 복음경제영성 진단이 이용자의 개인정보를 어떻게 처리하고 보호하는지 설명합니다.
+              본 방침은 MSBF 복음경제영성 진단이 이용자의 개인정보를 어떻게 처리하고 보호하는지 설명합니다.
             </p>
           </header>
 

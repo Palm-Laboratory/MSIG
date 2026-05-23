@@ -42,10 +42,10 @@ const RISK_LABELS: Record<Part2RiskKey, { name: string; subtitle: string }> = {
 };
 
 const PROFILE_LABELS: Record<Part3ProfileKey, { name: string; english: string }> = {
-  making: { name: "돈 버는 행동", english: "Making" },
-  spending: { name: "돈 쓰는 행동", english: "Spending" },
-  investing: { name: "돈 불리는 행동", english: "Investing" },
-  giving: { name: "돈 나누는 행동", english: "Giving" },
+  mission: { name: "나의 부르심", english: "Mission" },
+  stewardship: { name: "청지기 사명", english: "Stewardship" },
+  building: { name: "세움과 성장", english: "Building" },
+  flowing: { name: "나눔과 기부", english: "Flowing" },
 };
 
 const ARCHETYPE_DETAILS: Record<string, { description: string; strength: string; weakness: string; prescription: string }> = {
@@ -165,7 +165,7 @@ const formatSurveyResultForEmail = (answers: SurveyAnswers) => {
       <h3 style="margin:20px 0 8px;font-size:17px;color:#432424">8대 경제장애 위험도</h3>
       <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:13px;line-height:1.45;margin-bottom:18px"><tbody>${riskRows}</tbody></table>
 
-      <h3 style="margin:20px 0 8px;font-size:17px;color:#432424">MSIG 행동 프로파일</h3>
+      <h3 style="margin:20px 0 8px;font-size:17px;color:#432424">MSBF 행동 프로파일</h3>
       <table border="1" cellpadding="8" cellspacing="0" width="100%" style="border-collapse:collapse;font-size:13px;line-height:1.45;margin-bottom:24px"><tbody>${profileRows}</tbody></table>
     </div>
   `;

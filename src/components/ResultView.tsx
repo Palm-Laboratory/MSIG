@@ -24,7 +24,7 @@ type ScoreRow = {
 };
 
 const RESULT_BACK_WARNING = "다운받지 않은 결과는 저장되지 않습니다.";
-const PRINT_FRAME_ID = "msig-result-print-frame";
+const PRINT_FRAME_ID = "msbf-result-print-frame";
 
 const COMPETENCY_LABELS: Record<Part1CompetencyKey, { name: string; low: string; high: string }> = {
   abraham: {
@@ -71,10 +71,10 @@ const RISK_LABELS: Record<Part2RiskKey, { name: string; subtitle: string }> = {
 };
 
 const PROFILE_LABELS: Record<Part3ProfileKey, { name: string; english: string; color: string }> = {
-  making: { name: "돈 버는 행동", english: "Making", color: "#2d9e6b" },
-  spending: { name: "돈 쓰는 행동", english: "Spending", color: "#e8607a" },
-  investing: { name: "돈 불리는 행동", english: "Investing", color: "#4f9af1" },
-  giving: { name: "돈 나누는 행동", english: "Giving", color: "#f4a261" },
+  mission: { name: "나의 부르심", english: "Mission", color: "#2d9e6b" },
+  stewardship: { name: "청지기 사명", english: "Stewardship", color: "#e8607a" },
+  building: { name: "세움과 성장", english: "Building", color: "#4f9af1" },
+  flowing: { name: "나눔과 기부", english: "Flowing", color: "#f4a261" },
 };
 
 const RADAR_SHORT_LABELS: Record<string, string> = {
@@ -995,10 +995,10 @@ function MobileResultView({
         <div className="absolute left-[213px] top-[431px] size-[235.2px] rounded-full bg-[rgba(255,64,195,0.2)] opacity-25 blur-[12.6px]" />
         <div className="relative z-10 flex flex-col items-center gap-3 whitespace-nowrap text-center tracking-[1px]">
           <p className="text-[0.875rem] font-medium leading-[0.875rem] text-[#f3b5c1]">GOSPEL ECONOMIC SPIRITUALITY</p>
-          <h2 className="text-[1.75rem] font-medium leading-[1.75rem] text-[#313332]">MSIG 행동 프로파일</h2>
+          <h2 className="text-[1.75rem] font-medium leading-[1.75rem] text-[#313332]">MSBF 행동 프로파일</h2>
         </div>
         <p className="relative z-10 w-full text-[0.875rem] font-medium leading-7 tracking-[1px] text-[rgba(96,49,57,0.8)]">
-          M(Making) · S(Spending) · I(Investing) · G(Giving) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
+          M(Mission) · S(Stewardship) · B(Building) · F(Flowing) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
         </p>
         <div className="relative z-10 grid w-full grid-cols-2 gap-x-4 gap-y-6">
           {profileScores.map((row) => (
@@ -1057,7 +1057,7 @@ export function ResultView() {
   }, []);
 
   useEffect(() => {
-    window.history.pushState({ ...window.history.state, msigResultGuard: true }, "", window.location.href);
+    window.history.pushState({ ...window.history.state, msbfResultGuard: true }, "", window.location.href);
 
     const handlePopState = () => {
       window.alert(RESULT_BACK_WARNING);
@@ -1309,7 +1309,7 @@ export function ResultView() {
           <div className="relative z-10 mx-auto grid w-full max-w-[1160px] gap-[72px]">
             <div className="flex w-full flex-col items-start gap-4 tracking-[1px]">
               <p className="text-[1.25rem] font-medium leading-8 text-[#f3b5c1]">GOSPEL ECONOMIC SPIRITUALITY</p>
-              <h2 className="text-[3rem] font-medium leading-[3rem] text-[#313332]">MSIG 행동 프로파일</h2>
+              <h2 className="text-[3rem] font-medium leading-[3rem] text-[#313332]">MSBF 행동 프로파일</h2>
             </div>
             <div className="grid grid-cols-4 gap-5" ref={desktopProfileSectionRef}>
               {profileScores.map((row) => (
@@ -1328,7 +1328,7 @@ export function ResultView() {
               ))}
             </div>
             <p className="text-[1.5rem] font-medium leading-[2.75rem] tracking-[1px] text-[rgba(96,49,57,0.8)]">
-              M(Making)·S(Spending)·I(Investing)·G(Giving) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
+              M(Mission)·S(Stewardship)·B(Building)·F(Flowing) 네 영역이 균형을 이루는 것이 건강한 경제영성의 표지입니다. 가장 낮은 영역부터 개선해나가세요.
             </p>
           </div>
         </section>
