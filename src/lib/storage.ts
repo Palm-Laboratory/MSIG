@@ -1,5 +1,13 @@
 export const RESULT_STORAGE_TTL_MS = 30 * 60 * 1000;
 
+export type UserProfile = {
+  name: string;
+  phone: string;
+  age: string;
+  gender: string;
+  church: string;
+};
+
 export const RESULT_STORAGE_KEYS = {
   answers: "ges_answers",
   profile: "ges_user",

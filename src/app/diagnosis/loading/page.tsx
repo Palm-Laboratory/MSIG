@@ -1,10 +1,12 @@
 "use client";
 
+import emailjs from "@emailjs/browser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LottieAnimation } from "@/components/LottieAnimation";
-import { readJsonWithTtl, RESULT_STORAGE_KEYS } from "@/lib/storage";
+import { formatEmailBodyFromStorage } from "@/lib/email";
+import { readJsonWithTtl, RESULT_STORAGE_KEYS, type UserProfile } from "@/lib/storage";
 import { SURVEY_QUESTIONS } from "@/lib/survey-data";
 
 export default function DiagnosisLoadingPage() {
@@ -18,6 +20,33 @@ export default function DiagnosisLoadingPage() {
       setHasAnswers(false);
       return;
     }
+
+    const userProfile = readJsonWithTtl<UserProfile | null>(RESULT_STORAGE_KEYS.profile, null, RESULT_STORAGE_KEYS.legacyProfile);
+
+    const sendResultEmail = async () => {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+      if (!serviceId || !templateId || !publicKey) return;
+
+      try {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            user_name: userProfile?.name ?? "(미입력)",
+            user_phone: `나이: ${userProfile?.age ?? "-"} / 성별: ${userProfile?.gender ?? "-"} / 출석교회: ${userProfile?.church ?? "-"}`,
+            privacy_consent: "동의",
+            answers: formatEmailBodyFromStorage(userProfile ?? undefined),
+          },
+          { publicKey },
+        );
+      } catch (error) {
+        console.error("[DiagnosisLoading] 결과 이메일 발송 실패:", error);
+      }
+    };
+
+    void sendResultEmail();
 
     const timer = window.setTimeout(() => router.push("/diagnosis/result"), 3000);
     return () => window.clearTimeout(timer);
