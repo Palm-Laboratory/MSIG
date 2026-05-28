@@ -12,7 +12,7 @@ type FieldErrors = {
   privacyConsent?: string;
 };
 
-const validate = (name: string, phone: string, age: string, gender: string, church: string, privacyConsent: boolean): FieldErrors => {
+const validate = (name: string, phone: string, age: string, gender: string, privacyConsent: boolean): FieldErrors => {
   const errors: FieldErrors = {};
   if (name.trim().length < 2) errors.name = "이름을 2자 이상 입력해 주세요.";
   const trimmedPhone = phone.trim();
@@ -27,6 +27,9 @@ const validate = (name: string, phone: string, age: string, gender: string, chur
   return errors;
 };
 
+const inputClass =
+  "min-h-12 w-full rounded border border-[#d6c2c3] bg-white px-4 text-[1rem] text-[#292524] outline-none transition placeholder:text-[14px] placeholder:text-[#c4a9ad] focus:border-[#d47182] focus:ring-2 focus:ring-[rgba(212,113,130,0.15)]";
+
 export default function UserInfoPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -39,7 +42,7 @@ export default function UserInfoPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const fieldErrors = validate(name, phone, age, gender, church, privacyConsent);
+    const fieldErrors = validate(name, phone, age, gender, privacyConsent);
     setErrors(fieldErrors);
     if (Object.keys(fieldErrors).length > 0) return;
 
@@ -48,28 +51,26 @@ export default function UserInfoPage() {
     router.push("/diagnosis/part/1");
   };
 
-  const inputClass =
-    "min-h-12 w-full rounded border border-[#e8d0d0] bg-white px-4 text-body-m text-[#312225] outline-none transition placeholder:text-[#b69da2] focus:border-[#d47182] focus:ring-2 focus:ring-[#f3c6cf]";
-  const labelClass = "grid gap-2 text-[#4f3f42]";
-  const labelTextClass = "text-[0.875rem] font-extrabold";
-  const errorClass = "text-[0.8125rem] font-semibold leading-5 text-[#9b4250]";
-
   return (
     <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-[#fff7f5] px-6 py-12 text-[#292524]">
       <div className="pointer-events-none absolute -left-24 -top-24 size-[420px] rounded-full bg-[rgba(212,113,130,0.12)] blur-[60px]" />
       <div className="pointer-events-none absolute bottom-[-6rem] right-[-6rem] size-[380px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[60px]" />
 
-      <section className="relative z-10 w-full max-w-[480px]">
-        <div className="mb-8 text-center">
-          <p className="mb-3 text-[0.625rem] font-extrabold uppercase tracking-[0.125rem] text-[#d47182]">PERSONAL INFORMATION</p>
-          <h1 className="text-h2 lg:text-h2-desktop font-extrabold text-[#312225]">검사 전 기본 정보 입력</h1>
-          <p className="mt-3 text-body-s font-medium text-[#8a5b63]">입력하신 정보는 연구 자료 수집 목적으로만 사용됩니다.</p>
+      <section className="relative z-10 flex w-full max-w-[480px] flex-col gap-[3.75rem]">
+        <div className="flex flex-col items-center gap-[12px] text-center">
+          <p className="text-[0.625rem] font-bold uppercase leading-none tracking-[0.075rem] text-[#c18590]">PERSONAL INFORMATION</p>
+          <h1 className="text-[28px] font-bold leading-[1.22] text-[#292524] md:text-[36px]">검사 전 개인정보 입력</h1>
+          <p className="text-[15px] font-medium leading-4 tracking-[0.3px] text-[#78716c]">
+            입력하신 정보는 연구 자료 수집 목적으로만 사용됩니다.
+          </p>
         </div>
 
-        <div className="rounded-xl border border-[#f1d7d7] bg-white px-6 py-8 shadow-[0_4px_24px_rgba(212,113,130,0.1)] md:px-8">
+        <div className="rounded-lg border border-[rgba(0,0,0,0.04)] bg-[#fffdfd] px-6 py-8 shadow-[0_4px_8px_rgba(0,0,0,0.1)] md:px-8">
           <form className="grid gap-5" onSubmit={handleSubmit} noValidate>
-            <label className={labelClass} htmlFor="user-name">
-              <span className={labelTextClass}>이름</span>
+
+            {/* 이름 */}
+            <label className="grid gap-2" htmlFor="user-name">
+              <span className="text-[0.8125rem] font-normal text-[#524345]">이름</span>
               <input
                 autoComplete="name"
                 className={inputClass}
@@ -81,11 +82,14 @@ export default function UserInfoPage() {
                 aria-invalid={Boolean(errors.name)}
                 aria-describedby={errors.name ? "error-name" : undefined}
               />
-              {errors.name && <span className={errorClass} id="error-name">{errors.name}</span>}
+              {errors.name && (
+                <span className="text-[0.8125rem] font-medium leading-5 text-[#a33d4c]" id="error-name">{errors.name}</span>
+              )}
             </label>
 
-            <label className={labelClass} htmlFor="user-phone">
-              <span className={labelTextClass}>연락처</span>
+            {/* 연락처 */}
+            <label className="grid gap-2" htmlFor="user-phone">
+              <span className="text-[0.8125rem] font-normal text-[#524345]">연락처</span>
               <input
                 autoComplete="tel"
                 className={inputClass}
@@ -99,11 +103,14 @@ export default function UserInfoPage() {
                 aria-invalid={Boolean(errors.phone)}
                 aria-describedby={errors.phone ? "error-phone" : undefined}
               />
-              {errors.phone && <span className={errorClass} id="error-phone">{errors.phone}</span>}
+              {errors.phone && (
+                <span className="text-[0.8125rem] font-medium leading-5 text-[#a33d4c]" id="error-phone">{errors.phone}</span>
+              )}
             </label>
 
-            <label className={labelClass} htmlFor="user-age">
-              <span className={labelTextClass}>나이</span>
+            {/* 나이 */}
+            <label className="grid gap-2" htmlFor="user-age">
+              <span className="text-[0.8125rem] font-normal text-[#524345]">나이</span>
               <input
                 className={inputClass}
                 id="user-age"
@@ -117,19 +124,22 @@ export default function UserInfoPage() {
                 aria-invalid={Boolean(errors.age)}
                 aria-describedby={errors.age ? "error-age" : undefined}
               />
-              {errors.age && <span className={errorClass} id="error-age">{errors.age}</span>}
+              {errors.age && (
+                <span className="text-[0.8125rem] font-medium leading-5 text-[#a33d4c]" id="error-age">{errors.age}</span>
+              )}
             </label>
 
-            <fieldset className="grid gap-2">
-              <legend className={labelTextClass + " text-[#4f3f42]"}>성별</legend>
-              <div className="flex gap-4">
+            {/* 성별 */}
+            <fieldset className="grid">
+              <legend className="text-[0.8125rem] font-normal text-[#524345]">성별</legend>
+              <div className="mt-[8px] flex gap-3">
                 {["남성", "여성"].map((option) => (
                   <label
                     key={option}
-                    className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded border py-3 text-[0.9375rem] font-semibold transition ${
+                    className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded border py-3 text-[0.9375rem] font-medium transition ${
                       gender === option
-                        ? "border-[#d47182] bg-[#fff0f2] text-[#d47182]"
-                        : "border-[#e8d0d0] bg-white text-[#615557] hover:border-[#d47182]"
+                        ? "border-[#d47182] bg-[linear-gradient(143deg,#ffebeb_30%,#fff5f5_67%)] text-[#a33d4c]"
+                        : "border-[#d6c2c3] bg-white text-[#78716c] hover:border-[#d47182]"
                     }`}
                   >
                     <input
@@ -140,15 +150,34 @@ export default function UserInfoPage() {
                       type="radio"
                       value={option}
                     />
+                    <span
+                      className={
+                        gender === option
+                          ? "grid size-4 place-items-center rounded-full border-[0.1875rem] border-[rgba(255,169,173,0.4)] bg-[#f27c7c]"
+                          : "size-4 rounded-full border border-[#d6c2c3]"
+                      }
+                    >
+                      {gender === option && (
+                        <svg aria-hidden="true" className="size-2" fill="none" viewBox="0 0 8 8">
+                          <path d="M1.25 4.15 3.1 6 6.75 2" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />
+                        </svg>
+                      )}
+                    </span>
                     {option}
                   </label>
                 ))}
               </div>
-              {errors.gender && <span className={errorClass} id="error-gender">{errors.gender}</span>}
+              {errors.gender && (
+                <span className="text-[0.8125rem] font-medium leading-5 text-[#a33d4c]">{errors.gender}</span>
+              )}
             </fieldset>
 
-            <label className={labelClass} htmlFor="user-church">
-              <span className={labelTextClass}>출석교회 <span className="text-[0.75rem] font-medium text-[#b69da2]">(선택)</span></span>
+            {/* 출석교회 (선택) */}
+            <label className="grid gap-2" htmlFor="user-church">
+              <span className="text-[0.8125rem] font-normal text-[#524345]">
+                출석교회{" "}
+                <span className="text-[0.75rem] font-medium text-[#a8a29e]">(선택)</span>
+              </span>
               <input
                 className={inputClass}
                 id="user-church"
@@ -159,7 +188,12 @@ export default function UserInfoPage() {
               />
             </label>
 
-            <label className="flex cursor-pointer items-start gap-3 rounded-md border border-[#eedada] bg-[#fffafa] px-4 py-4 text-[#5f4c50]" htmlFor="privacy-consent">
+            {/* 개인정보 동의 */}
+            <label
+              className="relative flex cursor-pointer items-start gap-3 overflow-hidden rounded border border-[rgba(0,0,0,0.04)] bg-white px-4 py-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+              htmlFor="privacy-consent"
+            >
+              <div className="pointer-events-none absolute -bottom-12 -right-12 size-48 rounded-full bg-[rgba(140,71,82,0.05)] blur-[2rem]" />
               <input
                 checked={privacyConsent}
                 className="mt-0.5 size-4 accent-[#d47182]"
@@ -168,17 +202,22 @@ export default function UserInfoPage() {
                 type="checkbox"
               />
               <span className="grid gap-1 text-[0.8125rem] leading-5">
-                <span className="font-extrabold">개인정보 수집 및 이용에 동의합니다.</span>
-                <span className="text-[#8a7073]">입력하신 정보는 연구 자료 수집 목적으로만 사용되며, 제3자에게 제공되지 않습니다.</span>
-                {errors.privacyConsent && <span className={errorClass}>{errors.privacyConsent}</span>}
+                <span className="font-bold text-[#524345]">개인정보 수집 및 이용에 동의합니다.</span>
+                <span className="text-[#a8a29e]">입력하신 정보는 연구 자료 수집 목적으로만 사용되며, 제3자에게 제공되지 않습니다.</span>
+                {errors.privacyConsent && (
+                  <span className="font-medium text-[#a33d4c]">{errors.privacyConsent}</span>
+                )}
               </span>
             </label>
 
             <button
-              className="mt-1 inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-5 text-[1rem] font-extrabold text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.22)] transition hover:-translate-y-0.5 hover:brightness-[1.03]"
+              className="mt-1 inline-flex h-12 items-center justify-center gap-2 rounded bg-[linear-gradient(156deg,#d47182_30.73%,#e68798_67%)] px-5 text-[1rem] font-medium text-white shadow-[0_10px_15px_-3px_rgba(140,71,82,0.2),0_4px_6px_-4px_rgba(140,71,82,0.2)] transition hover:-translate-y-0.5"
               type="submit"
             >
-              진단 시작하기
+              <span>진단 시작하기</span>
+              <svg aria-hidden="true" className="h-[0.8125rem] w-[0.875rem]" fill="none" viewBox="0 0 14 13">
+                <path d="m5.4 2.1 4.4 4.4-4.4 4.4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+              </svg>
             </button>
           </form>
         </div>
