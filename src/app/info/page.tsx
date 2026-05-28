@@ -99,12 +99,13 @@ const hiddenQuestions = [
 ];
 
 const msbfAreas = [
-  ["M", "Mission", "부르심", "하나님으로부터 받은 미션을 일터와 삶 속에서 어떻게 수행하고 있는지 점검"],
-  ["S", "Stewardship", "청지기", "그리스도인으로서 맡겨진 것을 지키고 관리하는 청지기 사명의 태도 점검"],
-  ["B", "Building", "세움", "하나님이 주신 은사와 재능, 재정을 어떻게 세우고 키워 성장시키는지 점검"],
-  ["F", "Flowing", "흘려보냄", "하나님이 허락하신 아버지의 마음으로 나누고 기부하며 흘려보내는 삶의 태도 점검"],
+  ["M", "Mission", "부르심", "하나님으로부터 받은 미션을 일터와 삶 속에서 어떻게 수행하고 있는지 점검", "#ea738a"],
+  ["S", "Stewardship", "청지기", "그리스도인으로서 맡겨진 것을 지키고 관리하는 청지기 사명의 태도 점검", "#e0a15a"],
+  ["B", "Building", "세움", "하나님이 주신 은사와 재능, 재정을 어떻게 세우고 키워 성장시키는지 점검", "#58b279"],
+  ["F", "Flowing", "흘려보냄", "하나님이 허락하신 아버지의 마음으로 나누고 기부하며 흘려보내는 삶의 태도 점검", "#71a1f0"],
 ];
 
+// 2000px solid extension → solid stop at 2000/(2000+768) ≈ 72.25%
 const generationLabels = [
   {
     key: "youth",
@@ -113,8 +114,13 @@ const generationLabels = [
     color: "#f04d5a",
     titleColor: "#301010",
     glow: "rgba(234,139,154,0.2)",
+    gradientBg: "linear-gradient(to right, rgba(234,139,154,0.4) 0%, rgba(234,139,154,0.4) 72.25%, rgba(234,139,154,0) 100%)",
+    gradientBgMobile: "linear-gradient(to right, rgba(234,139,154,0.4) 0%, rgba(234,139,154,0) 100%)",
+    gradientSide: "left" as const,
+    blur: 24,
+    desktopTop: 605,
     x: 51,
-    y: 300.3,
+    y: 480.3,
     align: "left",
   },
   {
@@ -124,8 +130,13 @@ const generationLabels = [
     color: "#fcba3f",
     titleColor: "#301d10",
     glow: "rgba(249,183,78,0.2)",
+    gradientBg: "linear-gradient(to left, rgba(249,183,78,0.4) 0%, rgba(249,183,78,0.4) 72.25%, rgba(249,183,78,0) 100%)",
+    gradientBgMobile: "linear-gradient(to left, rgba(249,183,78,0.4) 0%, rgba(249,183,78,0) 100%)",
+    gradientSide: "right" as const,
+    blur: 24,
+    desktopTop: 1005,
     x: 988,
-    y: 675.3,
+    y: 875.3,
     align: "right",
   },
   {
@@ -135,8 +146,13 @@ const generationLabels = [
     color: "#43cd39",
     titleColor: "#081906",
     glow: "rgba(113,233,65,0.2)",
+    gradientBg: "linear-gradient(to right, rgba(113,233,65,0.4) 0%, rgba(113,233,65,0.4) 72.25%, rgba(113,233,65,0) 100%)",
+    gradientBgMobile: "linear-gradient(to right, rgba(113,233,65,0.4) 0%, rgba(113,233,65,0) 100%)",
+    gradientSide: "left" as const,
+    blur: 24,
+    desktopTop: 1410,
     x: 60,
-    y: 1085.3,
+    y: 1285.3,
     align: "left",
   },
   {
@@ -146,8 +162,13 @@ const generationLabels = [
     color: "#3957cd",
     titleColor: "#0e1531",
     glow: "rgba(78,115,249,0.2)",
+    gradientBg: "linear-gradient(to left, rgba(78,115,249,0.4) 0%, rgba(78,115,249,0.4) 72.25%, rgba(78,115,249,0) 100%)",
+    gradientBgMobile: "linear-gradient(to left, rgba(78,115,249,0.4) 0%, rgba(78,115,249,0) 100%)",
+    gradientSide: "right" as const,
+    blur: 24,
+    desktopTop: 1800,
     x: 975,
-    y: 1469.3,
+    y: 1669.3,
     align: "right",
   },
 ];
@@ -157,8 +178,9 @@ const generationBubbles = [
     key: "youth-1",
     text: "\"취업도 안 됐는데 빚은 쌓이고... 어디서부터 시작해야 할지 모르겠어요.\"",
     color: "rgba(255,126,126,0.7)",
+    tailColor: "#FF7E7E",
     x: 296,
-    y: 454.3,
+    y: 634.3,
     width: 326.4,
     tailAlign: "center",
     tailFlip: true,
@@ -167,38 +189,45 @@ const generationBubbles = [
     key: "youth-2",
     text: "\"카드값, 월세, 적금, 다 챙기려니 매달 숨이 막혀요.\"",
     color: "rgba(255,126,126,0.7)",
+    tailColor: "#FF7E7E",
     x: 110,
-    y: 703.3,
+    y: 883.3,
     width: 332.8,
     tailAlign: "left",
     tailFlip: false,
+    mirrorTail: true,
   },
   {
     key: "newlyweds-1",
     text: "\"저축이냐 소비냐, 돈 얘기만 나오면 싸워요. 같은 방향을 보고 싶은데...\"",
     color: "rgba(236,179,65,0.7)",
+    tailColor: "#ECB341",
     x: 665,
-    y: 851.3,
+    y: 1051.3,
     width: 332.8,
     tailAlign: "left",
     tailFlip: false,
+    mirrorTail: false,
   },
   {
     key: "newlyweds-2",
     text: "\"둘 다 버는데 왜 돈이 안 모이는지 정말 모르겠어요.\"",
     color: "rgba(236,179,65,0.7)",
+    tailColor: "#ECB341",
     x: 865,
-    y: 1099.3,
+    y: 1299.3,
     width: 326.4,
     tailAlign: "center",
     tailFlip: true,
+    mirrorTail: true,
   },
   {
     key: "middle-age-1",
     text: "\"애 학원비에 노후 준비까지, 어디서 돈이 새는지 모르겠어요.\"",
     color: "rgba(58,163,60,0.7)",
+    tailColor: "#3AA33C",
     x: 85,
-    y: 1249.3,
+    y: 1449.3,
     width: 326.4,
     tailAlign: "center",
     tailFlip: true,
@@ -207,31 +236,37 @@ const generationBubbles = [
     key: "middle-age-2",
     text: "\"대출은 아직 남았고, 은퇴는 다가오는데 뭘 먼저 해야 할지...\"",
     color: "rgba(58,163,60,0.7)",
+    tailColor: "#3AA33C",
     x: 245,
-    y: 1512.3,
+    y: 1712.3,
     width: 332.8,
     tailAlign: "left",
     tailFlip: false,
+    mirrorTail: true,
   },
   {
     key: "senior-1",
     text: "\"수입이 끊기고 나니 매달이 불안해요. 남은 자산을 어떻게 지켜야 할까요?\"",
     color: "rgba(59,94,237,0.7)",
+    tailColor: "#3B5EED",
     x: 858,
-    y: 1645.3,
+    y: 1845.3,
     width: 332.8,
     tailAlign: "left",
     tailFlip: false,
+    mirrorTail: false,
   },
   {
     key: "senior-2",
     text: "\"자식한테 짐이 되기 싫어서 혼자 고민하다 지쳐요.\"",
     color: "rgba(59,94,237,0.7)",
+    tailColor: "#3B5EED",
     x: 655,
-    y: 1905.3,
+    y: 2105.3,
     width: 326.4,
     tailAlign: "center",
     tailFlip: true,
+    mirrorTail: true,
   },
 ];
 
@@ -266,11 +301,11 @@ const serviceSteps = [
   },
 ];
 
-function BubbleTail({ align = "left", color, flip = false }: { align?: "center" | "left"; color: string; flip?: boolean }) {
+function BubbleTail({ align = "left", color, flip = false, mirror = false }: { align?: "center" | "left"; color: string; flip?: boolean; mirror?: boolean }) {
   const tail = (
-    <div className="flex h-[35.334px] w-[27px] items-center justify-center">
+    <div className="flex h-[35.334px] w-[27px] items-center justify-center" style={mirror ? { transform: "scaleX(-1)" } : undefined}>
       <div className="-rotate-90 -scale-y-100">
-        <div className="h-[27px] w-[35.334px] [clip-path:polygon(0_50%,100%_0,100%_100%)]" style={{ background: color }} />
+        <div className="h-[27px] w-[35.334px] [clip-path:polygon(0_0,100%_0,100%_100%)]" style={{ background: color }} />
       </div>
     </div>
   );
@@ -292,7 +327,7 @@ export default function InfoPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <section className="relative flex min-h-[720px] items-center justify-center overflow-hidden bg-[#fff7f5] px-0 pb-32 pt-40 [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-lg:px-6 max-lg:pb-18 max-lg:pt-28">
+      <section className="relative flex min-h-[720px] items-center justify-center overflow-hidden bg-[#fff7f5] px-0 pb-[128px] pt-[128px] [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-lg:px-6 max-lg:pb-18 max-lg:pt-28">
         <div className="absolute -left-[164px] top-[584px] h-[800px] w-[800px] rounded-full bg-[rgba(193,133,144,0.1)] blur-[32px]" />
         <div className="absolute left-[728px] top-16 h-[520px] w-[520px] rounded-full bg-[rgba(255,172,117,0.1)] blur-[32px]" />
 
@@ -329,10 +364,10 @@ export default function InfoPage() {
           </div>
 
           <div className="relative flex-[0_0_444.8px] max-lg:w-full max-lg:max-w-[420px] max-lg:flex-auto">
-            <div className="h-[492.8px] w-[444.8px] overflow-hidden rounded-[19.2px] shadow-[0_20px_40px_-9.6px_rgba(0,0,0,0.25)] max-lg:aspect-[444.8/492.8] max-lg:h-auto max-lg:w-full">
-              <img className="block h-full w-full object-cover" alt="성경 위 십자가를 들고 묵상하는 사람" src={heroImage} />
+            <div className="w-fit overflow-hidden rounded-[19.2px] shadow-[0_20px_40px_-9.6px_rgba(0,0,0,0.25)] max-lg:w-full">
+              <img className="block h-auto w-auto max-w-full" width={445} height={493} alt="성경 위 십자가를 들고 묵상하는 사람" src={heroImage} />
             </div>
-            <blockquote className="absolute -bottom-[24.2px] -left-6 m-0 max-w-[360px] rounded-2xl bg-[rgba(255,255,255,0.7)] px-6 py-6 pr-9 text-sm font-light leading-5 text-[#24191a] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] backdrop-blur-[6px] max-lg:-bottom-5 max-lg:left-4 max-lg:max-w-[calc(100%-32px)] max-lg:px-5 max-lg:py-[18px]">
+            <blockquote className="absolute -bottom-[24.2px] -left-6 m-0 max-w-[360px] rounded-2xl bg-[rgba(255,255,255,0.8)] px-6 py-6 pr-9 text-sm font-light leading-5 text-[#24191a] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] backdrop-blur-[6px] max-lg:-bottom-5 max-lg:left-4 max-lg:max-w-[calc(100%-32px)] max-lg:px-5 max-lg:py-[18px]">
               <p className="whitespace-nowrap font-light">"내 보물 있는 그 곳에는 네 마음도 있느니라"</p>
               <cite className="block not-italic">마태복음 6:21</cite>
             </blockquote>
@@ -362,8 +397,8 @@ export default function InfoPage() {
           <div className="grid w-full grid-cols-4 gap-5 max-lg:grid-cols-2 max-sm:grid-cols-1">
             {hiddenQuestions.map((question) => (
               <article className="flex min-h-[242px] flex-col items-start gap-3 rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[rgba(242,216,220,0.1)] p-[33px] shadow-[0_4px_6px_rgba(0,0,0,0.15)] backdrop-blur-[6px] max-lg:min-h-[220px] max-lg:p-7" key={question.title}>
-                <img className="h-9 w-9" alt="" src={question.icon} />
-                <h3 className="pt-1 text-h3 font-extrabold text-[#ffe4e6]">{question.title}</h3>
+                <img className="h-9 w-9 object-contain" alt="" src={question.icon} />
+                <h3 className="pt-1 text-h3 font-extrabold text-[#FFF5F0]">{question.title}</h3>
                 <p className="text-body-s font-medium text-[#ded2d2] opacity-80 lg:text-body-m">
                   {question.description}
                 </p>
@@ -381,13 +416,23 @@ export default function InfoPage() {
           </div>
         </div>
 
-        <div className="mx-auto hidden w-full overflow-visible pb-20 md:flex md:h-[73.5rem] md:justify-center min-[900px]:h-[81.13rem] lg:h-[86.5rem] min-[1150px]:h-[97.86rem] xl:h-[114.55rem]">
-          <div className="relative h-[133.75rem] w-[1280px] shrink-0 origin-top scale-[0.63] -translate-y-[15.75rem] min-[900px]:scale-[0.7] min-[900px]:-translate-y-[17.5rem] lg:scale-[0.75] lg:-translate-y-[18.75rem] min-[1150px]:scale-[0.855] min-[1150px]:-translate-y-[21.5rem] xl:scale-100 xl:-translate-y-[24.2rem]">
+        <div className="mx-auto hidden w-full overflow-visible pb-20 md:flex md:h-[81.4rem] md:justify-center min-[900px]:h-[89.9rem] lg:h-[95.9rem] min-[1150px]:h-[108.5rem] xl:h-[127.1rem]">
+          <div className="relative h-[146.25rem] w-[1280px] shrink-0 origin-top scale-[0.63] -translate-y-[15.75rem] min-[900px]:scale-[0.7] min-[900px]:-translate-y-[17.5rem] lg:scale-[0.75] lg:-translate-y-[18.75rem] min-[1150px]:scale-[0.855] min-[1150px]:-translate-y-[21.5rem] xl:scale-100 xl:-translate-y-[24.2rem]">
             <div className="pointer-events-none absolute -left-24 -top-24 h-[31.25rem] w-[31.25rem] rounded-full bg-[rgba(249,168,212,0.3)] opacity-25 blur-[40px]" />
-            <div className="absolute left-[-226px] top-[412.3px] h-[526px] w-[979px] rotate-180 rounded-r-[1000px] bg-[radial-gradient(circle_at_80%_50%,rgba(234,139,154,0.2)_0%,rgba(246,199,207,0)_28%)] blur-[12px]" />
-            <div className="absolute left-[519px] top-[802.3px] h-[526px] w-[979px] scale-y-[-1] rounded-r-[1000px] bg-[radial-gradient(circle_at_80%_50%,rgba(249,183,78,0.2)_0%,rgba(249,183,78,0)_28%)] blur-[12px]" />
-            <div className="absolute left-[-226px] top-[1206.3px] h-[526px] w-[979px] rotate-180 rounded-r-[1000px] bg-[radial-gradient(circle_at_80%_50%,rgba(113,233,65,0.2)_0%,rgba(113,233,65,0)_28%)] blur-[12px]" />
-            <div className="absolute left-[519px] top-[1602.3px] h-[526px] w-[979px] scale-y-[-1] rounded-r-[1000px] bg-[radial-gradient(circle_at_80%_50%,rgba(78,115,249,0.2)_0%,rgba(78,115,249,0)_28%)] blur-[12px]" />
+
+            {generationLabels.map((label) => (
+              <div
+                key={`bg-${label.key}`}
+                className="pointer-events-none absolute h-[526px]"
+                style={{
+                  top: label.desktopTop,
+                  ...(label.gradientSide === "left" ? { left: -2000 } : { right: -2000 }),
+                  width: "calc(60% + 2000px)",
+                  background: label.gradientBg,
+                  ...(label.blur ? { filter: `blur(${label.blur}px)` } : {}),
+                }}
+              />
+            ))}
 
             {generationLabels.map((label) => (
               <div
@@ -422,7 +467,7 @@ export default function InfoPage() {
                 <div className="flex items-center justify-center overflow-hidden rounded-[0.9rem] px-8 py-[38.4px]" style={{ background: bubble.color }}>
                   <p className="w-[16.8rem] text-h3 font-medium leading-9 text-white">{bubble.text}</p>
                 </div>
-                <BubbleTail align={bubble.tailAlign as "center" | "left"} color={bubble.color} flip={bubble.tailFlip} />
+                <BubbleTail align={bubble.tailAlign as "center" | "left"} color={bubble.tailColor ?? bubble.color} flip={bubble.tailFlip} mirror={bubble.mirrorTail} />
               </div>
             ))}
           </div>
@@ -440,7 +485,7 @@ export default function InfoPage() {
               const bubbles = generationBubbles.filter((bubble) => bubble.key.startsWith(label.key));
 
               return (
-                <article className="relative flex flex-col gap-5" key={label.key}>
+                <article className="relative flex flex-col gap-5 rounded-2xl -mx-4 p-4" key={label.key} style={{ background: label.gradientBgMobile }}>
                   <div className="flex flex-col gap-2">
                     <span className="text-h4 font-extrabold uppercase leading-6" style={{ color: label.color }}>
                       {label.eyebrow}
@@ -455,7 +500,7 @@ export default function InfoPage() {
                         <div className="flex min-h-[8.25rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-8 py-8" style={{ background: bubble.color }}>
                           <p className="text-body-m font-medium leading-7 text-white">{bubble.text}</p>
                         </div>
-                        <BubbleTail color={bubble.color} />
+                        <BubbleTail color={bubble.tailColor ?? bubble.color} mirror={bubble.mirrorTail} />
                       </div>
                     ))}
                   </div>
@@ -468,27 +513,31 @@ export default function InfoPage() {
 
       <section className="relative flex min-h-[720px] flex-col items-center justify-center gap-[60px] overflow-hidden bg-[#52494b] px-[60px] py-[100px] text-[#fff7f5] [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-lg:px-6 max-lg:py-28" id="archetypes">
         <div className="pointer-events-none absolute -right-[200px] top-[120px] h-[420px] w-[620px] rotate-[28deg] rounded-[48%] border-4 border-[rgba(207,190,190,0.22)]" />
-        <div className="relative z-10 mx-auto grid w-full max-w-[1120px] gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <div className="flex flex-col gap-6">
-            <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">MSBF Framework</span>
-            <h2 className="text-display font-extrabold leading-tight text-[#e7dede] lg:text-h1-desktop xl:text-display-desktop">
-              MSBF 경제영성 진단 프로그램이란
-            </h2>
-            <p className="text-body-m font-light text-[rgba(255,247,245,0.76)] lg:text-body-l-desktop">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1120px] gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
+              <span className="text-body-m font-medium uppercase tracking-[0.0625rem] text-[#f3b5c1] lg:text-h3">MSBF Framework</span>
+              <h2 className="text-display font-extrabold leading-tight text-[#FFF5F0] lg:text-h1-desktop xl:text-display-desktop">
+                MSBF 경제영성 진단 프로그램이란
+              </h2>
+            </div>
+            <p className="text-body-m font-medium text-[#F3DEDE] lg:text-body-l-desktop">
               MSBF는 성도의 경제영성을 네 가지 핵심 영역으로 분석하는 진단 프로그램입니다. 단순히 재정 상태만을 파악하는 것이 아니라, 삶 속에서 부르심을 어떻게 수행하고 맡겨진 것을
               지키며, 하나님이 주신 것을 세우고 흘려보내고 있는지를 입체적으로 점검하도록 설계되어 있습니다.
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {msbfAreas.map(([initial, label, title, description]) => (
-              <article className="rounded-lg border border-[rgba(255,247,245,0.12)] bg-[#5f5557] p-6 shadow-[0_18px_40px_rgba(36,25,26,0.18)]" key={label}>
-                <div className="mb-8 flex items-center justify-between gap-4">
-                  <strong className="flex h-12 w-12 items-center justify-center rounded bg-[#f3b5c1] text-h3 font-extrabold text-[#52494b]">{initial}</strong>
-                  <span className="text-label font-extrabold uppercase tracking-[0.14rem] text-[#cfbebe]">{label}</span>
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2">
+            {msbfAreas.map(([initial, label, title, description, boxColor]) => (
+              <article className="min-w-0 rounded-lg border border-[rgba(255,247,245,0.12)] bg-[#5f5557] p-6 shadow-[0_18px_40px_rgba(36,25,26,0.18)]" key={label}>
+                <div className="mb-8 flex items-start justify-between gap-4">
+                  <strong className="flex h-12 w-12 shrink-0 items-center justify-center rounded text-h3 font-extrabold text-white" style={{ background: boxColor }}>{initial}</strong>
+                  <div className="flex min-w-0 flex-col items-end gap-0.5 text-right">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.14rem] text-[#F3B5C1]">{label}</span>
+                    <h3 className="text-h3 font-extrabold text-[#FFF5F0]">{title}</h3>
+                  </div>
                 </div>
-                <h3 className="mb-3 text-h3 font-extrabold text-[#fff7f5]">{title}</h3>
-                <p className="text-body-s font-light text-[rgba(255,247,245,0.7)]">{description}</p>
+                <p className="text-body-s font-medium text-[rgba(255,247,245,0.7)]">{description}</p>
               </article>
             ))}
           </div>
@@ -522,10 +571,15 @@ export default function InfoPage() {
           <div className="absolute -right-[120px] top-[66.6px] h-[400px] w-[400px] rounded-full bg-[rgba(255,255,255,0.1)] blur-[32px]" />
           <div className="absolute -bottom-[96.79px] -left-24 h-64 w-64 rounded-full blur-[32px]" />
           <div className="relative z-10 flex flex-col items-center gap-[23px]">
-            <h2 className="pb-[17.6px] text-center text-h2 font-extrabold leading-tight text-white lg:text-h1-desktop">
-              지금, 당신의 경제 영성은 어떤지 확인해보세요
-            </h2>
-            <a className="relative inline-flex min-h-[4.3rem] items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-extrabold text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/info">
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-center text-body-m font-medium text-[rgba(255,255,255,0.8)]">
+                "네 보물 있는 그 곳에는 네 마음도 있느니라" (마태복음 6:21)
+              </p>
+              <h2 className="text-center text-display font-extrabold leading-tight text-white">
+                지금, 당신의 마음이 어디에 있는지 확인해보세요
+              </h2>
+            </div>
+            <a className="relative inline-flex min-h-[4.3rem] items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-extrabold !text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/info">
               진단 시작하기
             </a>
           </div>

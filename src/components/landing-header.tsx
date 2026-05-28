@@ -41,7 +41,7 @@ export function LandingHeader({ brandHref = "/info", label = "메인 내비게�
 
           return (
             <Link
-              className={isActive ? "border-b border-[#fecdd3] pb-[5px] text-base font-extrabold leading-6 !text-[#BE123C]" : "text-base font-semibold leading-6 text-[#78716c]"}
+              className={isActive ? "border-b border-[#fecdd3] pb-[5px] text-base font-normal leading-6 !text-[#BE123C]" : "text-base font-normal leading-6 text-[#78716c]"}
               href={item.href}
               key={item.label}
               style={isActive ? { color: "#BE123C" } : undefined}
