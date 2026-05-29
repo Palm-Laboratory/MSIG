@@ -3,7 +3,7 @@
 import emailjs from "@emailjs/browser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LottieAnimation } from "@/components/LottieAnimation";
 import { formatEmailBodyFromStorage } from "@/lib/email";
 import { readJsonWithTtl, RESULT_STORAGE_KEYS, type UserProfile } from "@/lib/storage";
@@ -12,6 +12,8 @@ import { SURVEY_QUESTIONS } from "@/lib/survey-data";
 export default function DiagnosisLoadingPage() {
   const router = useRouter();
   const [hasAnswers, setHasAnswers] = useState(true);
+  // StrictMode(개발)에서 effect가 두 번 실행돼도 이메일은 1회만 발송되도록 가드
+  const hasSentRef = useRef(false);
 
   useEffect(() => {
     const answers = readJsonWithTtl<Record<string, number>>(RESULT_STORAGE_KEYS.answers, {}, RESULT_STORAGE_KEYS.legacyAnswers);
@@ -24,6 +26,9 @@ export default function DiagnosisLoadingPage() {
     const userProfile = readJsonWithTtl<UserProfile | null>(RESULT_STORAGE_KEYS.profile, null, RESULT_STORAGE_KEYS.legacyProfile);
 
     const sendResultEmail = async () => {
+      if (hasSentRef.current) return;
+      hasSentRef.current = true;
+
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
