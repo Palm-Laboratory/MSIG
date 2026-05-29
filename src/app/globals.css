@@ -144,11 +144,11 @@ p {
 .landing-process {
   align-items: center;
   animation: landing-fade-up 700ms ease 220ms both;
-  background: #615557;
+  background: #443739;
   color: #fff5f0;
   display: flex;
   flex-direction: column;
-  gap: 56px;
+  gap: 72px;
   min-height: 640px;
   overflow: hidden;
   padding: 88px 60px 80px;
@@ -158,6 +158,7 @@ p {
 .landing-section-title {
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
   margin: 0 auto;
   max-width: 1280px;
   position: relative;
@@ -167,17 +168,24 @@ p {
 
 .landing-section-title span {
   color: #f3b5c1;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.125rem;
+  font-weight: 500;
   letter-spacing: 0.0625rem;
-  line-height: 1.5;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .landing-section-title h2 {
   color: #fff5f0;
-  font-size: 3.25rem;
-  font-weight: 900;
-  line-height: 1.625;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+@media (min-width: 1280px) {
+  .landing-section-title h2 {
+    font-size: 3.25rem;
+  }
 }
 
 .landing-process .landing-section-title {
@@ -235,7 +243,7 @@ p {
 
 .process-tabs button {
   align-items: center;
-  --process-tab-bg: #f9e4e7;
+  --process-tab-bg: #ffe2e6;
   background: transparent;
   border: 0;
   color: #BA9098;
@@ -263,13 +271,8 @@ p {
   z-index: -1;
 }
 
-.process-tabs button:nth-child(1) {
-  z-index: 3;
-}
-
 .process-tabs button:nth-child(2) {
   --process-tab-bg: #fdc8d1;
-  z-index: 2;
 }
 
 .process-tabs button:nth-child(3) {
@@ -283,15 +286,16 @@ p {
 .process-tabs button.selected {
   filter: drop-shadow(0 -4px 5px rgba(0, 0, 0, 0.08));
   transform: translateY(1px);
-  z-index: 4;
 }
 
 .process-panel {
-  background: #f9e4e7;
+  background: #ffe2e6;
   border-radius: 0 12px 12px 12px;
   margin-top: -2px;
   min-height: 350px;
   padding: 36px 40px;
+  position: relative;
+  z-index: 3;
 }
 
 .process-panel-2 {
@@ -309,7 +313,7 @@ p {
   color: #000;
   min-height: 278px;
   overflow: hidden;
-  padding: 70px 32px 48px;
+  padding: 48px 32px;
 }
 
 .process-panel h3,
@@ -318,15 +322,15 @@ p {
   font-size: 1.875rem;
   font-weight: 500;
   line-height: 1;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .process-panel-card ul,
 .process-mobile-card ul {
-  color: #000;
+  color: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   font-weight: 400;
   gap: 12px;
   line-height: 1.636;
@@ -373,7 +377,7 @@ p {
   color: #fff7f5;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: 72px;
   min-height: 720px;
   overflow: hidden;
   padding: 100px 60px;
@@ -381,7 +385,7 @@ p {
 }
 
 .landing-archetypes .landing-section-title h2 {
-  color: #e7dede;
+  color: #fff5f0;
 }
 
 .landing-archetypes .landing-section-title {
@@ -471,17 +475,23 @@ p {
   padding: 8px 10px;
 }
 
+.character-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .landing-character h3 {
   color: #f9e3e3;
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1;
 }
 
 .landing-character p {
   color: #f3b5c1;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.125rem;
   line-height: 1;
 }
@@ -515,9 +525,15 @@ p {
   flex-direction: column;
   gap: 60px;
   justify-content: center;
-  min-height: 560px;
+  min-height: 640px;
   padding: 100px 60px;
   text-align: center;
+}
+
+.landing-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .landing-cta h2 {
@@ -525,7 +541,6 @@ p {
   font-size: 3rem;
   font-weight: 900;
   line-height: 1.2;
-  margin-bottom: 32px;
 }
 
 .landing-cta p {
@@ -568,7 +583,7 @@ p {
   }
 
   .landing-cta {
-    min-height: 640px;
+    min-height: 720px;
   }
 }
 
@@ -584,13 +599,13 @@ p {
   }
 
   .landing-section-title span {
-    font-size: 0.875rem;
-    line-height: 1.714;
+    font-size: 0.9375rem;
+    line-height: 1.7;
   }
 
   .landing-section-title h2 {
-    font-size: 1.75rem;
-    line-height: 1.417;
+    font-size: 2rem;
+    line-height: 1.25;
   }
 
   .process-desktop-card {
@@ -607,7 +622,7 @@ p {
 .process-mobile-card > span {
     align-items: center;
     align-self: flex-start;
-    background: #f9e4e7;
+    background: #ffe2e6;
     border-radius: 6px 6px 0 0;
     color: #79474f;
     display: inline-flex;
@@ -622,7 +637,7 @@ p {
   }
 
   .process-mobile-card > div {
-    background: #f9e4e7;
+    background: #ffe2e6;
     border-radius: 0 16px 16px 16px;
     padding: 36px 16px;
   }

@@ -14,9 +14,24 @@ type LandingProcessCardProps = {
 
 export function LandingProcessCard({ parts }: LandingProcessCardProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  // 기본 z-순서: 첫 탭이 가장 위(= parts.length), 오른쪽으로 갈수록 1씩 낮아짐
+  const [zOrder, setZOrder] = useState<number[]>(() => parts.map((_, index) => parts.length - index));
   const selectedPart = parts[selectedIndex] ?? parts[0];
 
   const panelId = useMemo(() => `process-panel-${selectedIndex + 1}`, [selectedIndex]);
+
+  const handleSelect = (index: number) => {
+    setSelectedIndex(index);
+    // 선택한 탭을 맨 앞으로: 그보다 위에 있던 탭은 1씩 내리고, 아래는 그대로 유지
+    setZOrder((prev) => {
+      const current = prev[index];
+      return prev.map((z, idx) => {
+        if (idx === index) return parts.length;
+        if (z > current) return z - 1;
+        return z;
+      });
+    });
+  };
 
   return (
     <div className="process-desktop-card">
@@ -30,8 +45,9 @@ export function LandingProcessCard({ parts }: LandingProcessCardProps) {
               aria-selected={isSelected}
               className={isSelected ? "selected" : undefined}
               key={part.label}
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => handleSelect(index)}
               role="tab"
+              style={{ zIndex: zOrder[index] }}
               type="button"
             >
               <svg aria-hidden="true" className="process-tab-shape" preserveAspectRatio="none" viewBox="0 0 232 68">

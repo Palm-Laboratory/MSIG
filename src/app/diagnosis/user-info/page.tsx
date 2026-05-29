@@ -202,7 +202,7 @@ export default function UserInfoPage() {
                 type="checkbox"
               />
               <span className="grid gap-1 text-[0.8125rem] leading-5">
-                <span className="font-bold text-[#524345]">개인정보 수집 및 이용에 동의합니다.</span>
+                <span className="font-normal text-[#524345]">개인정보 수집 및 이용에 동의합니다.</span>
                 <span className="text-[#a8a29e]">입력하신 정보는 연구 자료 수집 목적으로만 사용되며, 제3자에게 제공되지 않습니다.</span>
                 {errors.privacyConsent && (
                   <span className="font-medium text-[#a33d4c]">{errors.privacyConsent}</span>

@@ -348,19 +348,24 @@ export default function InfoPage() {
               단순한 자산 관리를 넘어, 당신의 경제 생활 속에 숨겨진 영성을 진단합니다.<br />
               하나님 나라의 청지기로서 평안과 질서를 회복하는 여정을 시작하세요.
             </p>
-            <a className="mt-[16.7px] inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#d47182] px-7 py-4 text-center text-h4 font-extrabold !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/info">
-              테스트 시작
-              <FallbackImage
-                alt=""
-                className="inline-flex h-[15px] w-[15px] items-center justify-center brightness-0 invert"
-                fallback={
-                  <svg aria-hidden="true" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 16 16">
-                    <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                  </svg>
-                }
-                src={arrowIcon}
-              />
-            </a>
+            <div className="mt-[16.7px] grid grid-cols-2 gap-4 max-lg:w-full max-lg:grid-cols-1">
+              <a className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#d47182] px-7 py-4 text-center text-h4 font-normal !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/user-info">
+                테스트 시작
+                <FallbackImage
+                  alt=""
+                  className="inline-flex h-[15px] w-[15px] items-center justify-center brightness-0 invert"
+                  fallback={
+                    <svg aria-hidden="true" className="h-[15px] w-[15px]" fill="none" viewBox="0 0 16 16">
+                      <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                    </svg>
+                  }
+                  src={arrowIcon}
+                />
+              </a>
+              <a className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#ffebeb] px-7 py-4 text-center text-h4 font-normal !text-[#524345] shadow-[0_10px_15px_-3px_rgba(0,0,0,0.08),0_4px_6px_-4px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/info">
+                검사 과정
+              </a>
+            </div>
           </div>
 
           <div className="relative flex-[0_0_444.8px] max-lg:w-full max-lg:max-w-[420px] max-lg:flex-auto">
@@ -570,7 +575,7 @@ export default function InfoPage() {
           <div className="absolute right-[827px] top-[7.6px] h-64 w-64 rounded-full bg-[rgba(255,255,255,0.1)] blur-[32px]" />
           <div className="absolute -right-[120px] top-[66.6px] h-[400px] w-[400px] rounded-full bg-[rgba(255,255,255,0.1)] blur-[32px]" />
           <div className="absolute -bottom-[96.79px] -left-24 h-64 w-64 rounded-full blur-[32px]" />
-          <div className="relative z-10 flex flex-col items-center gap-[23px]">
+          <div className="relative z-10 flex flex-col items-center gap-8">
             <div className="flex flex-col items-center gap-4">
               <p className="text-center text-body-m font-medium text-[rgba(255,255,255,0.8)]">
                 "네 보물 있는 그 곳에는 네 마음도 있느니라" (마태복음 6:21)
@@ -579,7 +584,7 @@ export default function InfoPage() {
                 지금, 당신의 마음이 어디에 있는지 확인해보세요
               </h2>
             </div>
-            <a className="relative inline-flex min-h-[4.3rem] items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-extrabold !text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/info">
+            <a className="relative inline-flex items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-normal !text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/user-info">
               진단 시작하기
             </a>
           </div>

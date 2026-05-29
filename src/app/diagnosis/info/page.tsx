@@ -80,7 +80,7 @@ const archetypes = [
 export default function DiagnosisInfoPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#fff7f5]">
-      <section className="relative flex min-h-[42rem] flex-col items-center justify-center overflow-hidden bg-[#fff7f5] px-6 py-24 md:min-h-[46rem] md:px-10 md:py-28 [@media(min-height:980px)]:lg:min-h-[760px] lg:min-h-[640px] lg:justify-start lg:px-[120px] lg:pb-20 lg:pt-40">
+      <section className="relative flex min-h-[720px] flex-col items-center justify-center overflow-hidden bg-[#fff7f5] px-0 pb-[128px] pt-[128px] [@media(min-height:760px)]:min-h-[100svh] [@media(min-height:980px)]:min-h-[900px] max-lg:px-6 max-lg:pb-18 max-lg:pt-28">
         <div className="absolute -left-[12rem] bottom-[-10rem] h-[28rem] w-[28rem] rounded-full bg-[rgba(193,133,144,0.12)] blur-[2rem] lg:-left-[164px] lg:bottom-auto lg:top-[584px] lg:h-[800px] lg:w-[800px]" />
         <div className="absolute right-[-10rem] top-[6rem] h-[22rem] w-[22rem] rounded-full bg-[rgba(255,172,117,0.12)] blur-[2rem] lg:left-[728px] lg:right-auto lg:top-16 lg:h-[520px] lg:w-[520px]" />
 
@@ -103,8 +103,8 @@ export default function DiagnosisInfoPage() {
               성경 속 인물을 통해 해답을 찾아보세요.
             </p>
             <div className="flex w-full justify-center pt-[46px]">
-              <ResetDiagnosisLink className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/user-info">
-                <span className="text-h4">테스트 시작</span>
+              <ResetDiagnosisLink className="relative inline-flex min-h-12 items-center justify-center gap-3 rounded bg-[#d47182] px-6 py-4 text-center text-h4 uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/user-info">
+                <span className="text-h4 font-normal">테스트 시작</span>
                 <FallbackImage
                   alt=""
                   className="inline-flex h-[15px] w-[15px] items-center justify-center brightness-0 invert"
@@ -163,22 +163,24 @@ export default function DiagnosisInfoPage() {
               <div className="character-image-slot" aria-label={imageSrc ? `${name} 캐릭터 이미지` : `${name} 캐릭터 이미지 준비 중`}>
                 {imageSrc ? <img alt={`${name} 캐릭터`} className={imageClassName} src={imageSrc} /> : <span>이미지 준비 중</span>}
               </div>
-              <h3>{name}</h3>
-              <p>{subtitle}</p>
+              <div className="character-meta">
+                <h3>{name}</h3>
+                <p>{subtitle}</p>
+              </div>
             </article>
           ))}
         </div>
-        <p className="mt-5 text-center text-caption font-medium leading-5 text-[#7d545b]">모든 이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
+        <p className="mt-5 text-center text-caption font-medium leading-5 text-[rgba(243,222,222,0.6)]">모든 이미지는 생성형 AI를 통해 만들어진 이미지입니다.</p>
       </section>
 
       <section className="landing-cta">
-        <div>
+        <div className="landing-cta-text">
           <h2>이제 당신의 경제영성을 확인해보세요</h2>
           <p>더 깊은 상담을 원하신다면 전문가와 함께 정밀한 상담을 받아보세요.</p>
         </div>
         <div className="landing-cta-actions">
-          <ResetDiagnosisLink className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-6 py-4 text-center text-h4 font-extrabold uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:px-8 md:py-4 md:text-h3 lg:min-h-[60px] lg:px-7 lg:py-3 lg:text-h3-desktop" href="/diagnosis/user-info">
-            <span className="text-h4">진단 시작하기 (무료)</span>
+          <ResetDiagnosisLink className="inline-flex min-h-12 items-center justify-center rounded bg-[#d47182] px-12 py-4 text-center text-h4 uppercase tracking-[0.0875rem] !text-white shadow-[0_10px_15px_-3px_rgba(146,75,87,0.24),0_4px_6px_-4px_rgba(146,75,87,0.24)] transition hover:-translate-y-0.5 hover:brightness-[1.03] md:min-h-14 md:py-4 md:text-h3 lg:min-h-[60px] lg:py-3 lg:text-h3-desktop" href="/diagnosis/user-info">
+            <span className="text-h4 font-normal">진단 시작하기 (무료)</span>
           </ResetDiagnosisLink>
         </div>
       </section>
