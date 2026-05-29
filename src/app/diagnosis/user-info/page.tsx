@@ -30,6 +30,14 @@ const validate = (name: string, phone: string, age: string, gender: string, priv
 const inputClass =
   "min-h-12 w-full rounded border border-[#d6c2c3] bg-white px-4 text-[1rem] text-[#292524] outline-none transition placeholder:text-[14px] placeholder:text-[#c4a9ad] focus:border-[#d47182] focus:ring-2 focus:ring-[rgba(212,113,130,0.15)]";
 
+// 숫자만 추출 후 3-4-4 형식으로 하이픈 자동 삽입 (최대 11자리)
+const formatPhone = (value: string) => {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length < 4) return digits;
+  if (digits.length < 8) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+};
+
 export default function UserInfoPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -95,7 +103,7 @@ export default function UserInfoPage() {
                 className={inputClass}
                 id="user-phone"
                 inputMode="numeric"
-                onChange={(e) => { setPhone(e.target.value); setErrors((prev) => ({ ...prev, phone: undefined })); }}
+                onChange={(e) => { setPhone(formatPhone(e.target.value)); setErrors((prev) => ({ ...prev, phone: undefined })); }}
                 pattern="[0-9 -]*"
                 placeholder="010-0000-0000"
                 type="tel"
