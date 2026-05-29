@@ -30,7 +30,8 @@ export default function DiagnosisLoadingPage() {
       hasSentRef.current = true;
 
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      // 결과 분석 전용 템플릿. 미설정 시 상담 템플릿으로 폴백
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_RESULT_TEMPLATE_ID ?? process.env.NEXT_PUBLIC_EMAILJS_CONSULTATION_TEMPLATE_ID;
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
       if (!serviceId || !templateId || !publicKey) return;
 
@@ -40,7 +41,10 @@ export default function DiagnosisLoadingPage() {
           templateId,
           {
             user_name: userProfile?.name ?? "(미입력)",
-            user_phone: `나이: ${userProfile?.age ?? "-"} / 성별: ${userProfile?.gender ?? "-"} / 출석교회: ${userProfile?.church ?? "-"}`,
+            user_phone: userProfile?.phone ?? "-",
+            user_age: userProfile?.age ?? "-",
+            user_gender: userProfile?.gender ?? "-",
+            user_church: userProfile?.church ?? "-",
             privacy_consent: "동의",
             answers: formatEmailBodyFromStorage(userProfile ?? undefined),
           },
