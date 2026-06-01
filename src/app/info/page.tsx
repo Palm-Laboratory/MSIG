@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FallbackImage } from "@/components/FallbackImage";
 import { LandingHeader } from "@/components/landing-header";
+import { ResetDiagnosisLink } from "@/components/ResetDiagnosisLink";
 import { SiteFooter } from "@/components/site-footer";
 import { DEFAULT_DESCRIPTION, OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, SITE_NAME, SITE_URL } from "@/lib/seo";
 
@@ -349,7 +350,7 @@ export default function InfoPage() {
               하나님 나라의 청지기로서 평안과 질서를 회복하는 여정을 시작하세요.
             </p>
             <div className="mt-[16.7px] grid grid-cols-2 gap-4 max-lg:w-full max-lg:grid-cols-1">
-              <a className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#d47182] px-7 py-4 text-center text-h4 font-normal !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/user-info">
+              <ResetDiagnosisLink className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#d47182] px-7 py-4 text-center text-h4 font-normal !text-white shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1),0_4px_4px_rgba(146,75,87,0.25)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/user-info">
                 테스트 시작
                 <FallbackImage
                   alt=""
@@ -361,7 +362,7 @@ export default function InfoPage() {
                   }
                   src={arrowIcon}
                 />
-              </a>
+              </ResetDiagnosisLink>
               <a className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded bg-[#ffebeb] px-7 py-4 text-center text-h4 font-normal !text-[#524345] shadow-[0_10px_15px_-3px_rgba(0,0,0,0.08),0_4px_6px_-4px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5 hover:brightness-[1.03] lg:px-8 lg:py-3 lg:text-h4 xl:min-h-[60px]" href="/diagnosis/info">
                 검사 과정
               </a>
@@ -584,9 +585,9 @@ export default function InfoPage() {
                 지금, 당신의 마음이 어디에 있는지 확인해보세요
               </h2>
             </div>
-            <a className="relative inline-flex items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-normal !text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/user-info">
+            <ResetDiagnosisLink className="relative inline-flex items-center justify-center rounded-2xl bg-white px-12 py-5 text-center text-h4 font-normal !text-[#a43248] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition hover:-translate-y-0.5 hover:brightness-[1.02] lg:text-h4-desktop" href="/diagnosis/user-info">
               진단 시작하기
-            </a>
+            </ResetDiagnosisLink>
           </div>
         </div>
       </section>
